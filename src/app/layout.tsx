@@ -9,6 +9,8 @@ import {
   sourceSerif,
 } from "./fonts/fonts";
 import "./globals.css";
+import { Suspense } from "react";
+import PageSpinner from "../components/loading/PageSpinner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +37,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${sohne.variable} ${sourceSerif.variable} ${gtSuper.variable} ${lucidaGrande.variable} ${lucidaUnicode.variable} antialiased`}
       >
-        {children}
+        <Suspense fallback={<PageSpinner />}>{children}</Suspense>
         <Toaster />
       </body>
     </html>
