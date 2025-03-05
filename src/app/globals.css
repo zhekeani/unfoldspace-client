@@ -45,6 +45,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 
   /* Font family */
+  --font-sohne: var(--font-sohne);
   --font-article: var(--font-source-serif), Georgia, "Times New Roman", serif;
   --font-gt-super: var(--font-gt-super), "Palatino Linotype", "Book Antiqua",
     Palatino, serif;
@@ -150,4 +151,8 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+body {
+  @apply font-sohne;
 }
