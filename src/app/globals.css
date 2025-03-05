@@ -43,6 +43,12 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --font-article: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  --font-gt-super: var(--font-gt-super), "Palatino Linotype", "Book Antiqua",
+    Palatino, serif;
+  --font-lucida: var(--font-lucida-grande), var(--font-lucida-unicode),
+    "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 :root {
