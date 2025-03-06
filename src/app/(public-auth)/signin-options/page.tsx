@@ -48,7 +48,7 @@ const SigninOptionsPage = () => {
           </Link>
         </div>
         <div className="flex gap-1 mt-[40px] mb-16 items-center justify-center">
-          <p>No account?</p>{" "}
+          <p className="font-light">No account?</p>{" "}
           <Link
             href="/signup-options"
             className="px-0 text-base text-main-text hover:!bg-transparent hover:underline font-medium"
@@ -58,7 +58,7 @@ const SigninOptionsPage = () => {
         </div>
 
         <div className=" mb-8">
-          <p className="text-xs text-main-text">
+          <p className="text-xs text-main-text font-light">
             Forgot email or trouble singing in?{" "}
             <span>
               <Link href={"/"} className="underline text-main-text">

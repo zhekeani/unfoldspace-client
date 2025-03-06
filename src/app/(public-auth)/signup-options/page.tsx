@@ -27,7 +27,7 @@ const SignupOptionsPage = () => {
           </Link>
         </div>
         <div className="flex gap-1 mt-[40px] mb-[100px] items-center justify-center">
-          <p className="text-main-text">Already have an account?</p>{" "}
+          <p className="text-main-text font-light">Already have an account?</p>{" "}
           <Link
             href="/signin-options"
             className="px-0 text-base text-main-text hover:!bg-transparent hover:underline font-medium"

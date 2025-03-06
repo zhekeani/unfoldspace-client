@@ -66,7 +66,7 @@ const EmailSignInPage = () => {
       </h3>
 
       <div className="">
-        <p className="mt-[30px] text-center text-main-text">
+        <p className="mt-[30px] text-center text-main-text font-light">
           <span className="text-black text-base">
             Enter the email address associated with <br /> your account, and
             we’ll send a magic link to <br /> your inbox.
@@ -109,7 +109,8 @@ const EmailSignInPage = () => {
           href="/signin-options"
           className="font-normal text-sm flex gap-1 items-center text-sub-text hover:text-main-text transition-colors"
         >
-          <ChevronLeft className="w-4 h-4" /> All sign in options
+          <ChevronLeft className="w-4 h-4" />{" "}
+          <span className="font-light">All sign in options</span>
         </Link>
       </div>
     </>

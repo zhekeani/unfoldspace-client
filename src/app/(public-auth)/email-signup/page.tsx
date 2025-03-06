@@ -67,7 +67,7 @@ const EmailSignUpPage = () => {
       </h3>
 
       <div className="">
-        <p className="mt-[30px] text-center text-main-text">
+        <p className="mt-[30px] text-center text-main-text font-light">
           <span className="text-black text-base">
             Enter your email address to create an <br /> account
           </span>
@@ -109,7 +109,8 @@ const EmailSignUpPage = () => {
           href="/signup-options"
           className="font-normal text-sm flex gap-1 items-center text-sub-text hover:text-main-text transition-colors"
         >
-          <ChevronLeft className="w-4 h-4" /> All sign up options
+          <ChevronLeft className="w-4 h-4" />{" "}
+          <span className="font-light">All sign up options</span>
         </Link>
       </div>
     </>
