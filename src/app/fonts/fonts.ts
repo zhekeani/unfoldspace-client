@@ -5,6 +5,16 @@ import localFont from "next/font/local";
 export const sohne = localFont({
   src: [
     {
+      path: "./sohne/TestSohne-Leicht.woff2",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "./sohne/TestSohne-LeichtKursiv.woff2",
+      weight: "300",
+      style: "italic",
+    },
+    {
       path: "./sohne/TestSohne-Buch.woff2",
       weight: "400",
       style: "normal",
