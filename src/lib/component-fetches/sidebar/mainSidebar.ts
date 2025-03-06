@@ -5,6 +5,7 @@ export const fetchMainSidebarData = async (): Promise<{
   stories: Story[];
   topics: Topic[];
   lastSavedStories: Story[];
+  activeUserId: string;
 } | null> => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -12,16 +13,18 @@ export const fetchMainSidebarData = async (): Promise<{
     const supabase = await getSupabaseCookiesUtilClient();
     if (!supabase) throw new Error("Database client unavailable.");
 
-    const [storiesRes, topicsRes, lastSavedStories] = await Promise.all([
-      supabase
-        .from("stories")
-        .select("*")
-        .eq("user_id", "ec37a113-9d04-42a1-a662-fe36b2e4d4cf")
-        .order("published_at", { ascending: false })
-        .limit(3),
-      supabase.from("topics").select("*").eq("depth_level", 1),
-      supabase.rpc("get_active_user_last_saved_stories"),
-    ]);
+    const [storiesRes, topicsRes, lastSavedStories, activeUserRes] =
+      await Promise.all([
+        supabase
+          .from("stories")
+          .select("*")
+          .eq("user_id", "ec37a113-9d04-42a1-a662-fe36b2e4d4cf")
+          .order("published_at", { ascending: false })
+          .limit(3),
+        supabase.from("topics").select("*").eq("depth_level", 1),
+        supabase.rpc("get_active_user_last_saved_stories"),
+        supabase.rpc("get_active_service_user_id"),
+      ]);
 
     if (storiesRes.error || !storiesRes.data) {
       console.error(storiesRes.error);
@@ -35,11 +38,16 @@ export const fetchMainSidebarData = async (): Promise<{
       console.error(lastSavedStories.error);
       throw new Error("Failed to fetch last saved stories.");
     }
+    if (activeUserRes.error || !activeUserRes.data) {
+      console.error(activeUserRes.error);
+      throw new Error("Failed to fetch active user ID.");
+    }
 
     return {
       stories: storiesRes.data,
       topics: topicsRes.data,
       lastSavedStories: lastSavedStories.data,
+      activeUserId: activeUserRes.data,
     };
   } catch (error) {
     console.error(error);

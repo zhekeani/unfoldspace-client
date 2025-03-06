@@ -4,7 +4,7 @@ import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 export const fetchUserPreviewByIdOnClient = async (
   userId: string
 ): Promise<{ user: UserPopoverServiceUser } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
     const supabase = getSupabaseBrowserClient();

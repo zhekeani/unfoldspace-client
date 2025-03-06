@@ -6,14 +6,15 @@ import UserPopover from "../../popover/UserPopover";
 
 type SidebarStoryItemProps = {
   story: Story;
+  activeUserId: string;
 };
 
-const SidebarStoryItem = ({ story }: SidebarStoryItemProps) => {
+const SidebarStoryItem = ({ story, activeUserId }: SidebarStoryItemProps) => {
   return (
     <div>
       <div className="flex gap-2 items-center mb-3">
-        <UserPopover userId={story.user_id}>
-          <Link href={`/%40${story.author_username}`} className="">
+        <UserPopover userId={story.user_id} activeUserId={activeUserId}>
+          <Link href={`/%40${story.author_username}`} className="rounded-full">
             <Avatar className="w-6 h-6">
               <AvatarImage
                 className="w-full h-full object-cover"
@@ -27,7 +28,7 @@ const SidebarStoryItem = ({ story }: SidebarStoryItemProps) => {
         </UserPopover>
         <div className=" text-xs text-black tracking-tight flex gap-1">
           <p className=" text-sub-text font-light">by</p>{" "}
-          <UserPopover userId={story.user_id}>
+          <UserPopover userId={story.user_id} activeUserId={activeUserId}>
             <Link
               href={`/%40${story.author_username}`}
               className="font-normal hover:underline"

@@ -13,14 +13,18 @@ const MainSidebar = async () => {
     return null;
   }
 
-  const { stories, topics, lastSavedStories } = response;
+  const { stories, topics, lastSavedStories, activeUserId } = response;
 
   return (
     <div className="w-[303px]">
       <SideBarSubsectionWrapper heading="Staff Picks">
         <div className="flex flex-col gap-4 mb-4">
           {stories.map((story) => (
-            <SidebarStoryItem key={story.id} story={story} />
+            <SidebarStoryItem
+              key={story.id}
+              story={story}
+              activeUserId={activeUserId}
+            />
           ))}
         </div>
         <Link href={"/"} className="text-sub-text text-sm hover:underline">
@@ -50,7 +54,11 @@ const MainSidebar = async () => {
       <SideBarSubsectionWrapper heading="Lastly saved">
         <div className="mb-4">
           {lastSavedStories.map((story) => (
-            <SidebarStoryItem key={story.id} story={story} />
+            <SidebarStoryItem
+              key={story.id}
+              story={story}
+              activeUserId={activeUserId}
+            />
           ))}
         </div>
         <Link href={"/"} className="text-sub-text text-sm hover:underline">
