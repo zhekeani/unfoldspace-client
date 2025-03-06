@@ -14,9 +14,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Spinner } from "../../../components/loading/Spinner";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -25,6 +26,7 @@ const formSchema = z.object({
 });
 
 const EmailSignUpPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const error = searchParams.get("error");
@@ -53,9 +55,11 @@ const EmailSignUpPage = () => {
   const formAction = "/api/auth/register";
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     const isValid = await trigger();
     if (!isValid) {
       e.preventDefault();
+      setIsLoading(false);
     }
     // If valid, the browser will submit the form via its action attribute.
   };
@@ -98,8 +102,12 @@ const EmailSignUpPage = () => {
             )}
           />
 
-          <Button type="submit" className="rounded-full w-full">
-            Continue
+          <Button
+            type="submit"
+            className="rounded-full w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner className="w-4 h-4" /> : "Continue"}
           </Button>
         </form>
       </Form>

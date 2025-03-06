@@ -1,5 +1,6 @@
 "use client";
 
+import { Spinner } from "@/components/loading/Spinner"; // Import Spinner component
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,6 +26,7 @@ const formSchema = z.object({
 });
 
 const EmailSignInPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
   const error = searchParams.get("error");
@@ -37,7 +39,9 @@ const EmailSignInPage = () => {
       email: prefillEmail,
     },
   });
-  const { trigger, setError } = form;
+
+  const { trigger, setError, formState } = form;
+  const { isSubmitting } = formState; // Track form submission state
 
   useEffect(() => {
     if (error) {
@@ -52,9 +56,11 @@ const EmailSignInPage = () => {
   const formAction = "/api/auth/magic-link";
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     const isValid = await trigger();
     if (!isValid) {
       e.preventDefault();
+      setIsLoading(false);
     }
     // If valid, the browser will submit the form via its action attribute.
   };
@@ -91,15 +97,24 @@ const EmailSignInPage = () => {
                   Your email
                 </FormLabel>
                 <FormControl>
-                  <Input size={30} placeholder="email" {...field} />
+                  <Input
+                    size={30}
+                    placeholder="email"
+                    {...field}
+                    disabled={isSubmitting} // Disable input while submitting
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="rounded-full w-full">
-            Continue
+          <Button
+            type="submit"
+            className="rounded-full w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? <Spinner className="w-4 h-4" /> : "Continue"}
           </Button>
         </form>
       </Form>
