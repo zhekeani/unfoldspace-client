@@ -71,6 +71,10 @@
   /* Font size */
   --text-xs-sm: 0.8125rem;
   --leading-xs-sm: 1rem;
+
+  /* Shadow */
+  --shadow-border-0_5: 0 0 0 0.5px rgba(0, 0, 0, 1);
+  --shadow-border-gray_0_5: 0 0 0 0.5px rgba(0, 0, 0, 0.2);
 }
 
 :root {
@@ -150,6 +154,15 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .auth-option-link {
+    @apply h-10 px-8 inline-flex items-center whitespace-nowrap transition-colors
+      focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring
+       border-input bg-background  hover:bg-accent hover:text-accent-foreground
+      rounded-full gap-5 justify-start font-normal text-base tracking-tight shadow-border-0_5;
   }
 }
 
