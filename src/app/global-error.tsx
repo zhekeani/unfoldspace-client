@@ -1,30 +1,43 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 
 type SearchParams = {
   type?: string;
 };
 
-const GlobalError = ({ searchParams }: { searchParams: SearchParams }) => {
-  const knownErrors: Record<string, { title: string; message: string }> = {
-    "login-failed": {
-      title: "Login Failed",
-      message:
-        "Something went wrong while trying to sign in. Please check your credentials and try again.",
-    },
-    magicLink: {
-      title: "Invalid Magic Link",
-      message:
-        "This magic link is either expired or invalid. Please request a new one and try again.",
-    },
-  };
+const knownErrors: Record<string, { title: string; message: string }> = {
+  "login-failed": {
+    title: "Login Failed",
+    message:
+      "Something went wrong while trying to sign in. Please check your credentials and try again.",
+  },
+  magicLink: {
+    title: "Invalid Magic Link",
+    message:
+      "This magic link is either expired or invalid. Please request a new one and try again.",
+  },
+};
 
+const GlobalError = ({
+  error,
+  reset,
+  searchParams,
+}: {
+  error: Error;
+  reset: () => void;
+  searchParams: SearchParams;
+}) => {
+  useEffect(() => {
+    console.error("Global error caught:", error);
+  }, [error]);
+
+  // Check if there's a known type in searchParams, otherwise use the thrown error
   const errorType = searchParams.type;
   const errorContent = knownErrors[errorType || ""] || {
     title: "Something went wrong",
-    message:
-      "An unexpected error occurred. Please try again later or return to the home page.",
+    message: error?.message || "An unexpected error occurred.",
   };
 
   return (
@@ -48,8 +61,16 @@ const GlobalError = ({ searchParams }: { searchParams: SearchParams }) => {
                 {errorContent.message}
               </p>
             </div>
-            <div className="mt-2 font-sohne font-light underline text-main-text">
-              <Link href={"/"}>Home</Link>
+            <div className="mt-5 flex gap-4 justify-center">
+              <button
+                onClick={() => reset()}
+                className="px-4 py-2 rounded bg-blue-500 text-white"
+              >
+                Try Again
+              </button>
+              <Link href="/" className="px-4 py-2 rounded bg-gray-300">
+                Home
+              </Link>
             </div>
           </div>
         </div>
