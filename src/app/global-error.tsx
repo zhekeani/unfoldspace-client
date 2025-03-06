@@ -1,11 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-
-type SearchParams = {
-  type?: string;
-};
+import { Button } from "../components/ui/button";
+import { gtSuper, sohne, sourceSerif } from "./fonts/fonts";
 
 const knownErrors: Record<string, { title: string; message: string }> = {
   "login-failed": {
@@ -20,28 +19,23 @@ const knownErrors: Record<string, { title: string; message: string }> = {
   },
 };
 
-const GlobalError = ({
-  error,
-  reset,
-  searchParams,
-}: {
-  error: Error;
-  reset: () => void;
-  searchParams: SearchParams;
-}) => {
+const GlobalError = ({ error, reset }: { error: Error; reset: () => void }) => {
+  const searchParams = useSearchParams();
+  const errorType = searchParams.get("type");
+
   useEffect(() => {
     console.error("Global error caught:", error);
   }, [error]);
 
-  // Check if there's a known type in searchParams, otherwise use the thrown error
-  const errorType = searchParams.type;
   const errorContent = knownErrors[errorType || ""] || {
     title: "Something went wrong",
     message: error?.message || "An unexpected error occurred.",
   };
 
   return (
-    <div className="w-full flex justify-center">
+    <div
+      className={`w-full flex justify-center ${sohne.variable} ${sourceSerif.variable} ${gtSuper.variable}`}
+    >
       <div className="w-full max-w-[680px]">
         <div className="mx-6">
           <div className="mt-[80px] text-center">
@@ -62,15 +56,19 @@ const GlobalError = ({
               </p>
             </div>
             <div className="mt-5 flex gap-4 justify-center">
-              <button
-                onClick={() => reset()}
-                className="px-4 py-2 rounded bg-blue-500 text-white"
-              >
+              <Button onClick={() => reset()} className="">
                 Try Again
-              </button>
-              <Link href="/" className="px-4 py-2 rounded bg-gray-300">
-                Home
-              </Link>
+              </Button>
+              <Button
+                variant={"outline"}
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <Link href="/" className="">
+                  Home
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

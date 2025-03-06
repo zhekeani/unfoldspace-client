@@ -111,7 +111,7 @@ const EmailSignInPage = () => {
 
           <Button
             type="submit"
-            className="rounded-full w-full"
+            className="rounded-full w-full cursor-pointer"
             disabled={isLoading}
           >
             {isLoading ? <Spinner className="w-4 h-4" /> : "Continue"}

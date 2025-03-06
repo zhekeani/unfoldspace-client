@@ -164,6 +164,18 @@
        border-input bg-background  hover:bg-accent hover:text-accent-foreground
       rounded-full gap-5 justify-start font-normal text-base tracking-tight shadow-border-0_5;
   }
+
+  .base-wrapper {
+    @apply w-full flex-1 max-w-[1336px] mx-auto flex flex-row justify-evenly;
+  }
+
+  .left-content {
+    @apply flex-1 max-w-[728px] min-h-full  h-fit;
+  }
+
+  .right-content {
+    @apply hidden desktop:flex w-[351px] min-w-[351px] min-h-full  h-fit pr-6 justify-end border-l-[1px] border-l-black/10;
+  }
 }
 
 body {

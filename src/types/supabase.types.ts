@@ -728,9 +728,55 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_active_service_user: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          created_at: string
+          supabase_user_id: string
+          username: string
+          profile_picture: string
+          name: string
+          pronouns: string
+          short_bio: string
+          bio: Json
+          social_links: Json
+          is_verified: boolean
+          email: string
+          following_count: number
+          followers_count: number
+          reading_lists_count: number
+          stories_count: number
+          default_reading_list_id: string
+        }[]
+      }
       get_active_service_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_active_user_last_saved_stories: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          user_id: string
+          cover_image: string
+          claps_count: number
+          responses_count: number
+          title: string
+          description: string
+          visibility: Database["public"]["Enums"]["story_visibility"]
+          published_at: string
+          words_count: number
+          html_content: string
+          json_content: Json
+          author_name: string
+          author_profile_picture: string
+          recent_top_response_ids: Json
+          topic_ids: Json
+          author_username: string
+        }[]
       }
       get_reading_list_detail: {
         Args: {
@@ -835,6 +881,31 @@ export type Database = {
           total_replies: number
           edited_at: string
           has_clapped: boolean
+        }[]
+      }
+      get_service_user_with_follow_status: {
+        Args: {
+          p_user_id: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          supabase_user_id: string
+          username: string
+          profile_picture: string
+          name: string
+          pronouns: string
+          short_bio: string
+          bio: Json
+          social_links: Json
+          is_verified: boolean
+          email: string
+          following_count: number
+          followers_count: number
+          reading_lists_count: number
+          stories_count: number
+          default_reading_list_id: string
+          has_followed: boolean
         }[]
       }
       get_stories: {

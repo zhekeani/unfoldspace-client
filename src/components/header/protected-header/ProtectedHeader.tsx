@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fetchUserOnServer } from "@/lib/component-fetchs/service-user/fetchUser";
+import { fetchUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { Bell, Search } from "lucide-react";
 import Link from "next/link";
 import HeaderNewStoryBtn from "./components/NewStoryBtn";

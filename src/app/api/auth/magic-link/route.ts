@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
 
   const signInPageUrl = "/email-signin";
   const defaultErrorUrl = buildUrl(`/error?type=${type}`, request);
+  const safeEmailString = email ? encodeURIComponent(email) : "";
 
   if (!email || !type) {
     return NextResponse.redirect(
@@ -50,7 +51,10 @@ export async function POST(request: NextRequest) {
   if (!otpSuccess) {
     return NextResponse.redirect(defaultErrorUrl, 302);
   } else {
-    const thanksUrl = buildUrl(`/magic-thanks?type=${type}`, request);
+    const thanksUrl = buildUrl(
+      `/magic-thanks?type=${type}&email=${safeEmailString}`,
+      request
+    );
     return NextResponse.redirect(thanksUrl, 302);
   }
 }
