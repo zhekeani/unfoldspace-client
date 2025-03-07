@@ -4,16 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Carousel } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { Topic } from "@/types/database.types";
-import { debounce } from "lodash";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import {
   AutosizeCarouselContent,
   AutosizeCarouselItem,
   AutosizeCarouselNext,
   AutosizeCarouselPrevious,
 } from "./AutosizeCarousel";
+import { useAutosizeCarousel } from "./hooks/UseAutosizeCarousel";
 
 export type TopicCarouselProps = {
   activeTopic?: string;
@@ -24,28 +23,9 @@ const TopicsCarousel = ({
   activeTopic = "For you",
   topics,
 }: TopicCarouselProps) => {
-  const [isLastItemVisible, setIsLastItemVisible] = useState(false);
-
-  useEffect(() => {
-    const observerCallback = debounce(
-      ([entry]: IntersectionObserverEntry[]) => {
-        setIsLastItemVisible(entry.isIntersecting);
-      },
-      100
-    );
-
-    const observer = new IntersectionObserver(observerCallback, {
-      root: null,
-      threshold: 1.0,
-    });
-
-    const lastItem = document.querySelector("[data-last-item]");
-    if (lastItem) observer.observe(lastItem);
-
-    return () => {
-      if (lastItem) observer.unobserve(lastItem);
-    };
-  }, [activeTopic]);
+  const { isLastItemVisible } = useAutosizeCarousel(
+    topics.map((topic) => topic.name)
+  );
 
   return (
     <div className="h-[53px] max-h-[53px] flex items-center mx-6 gap-3 w-full ">
