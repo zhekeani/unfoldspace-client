@@ -27,7 +27,10 @@ const MainSidebar = async () => {
             />
           ))}
         </div>
-        <Link href={"/"} className="text-sub-text text-sm hover:underline">
+        <Link
+          href={`/home?page`}
+          className="text-sub-text text-sm hover:underline"
+        >
           See the full list
         </Link>
       </SideBarSubsectionWrapper>
@@ -39,8 +42,11 @@ const MainSidebar = async () => {
           {topics.map((topic) => (
             <Link
               key={topic.id}
-              href="/"
-              className="text-sm px-3 py-2 rounded-full bg-gray-100 text-main-text"
+              href={{
+                pathname: "/home",
+                query: { tag: topic.name },
+              }}
+              className="text-sm px-3 py-2 rounded-full bg-gray-100 text-main-text hover:bg-gray-200 transition-colors"
             >
               {topic.name}
             </Link>
@@ -52,7 +58,7 @@ const MainSidebar = async () => {
       </SideBarSubsectionWrapper>
 
       <SideBarSubsectionWrapper heading="Lastly saved">
-        <div className="mb-4">
+        <div className="mb-4 flex flex-col gap-5">
           {lastSavedStories.map((story) => (
             <SidebarStoryItem
               key={story.id}

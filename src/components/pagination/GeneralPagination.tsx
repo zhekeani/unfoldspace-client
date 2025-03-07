@@ -91,7 +91,7 @@ const GeneralPagination = ({
             aria-disabled={!hasNextPage}
             className={cn(
               "font-light",
-              hasNextPage
+              !hasNextPage
                 ? "pointer-events-none text-sub-text"
                 : "text-main-text"
             )}

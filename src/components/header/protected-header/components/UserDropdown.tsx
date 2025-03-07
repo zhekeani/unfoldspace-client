@@ -39,7 +39,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
 
   return (
     <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-      <DropdownMenuTrigger className="rounded-full">
+      <DropdownMenuTrigger className="rounded-full cursor-pointer">
         <Avatar className="h-8 w-8">
           <AvatarImage
             className="w-full h-full object-cover"

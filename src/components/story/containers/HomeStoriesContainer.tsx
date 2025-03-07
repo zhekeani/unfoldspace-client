@@ -14,7 +14,7 @@ const InnerHomeStoriesContainer = ({
   activeUserId,
 }: HomeStoriesContainerProps) => {
   return (
-    <div className="pt-[50px] flex-1 flex flex-col gap-6">
+    <div className="pt-[40px] flex-1 flex flex-col gap-6">
       {stories.length === 0 ? (
         <p className="text-center text-sub-text mt-[100px]">
           No stories found.
