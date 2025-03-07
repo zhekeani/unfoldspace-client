@@ -19,9 +19,14 @@ type StoryItemProps = {
   initialStory: StoryItemStory;
   isOwned: boolean;
   activeUserId: string;
+  showProfile?: boolean;
 };
 
-const StoryItem = ({ initialStory, activeUserId }: StoryItemProps) => {
+const StoryItem = ({
+  initialStory,
+  activeUserId,
+  showProfile = true,
+}: StoryItemProps) => {
   const rowRef = useRef<HTMLDivElement | null>(null);
   const [rowWidth, setRowWidth] = useState<number>(0);
 
@@ -58,32 +63,37 @@ const StoryItem = ({ initialStory, activeUserId }: StoryItemProps) => {
   return (
     <div className=" h-fit flex flex-col mx-6 border-b-[1px] border-muted-gray-200">
       {/* Profile */}
-      <div className="flex gap-2 mb-4 items-center">
-        <UserPopover userId={story.user_id} activeUserId={activeUserId}>
-          <Link href={`/%40${story.author_username}`} className="rounded-full">
-            <Avatar className="w-6 h-6">
-              <AvatarImage
-                className="w-full h-full object-cover"
-                src={story.author_profile_picture || ""}
-              />
-              <AvatarFallback>
-                {story.author_name!.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-          </Link>
-        </UserPopover>
-        <div className="text-xs text-main-text tracking-tight flex gap-1">
-          <span className="text-sub-text font-light">by</span>
+      {showProfile && (
+        <div className="flex gap-2 mb-4 items-center">
           <UserPopover userId={story.user_id} activeUserId={activeUserId}>
             <Link
               href={`/%40${story.author_username}`}
-              className="hover:underline text-main-text"
+              className="rounded-full"
             >
-              {story.author_name!}
+              <Avatar className="w-6 h-6">
+                <AvatarImage
+                  className="w-full h-full object-cover"
+                  src={story.author_profile_picture || ""}
+                />
+                <AvatarFallback>
+                  {story.author_name!.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
             </Link>
           </UserPopover>
+          <div className="text-xs text-main-text tracking-tight flex gap-1">
+            <span className="text-sub-text font-light">by</span>
+            <UserPopover userId={story.user_id} activeUserId={activeUserId}>
+              <Link
+                href={`/%40${story.author_username}`}
+                className="hover:underline text-main-text"
+              >
+                {story.author_name!}
+              </Link>
+            </UserPopover>
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex flex-row">
         <div className="flex-1">

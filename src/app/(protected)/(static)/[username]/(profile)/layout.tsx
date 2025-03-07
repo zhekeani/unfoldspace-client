@@ -11,6 +11,7 @@ import { generateUserSubsectionTabs } from "@/lib/components/subsection-tab/gene
 import { cn } from "@/lib/utils";
 import { UserWFollowStatus } from "@/types/database.types";
 import { ReactNode, Suspense } from "react";
+import UserHomePageSkeleton from "../../../../../components/skeleton/UserHomePageSkeleton";
 
 type PageParams = {
   username: string;
@@ -65,7 +66,7 @@ const UserLayout = async ({
           activeUserId={activeUserId}
           subsectionTabs={subsectionTabs}
         />
-        {children}
+        <Suspense fallback={<UserHomePageSkeleton />}>{children}</Suspense>
       </div>
       <div
         className={cn(
