@@ -77,8 +77,6 @@ export const fetchUserIdByUsernameOnServer = async (
     const supabase = await getSupabaseCookiesUtilClient();
     if (!supabase) throw new Error("Database client unavailable.");
 
-    console.log("This is the fucking username:", username);
-
     const { data, error } = await supabase
       .from("service_users")
       .select("id")
