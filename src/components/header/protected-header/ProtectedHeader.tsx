@@ -13,7 +13,6 @@ const ProtectedHeader = async () => {
     return null;
   }
   const { serviceUser } = response;
-  console.log(serviceUser);
 
   return (
     <header className="w-full flex flex-shrink-0 h-[57px] px-6 border-b-gray-200 border-b-[1px]">
@@ -39,7 +38,9 @@ const ProtectedHeader = async () => {
         </div>
 
         <div className="flex h-full items-center gap-3">
-          <HeaderNewStoryBtn />
+          <div className="hidden tablet:block">
+            <HeaderNewStoryBtn />
+          </div>
 
           <Button
             variant="ghost"
