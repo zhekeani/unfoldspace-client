@@ -1,9 +1,5 @@
 import { fetchUserReadingListsById } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
-import {
-  fetchActiveUserIdOnServer,
-  fetchUserByUsernameOnServer,
-  fetchUserIdByUsernameOnServer,
-} from "@/lib/component-fetches/service-user/fetchUserServer";
+import { UserWFollowStatus } from "@/types/database.types";
 import Link from "next/link";
 import SidebarFooter from "./components/SidebarFooter";
 import SidebarReadingListItem from "./components/SidebarReadingListItem";
@@ -11,38 +7,24 @@ import SideBarSubsectionWrapper from "./components/SidebarSubsectionWrapper";
 import SidebarUserSection from "./components/SidebarUserSection";
 
 type UserSidebarProps = {
-  username: string;
+  user: UserWFollowStatus;
+  activeUserId: string;
 };
 
-const fetchSidebarData = async (username: string) => {
+const fetchSidebarData = async (userId: string) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const userId = await fetchUserIdByUsernameOnServer(username);
-  if (!userId) return null;
-
-  const [serviceUser, activeUserId, readingLists] = await Promise.all([
-    fetchUserByUsernameOnServer(username),
-    fetchActiveUserIdOnServer(),
-    fetchUserReadingListsById(userId),
-  ]);
-  if (!serviceUser || !activeUserId) return null;
+  const [readingLists] = await Promise.all([fetchUserReadingListsById(userId)]);
 
   return {
-    targetUser: serviceUser,
-    activeUserId: activeUserId,
     readingLists: readingLists,
   };
 };
 
-const UserSidebar = async ({ username }: UserSidebarProps) => {
-  const data = await fetchSidebarData(username);
+const UserSidebar = async ({ user, activeUserId }: UserSidebarProps) => {
+  const data = await fetchSidebarData(user.id);
 
-  if (!data) {
-    return null;
-  }
-
-  const { targetUser: user, activeUserId, readingLists } = data;
-
+  const { readingLists } = data;
   const isSameUser = activeUserId === user.id;
 
   return (

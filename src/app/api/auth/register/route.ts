@@ -21,7 +21,6 @@ export async function POST(request: NextRequest) {
   const safeEmailString = email ? encodeURIComponent(email) : "";
 
   if (!isNotEmptyString(email) || !email || !emailRegex.test(email)) {
-    console.log("failed the email check", email);
     return NextResponse.redirect(
       buildUrl(
         `/email-signup?error=${encodeURIComponent(
