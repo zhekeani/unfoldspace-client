@@ -778,6 +778,31 @@ export type Database = {
           author_username: string
         }[]
       }
+      get_follow_status_by_id: {
+        Args: {
+          param_user_id: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          supabase_user_id: string
+          username: string
+          profile_picture: string
+          name: string
+          pronouns: string
+          short_bio: string
+          bio: Json
+          social_links: Json
+          is_verified: boolean
+          email: string
+          following_count: number
+          followers_count: number
+          reading_lists_count: number
+          stories_count: number
+          default_reading_list_id: string
+          has_followed: boolean
+        }[]
+      }
       get_reading_list_detail: {
         Args: {
           list_id_param: string
@@ -1063,10 +1088,9 @@ export type Database = {
           visibility: Database["public"]["Enums"]["reading_list_visibility"]
         }[]
       }
-      get_user_stories: {
+      get_user_stories_by_id: {
         Args: {
-          target_user: string
-          active_user: string
+          target_user_id: string
           limit_param?: number
           offset_param?: number
           cursor?: string
@@ -1092,6 +1116,86 @@ export type Database = {
           topic_ids: Json
           author_username: string
           is_saved: boolean
+        }[]
+      }
+      get_user_stories_by_username: {
+        Args: {
+          target_username: string
+          limit_param?: number
+          offset_param?: number
+          cursor?: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          user_id: string
+          cover_image: string
+          claps_count: number
+          responses_count: number
+          title: string
+          description: string
+          visibility: Database["public"]["Enums"]["story_visibility"]
+          published_at: string
+          words_count: number
+          html_content: string
+          json_content: Json
+          author_name: string
+          author_profile_picture: string
+          recent_top_response_ids: Json
+          topic_ids: Json
+          author_username: string
+          is_saved: boolean
+        }[]
+      }
+      get_user_with_follow_status_by_id: {
+        Args: {
+          param_user_id: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          supabase_user_id: string
+          username: string
+          profile_picture: string
+          name: string
+          pronouns: string
+          short_bio: string
+          bio: Json
+          social_links: Json
+          is_verified: boolean
+          email: string
+          following_count: number
+          followers_count: number
+          reading_lists_count: number
+          stories_count: number
+          default_reading_list_id: string
+          has_followed: boolean
+        }[]
+      }
+      get_user_with_follow_status_by_username: {
+        Args: {
+          param_username: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          supabase_user_id: string
+          username: string
+          profile_picture: string
+          name: string
+          pronouns: string
+          short_bio: string
+          bio: Json
+          social_links: Json
+          is_verified: boolean
+          email: string
+          following_count: number
+          followers_count: number
+          reading_lists_count: number
+          stories_count: number
+          default_reading_list_id: string
+          has_followed: boolean
         }[]
       }
       update_story_topics: {
