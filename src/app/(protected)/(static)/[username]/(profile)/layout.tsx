@@ -1,6 +1,7 @@
 import UserSubheader from "@/components/header/protected-header/UserSubheader";
 import UserSidebarSkeleton from "@/components/sidebar/skeletons/UserSidebarSkeleton";
 import UserSidebar from "@/components/sidebar/UserSidebar";
+import UserPageSpinner from "@/components/skeleton/UserPageSpinner";
 import {
   fetchActiveUserIdOnServer,
   fetchUserByUsernameOnServer,
@@ -11,7 +12,6 @@ import { generateUserSubsectionTabs } from "@/lib/components/subsection-tab/gene
 import { cn } from "@/lib/utils";
 import { UserWFollowStatus } from "@/types/database.types";
 import { ReactNode, Suspense } from "react";
-import UserHomePageSkeleton from "../../../../../components/skeleton/UserHomePageSkeleton";
 
 type PageParams = {
   username: string;
@@ -66,7 +66,7 @@ const UserLayout = async ({
           activeUserId={activeUserId}
           subsectionTabs={subsectionTabs}
         />
-        <Suspense fallback={<UserHomePageSkeleton />}>{children}</Suspense>
+        <Suspense fallback={<UserPageSpinner />}>{children}</Suspense>
       </div>
       <div
         className={cn(

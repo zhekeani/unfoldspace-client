@@ -105,7 +105,7 @@ const StoryItem = ({
               <h2 className="text-xl tablet:text-2xl font-medium tracking-tight text-main-text">
                 {story.title}
               </h2>
-              <p className="pt-2 text-sub-text tracking-tight">
+              <p className="pt-2 text-sub-text tracking-tight line-clamp-2">
                 {story.description}
               </p>
             </div>
