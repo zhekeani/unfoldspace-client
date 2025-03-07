@@ -2,6 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { fetchStoryByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import { timeAgo } from "@/lib/story/calculateReadTime";
 import { Story } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +10,6 @@ import { Ellipsis, Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { fetchStoryByIdOnClient } from "../../lib/component-fetches/story/fetchStoriesClient";
 import UserPopover from "../popover/UserPopover";
 import StoryBookmarkPopover from "./components/StoryBookmarkPopover";
 
@@ -100,7 +100,7 @@ const StoryItem = ({ initialStory, activeUserId }: StoryItemProps) => {
               </p>
             </div>
             <div className="flex-shrink-0 tablet:hidden">
-              <Image
+              <img
                 src={story.cover_image!}
                 alt={story.title}
                 width={80}

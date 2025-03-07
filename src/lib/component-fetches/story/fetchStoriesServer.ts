@@ -9,6 +9,7 @@ export const fetchStoriesByTopicOnServer = async (
   stories: StoryItemStory[];
   activeUserId: string;
   hasNextPage: boolean;
+  storiesCount: number;
 }> => {
   try {
     const supabase = await getSupabaseCookiesUtilClient();
@@ -25,28 +26,71 @@ export const fetchStoriesByTopicOnServer = async (
     const activeServiceUserId = activeUserRes.data;
     const offset = (page - 1) * limit;
 
-    const { data: stories, error } = await supabase.rpc(
-      "get_stories_by_topic",
-      {
+    let topicId: string | undefined;
+    if (topic) {
+      const { data: topicIdData, error: topicIdError } = await supabase
+        .from("topics")
+        .select("id")
+        .eq("name", topic)
+        .maybeSingle();
+      if (topicIdError) {
+        console.error(topicIdError);
+        throw new Error("Failed to fetch topic ID.");
+      }
+      topicId = topicIdData ? topicIdData.id : undefined;
+    }
+
+    const countQuery = supabase
+      .from("stories")
+      .select("*", { count: "exact" })
+      .eq("visibility", "published");
+
+    if (topic) {
+      if (!topicId) {
+        return {
+          stories: [],
+          activeUserId: activeServiceUserId,
+          hasNextPage: false,
+          storiesCount: 0,
+        };
+      } else {
+        countQuery.contains("topic_ids", JSON.stringify([topicId]));
+      }
+    }
+
+    const [storiesRes, storiesCountRes] = await Promise.all([
+      supabase.rpc("get_stories_by_topic", {
         topic_name: topic,
         limit_param: limit + 1,
         offset_param: offset,
-      }
-    );
+      }),
+      countQuery,
+    ]);
 
-    if (error || !stories) {
+    if (storiesRes.error || !storiesRes.data) {
+      console.error(storiesRes.error);
       throw new Error("Failed to fetch stories.");
     }
+    if (storiesCountRes.error) {
+      console.error(storiesCountRes.error);
+      throw new Error("Failed to fetch stories count.");
+    }
 
-    const hasNextPage = stories.length > limit;
+    const hasNextPage = storiesRes.data.length > limit;
 
     return {
-      stories: stories.slice(0, limit),
+      stories: storiesRes.data.slice(0, limit),
       activeUserId: activeServiceUserId,
       hasNextPage,
+      storiesCount: storiesCountRes.count || 0,
     };
   } catch (error) {
     console.error(error);
-    return { stories: [], activeUserId: "", hasNextPage: false };
+    return {
+      stories: [],
+      activeUserId: "",
+      hasNextPage: false,
+      storiesCount: 0,
+    };
   }
 };

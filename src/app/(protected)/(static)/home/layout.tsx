@@ -1,8 +1,13 @@
 import MainLayoutWrapper from "@/components/layout-wrapper/MainLayoutWrapper";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
+import HomePageSkeleton from "../../../../components/skeleton/HomePageSkeleton";
 
 const ProtectedHomeLayout = ({ children }: { children: ReactNode }) => {
-  return <MainLayoutWrapper>{children}</MainLayoutWrapper>;
+  return (
+    <MainLayoutWrapper>
+      <Suspense fallback={<HomePageSkeleton />}>{children}</Suspense>
+    </MainLayoutWrapper>
+  );
 };
 
 export default ProtectedHomeLayout;

@@ -11,7 +11,7 @@ export const fetchHomeTopicsOnServer = async () => {
       .from("topics")
       .select("id, name")
       .in("depth_level", [0, 1])
-      .limit(10);
+      .limit(20);
 
     if (error || !topics) {
       throw new Error("Failed to fetch topics.");
