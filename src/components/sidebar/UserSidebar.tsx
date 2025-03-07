@@ -46,29 +46,36 @@ const UserSidebar = async ({ username }: UserSidebarProps) => {
   const isSameUser = activeUserId === user.id;
 
   return (
-    <div className="w-[303px] flex flex-col justify-between;">
-      <div className="mt-10">
+    <div className="w-full desktop:w-[303px] flex desktop:flex-col justify-between;">
+      <div className="mt-10 w-full desktop:w-fit">
         <SidebarUserSection initialUser={user} isSameUser={isSameUser} />
 
         {readingLists && (
-          <SideBarSubsectionWrapper heading="Lists">
-            <div className="flex flex-col gap-4 mb-4">
-              {readingLists.map((readingList) => (
-                <SidebarReadingListItem
-                  key={readingList.id}
-                  readingList={readingList}
-                />
-              ))}
-            </div>
+          <div className="hidden desktop:block">
+            <SideBarSubsectionWrapper heading="Lists">
+              <div className="flex flex-col gap-4 mb-4">
+                {readingLists.map((readingList) => (
+                  <SidebarReadingListItem
+                    key={readingList.id}
+                    readingList={readingList}
+                  />
+                ))}
+              </div>
 
-            <Link href={"/"} className="text-sub-text text-sm hover:underline">
-              View all
-            </Link>
-          </SideBarSubsectionWrapper>
+              <Link
+                href={"/"}
+                className="text-sub-text text-sm hover:underline"
+              >
+                View all
+              </Link>
+            </SideBarSubsectionWrapper>
+          </div>
         )}
       </div>
 
-      <SidebarFooter />
+      <div className="hidden desktop:block">
+        <SidebarFooter />
+      </div>
     </div>
   );
 };

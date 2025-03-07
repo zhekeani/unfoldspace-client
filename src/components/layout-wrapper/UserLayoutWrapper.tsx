@@ -1,5 +1,6 @@
 import UserSidebar from "@/components/sidebar/UserSidebar";
 import { ReactNode, Suspense } from "react";
+import { cn } from "../../lib/utils";
 import UserSidebarSkeleton from "../sidebar/skeletons/UserSidebarSkeleton";
 
 type UserLayoutWrapperProps = {
@@ -7,11 +8,19 @@ type UserLayoutWrapperProps = {
   username: string;
 };
 
-const UserLayoutWrapper = ({ children, username }: UserLayoutWrapperProps) => {
+const UserLayoutWrapper = async ({
+  children,
+  username,
+}: UserLayoutWrapperProps) => {
   return (
-    <div className="base-wrapper">
+    <div className="w-full flex-1 max-w-[1336px] mx-auto flex desktop:flex-row justify-evenly items-center desktop:items-start flex-col-reverse">
       <div className="left-content">{children}</div>
-      <div className="right-content">
+      <div
+        className={cn(
+          "desktop:flex desktop:w-[351px] desktop:min-w-[351px] desktop:min-h-full h-fit desktop:pr-6 desktop:justify-end desktop:border-l-[1px] desktop:border-l-black/10 desktop:flex-none desktop:pl-0",
+          "flex-1 max-w-[728px] w-full h-fit bg-blue-200 px-6"
+        )}
+      >
         <Suspense fallback={<UserSidebarSkeleton />}>
           <UserSidebar username={username} />
         </Suspense>
