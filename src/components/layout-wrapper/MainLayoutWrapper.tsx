@@ -1,7 +1,7 @@
 import { ReactNode, Suspense } from "react";
 
 import MainSidebar from "../sidebar/MainSidebar";
-import MainSidebarSkeleton from "../sidebar/components/MainSidebarSkeleton";
+import MainSidebarSkeleton from "@/components/sidebar/skeletons/MainSidebarSkeleton";
 
 type MainLayoutWrapperProps = {
   children: ReactNode;

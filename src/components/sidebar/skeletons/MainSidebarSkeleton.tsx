@@ -1,5 +1,5 @@
+import SideBarSubsectionWrapper from "@/components/sidebar/components/SidebarSubsectionWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
-import SideBarSubsectionWrapper from "./SidebarSubsectionWrapper";
 
 const MainSidebarSkeleton = () => {
   return (

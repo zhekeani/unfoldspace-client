@@ -1,5 +1,6 @@
 import UserSidebar from "@/components/sidebar/UserSidebar";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
+import UserSidebarSkeleton from "../sidebar/skeletons/UserSidebarSkeleton";
 
 type UserLayoutWrapperProps = {
   children: ReactNode;
@@ -11,7 +12,9 @@ const UserLayoutWrapper = ({ children, username }: UserLayoutWrapperProps) => {
     <div className="base-wrapper">
       <div className="left-content">{children}</div>
       <div className="right-content">
-        <UserSidebar username={username} />
+        <Suspense fallback={<UserSidebarSkeleton />}>
+          <UserSidebar username={username} />
+        </Suspense>
       </div>
     </div>
   );
