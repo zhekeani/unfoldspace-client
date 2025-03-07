@@ -1,5 +1,6 @@
 "use client";
 
+import { updateUserFollowing } from "@/actions/user/updateUserFollowing";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,9 +18,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import Link from "next/link";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { toast } from "sonner";
-import { updateUserFollowing } from "../../actions/user/updateUserFollowing";
 import UserPopoverSkeleton from "./components/UserPopoverSkeleton";
 
 type UserPopoverProps = {
@@ -39,15 +39,14 @@ const InnerUserPopover = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const queryClient = useQueryClient();
-  const { data, error, isLoading, refetch, isRefetching, isFetching } =
-    useQuery({
-      queryKey: ["user-popover", userId],
-      queryFn: () => fetchUserPreviewByIdOnClient(userId),
-      enabled: false, // Initially disabled, fetch only when opened
-      staleTime: 5 * 60 * 1000,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    });
+  const { data, error, isLoading, isRefetching, isFetching } = useQuery({
+    queryKey: ["user-popover", userId],
+    queryFn: () => fetchUserPreviewByIdOnClient(userId),
+    enabled: isOpen, // Initially disabled, fetch only when opened
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
   const { mutate: followMutation, isPending: isUpdateFollowing } = useMutation({
     mutationFn: async (actionType: "follow" | "unfollow") =>
@@ -71,7 +70,6 @@ const InnerUserPopover = ({
         toast.error(res.error);
       }
       queryClient.invalidateQueries({ queryKey: ["user-popover", userId] });
-      refetch();
     },
   });
 
@@ -79,12 +77,6 @@ const InnerUserPopover = ({
     const actionType = data?.user.has_followed ? "unfollow" : "follow";
     followMutation(actionType);
   };
-
-  useEffect(() => {
-    if (isOpen) {
-      refetch(); // Trigger fetch only when popover opens
-    }
-  }, [isOpen, refetch]);
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) {

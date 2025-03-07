@@ -1,4 +1,3 @@
-import { cn } from "../../lib/utils";
 import {
   Pagination,
   PaginationContent,
@@ -7,7 +6,8 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "../ui/pagination";
+} from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
 
 type GeneralPaginationProps = {
   currentPage: number;

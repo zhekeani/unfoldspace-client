@@ -1,13 +1,13 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Carousel } from "@/components/ui/carousel";
+import { cn } from "@/lib/utils";
+import { Topic } from "@/types/database.types";
 import { debounce } from "lodash";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn } from "../../lib/utils";
-import { Topic } from "../../types/database.types";
-import { Button } from "../ui/button";
-import { Carousel } from "../ui/carousel";
 import {
   AutosizeCarouselContent,
   AutosizeCarouselItem,

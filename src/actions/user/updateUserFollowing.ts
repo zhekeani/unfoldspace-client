@@ -1,7 +1,7 @@
 "use server";
 
-import { getSupabaseCookiesUtilClient } from "../../supabase-utils/cookiesUtilClient";
-import { ActionResponse } from "../../types/server-action.types";
+import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
+import { ActionResponse } from "@/types/server-action.types";
 
 /**
  * Server action to follow or unfollow other user.

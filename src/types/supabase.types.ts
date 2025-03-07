@@ -908,13 +908,39 @@ export type Database = {
           has_followed: boolean
         }[]
       }
-      get_stories: {
+      get_stories_by_topic: {
         Args: {
-          active_user: string
-          topic_id?: string
+          topic_name?: string
           limit_param?: number
           offset_param?: number
           cursor?: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          user_id: string
+          cover_image: string
+          claps_count: number
+          responses_count: number
+          title: string
+          description: string
+          visibility: Database["public"]["Enums"]["story_visibility"]
+          published_at: string
+          words_count: number
+          html_content: string
+          json_content: Json
+          author_name: string
+          author_profile_picture: string
+          recent_top_response_ids: Json
+          topic_ids: Json
+          author_username: string
+          is_saved: boolean
+        }[]
+      }
+      get_story_by_id: {
+        Args: {
+          story_id: string
         }
         Returns: {
           id: string

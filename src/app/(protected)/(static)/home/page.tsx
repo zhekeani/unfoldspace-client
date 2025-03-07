@@ -1,10 +1,10 @@
-import TopicsCarousel from "../../../../components/carousel/TopicCarousel";
-import GeneralPagination from "../../../../components/pagination/GeneralPagination";
-import HomeStoriesContainer from "../../../../components/story/containers/HomeStoriesContainer";
-import { StoryItemStory } from "../../../../components/story/StoryItem";
-import { fetchStoriesByTopicOnServer } from "../../../../lib/component-fetches/story/fetchStoriesServer";
-import { fetchHomeTopicsOnServer } from "../../../../lib/component-fetches/topic/fetchTopicsServer";
-import { Topic } from "../../../../types/database.types";
+import TopicsCarousel from "@/components/carousel/TopicCarousel";
+import GeneralPagination from "@/components/pagination/GeneralPagination";
+import HomeStoriesContainer from "@/components/story/containers/HomeStoriesContainer";
+import { StoryItemStory } from "@/components/story/StoryItem";
+import { fetchStoriesByTopicOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
+import { fetchHomeTopicsOnServer } from "@/lib/component-fetches/topic/fetchTopicsServer";
+import { Topic } from "@/types/database.types";
 
 type SearchParams = {
   tag?: string;
