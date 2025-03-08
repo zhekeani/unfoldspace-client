@@ -15,6 +15,7 @@ const CoverImageItem = ({ coverImageUrl, index }: CoverImageItemProps) => {
   return (
     <div className="relative bg-muted-foreground/10  w-full h-full outline-none border-none">
       {coverImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={coverImageUrl}
           alt="reading list item"

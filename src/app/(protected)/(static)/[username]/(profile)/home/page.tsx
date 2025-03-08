@@ -23,8 +23,6 @@ const fetchPageInitialData = async (
   hasNextPage: boolean;
   storiesCount: number;
 } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
   const [storiesRes, activeUserIdRes] = await Promise.all([
     fetchUserStoriesOnServer(username, limit, page),
     fetchActiveUserIdOnServer(),
