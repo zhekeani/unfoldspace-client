@@ -19,16 +19,23 @@ const InnerUserReadingListsContainer = ({
 }: UserReadingListsContainerProps) => {
   return (
     <div className="w-full px-6 pb-2">
-      <div className="w-full flex flex-col gap-9 items-center">
-        {readingLists.map((readingList) => (
-          <ReadingListItem
-            username={username}
-            key={readingList.id}
-            initialReadingList={readingList}
-            isOwned={readingList.user_id === activeUserId}
-          />
-        ))}
-      </div>
+      {readingLists.length === 0 && (
+        <p className="text-center text-sub-text mt-[100px]">
+          No public reading lists found
+        </p>
+      )}
+      {readingLists.length > 0 && (
+        <div className="w-full flex flex-col gap-9 items-center">
+          {readingLists.map((readingList) => (
+            <ReadingListItem
+              username={username}
+              key={readingList.id}
+              initialReadingList={readingList}
+              isOwned={readingList.user_id === activeUserId}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

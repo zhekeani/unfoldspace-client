@@ -28,7 +28,7 @@ const UserSidebar = async ({ user, activeUserId }: UserSidebarProps) => {
   const isSameUser = activeUserId === user.id;
 
   return (
-    <div className="w-full desktop:w-[303px] flex desktop:flex-col justify-between;">
+    <div className="w-full desktop:h-[calc(100vh-57px)] desktop:w-[303px] flex desktop:flex-col justify-between">
       <div className="mt-10 w-full desktop:w-fit">
         <SidebarUserSection initialUser={user} isSameUser={isSameUser} />
 
@@ -55,7 +55,7 @@ const UserSidebar = async ({ user, activeUserId }: UserSidebarProps) => {
         )}
       </div>
 
-      <div className="hidden desktop:block">
+      <div className="hidden desktop:block ">
         <SidebarFooter />
       </div>
     </div>

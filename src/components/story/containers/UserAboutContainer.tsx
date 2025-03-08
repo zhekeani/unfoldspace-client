@@ -69,7 +69,7 @@ const InnerUserAboutContainer = ({
         <>
           {hasBio && <div></div>}
           <div className="text-sm font-light flex gap-1.5">
-            <p>Medium member since </p>
+            <p>UnfoldSpace member since </p>
             <p>{convertIsoDate(user.created_at)}</p>
           </div>
         </>

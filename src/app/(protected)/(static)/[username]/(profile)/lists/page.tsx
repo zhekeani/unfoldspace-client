@@ -70,13 +70,11 @@ const UserListsPage = async ({
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <div style={{ minHeight: "calc(100vh - 400px)" }}>
-        {readingListsCount > 0 && (
-          <UserReadingListsContainer
-            readingLists={readingLists}
-            activeUserId={activeUserId}
-            username={username}
-          />
-        )}
+        <UserReadingListsContainer
+          readingLists={readingLists}
+          activeUserId={activeUserId}
+          username={username}
+        />
       </div>
       {readingListsCount > 0 && (
         <div className="my-6">

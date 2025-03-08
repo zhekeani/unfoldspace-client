@@ -102,7 +102,7 @@ const StoryItem = ({
             className="flex"
           >
             <div>
-              <h2 className="text-xl tablet:text-2xl font-medium tracking-tight text-main-text">
+              <h2 className="text-xl tablet:text-2xl font-medium tracking-tight text-main-text line-clamp-3">
                 {story.title}
               </h2>
               <p className="pt-2 text-sub-text tracking-tight line-clamp-2">

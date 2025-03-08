@@ -59,8 +59,8 @@ const UserLayout = async ({
   const { has_followed, ...user } = targetUser;
 
   return (
-    <div className="w-full flex-1 max-w-[1336px] mx-auto flex desktop:flex-row justify-evenly items-center desktop:items-start flex-col-reverse">
-      <div className="left-content w-full">
+    <div className="w-full flex-1 max-w-[1336px] mx-auto flex desktop:flex-row justify-evenly items-center desktop:items-start flex-col-reverse relative">
+      <div className="left-content w-full min-h-[800px] ">
         <UserSubheader
           user={user}
           activeUserId={activeUserId}
@@ -68,10 +68,12 @@ const UserLayout = async ({
         />
         <Suspense fallback={<UserPageSpinner />}>{children}</Suspense>
       </div>
+      {/* this one should be sticky */}
       <div
         className={cn(
-          "desktop:flex desktop:w-[351px] desktop:min-w-[351px] desktop:min-h-full h-fit desktop:pr-6 desktop:justify-end desktop:border-l-[1px] desktop:border-l-black/10 desktop:flex-none desktop:pl-0",
-          "flex-1 max-w-[728px] w-full h-fit px-6"
+          "desktop:flex desktop:w-[351px] desktop:min-w-[351px]  desktop:pr-6 desktop:h-svh desktop:justify-end desktop:flex-none desktop:pl-0 ",
+          "flex-1 max-w-[728px] w-full h-fit px-6 desktop:border-l-[1px] desktop:border-l-black/10",
+          "desktop:sticky desktop:bottom-0 desktop:self-end"
         )}
       >
         <Suspense fallback={<UserSidebarSkeleton />}>
