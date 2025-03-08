@@ -754,6 +754,22 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_active_user_draft_stories: {
+        Args: {
+          limit_param?: number
+          offset_param?: number
+        }
+        Returns: {
+          id: string
+          user_id: string
+          created_at: string
+          updated_at: string
+          title: string
+          description: string
+          words_count: number
+          json_content: Json
+        }[]
+      }
       get_active_user_last_saved_stories: {
         Args: Record<PropertyKey, never>
         Returns: {

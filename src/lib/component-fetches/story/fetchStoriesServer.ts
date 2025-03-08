@@ -1,3 +1,4 @@
+import { StoryDraft } from "@/components/story/StoryDraftItem";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
 
@@ -162,5 +163,88 @@ export const fetchUserStoriesOnServer = async (
       storiesCount: 0,
       targetUserId: "",
     };
+  }
+};
+
+export const fetchActiveUserDraftsOnServer = async (
+  userId: string,
+  limit: number,
+  page: number
+): Promise<{
+  drafts: StoryDraft[];
+  hasNextPage: boolean;
+  draftsCount: number;
+}> => {
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const offset = (page - 1) * limit;
+
+    const [draftsRes, draftsCountRes] = await Promise.all([
+      supabase.rpc("get_active_user_draft_stories", {
+        limit_param: limit,
+        offset_param: offset,
+      }),
+      supabase
+        .from("stories")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId)
+        .eq("visibility", "draft"),
+    ]);
+
+    if (draftsRes.error || !draftsRes.data) {
+      console.error(draftsRes.error);
+      throw new Error("Failed to fetch drafts.");
+    }
+    if (draftsCountRes.error) {
+      console.error(draftsCountRes.error);
+      throw new Error("Failed to fetch drafts count.");
+    }
+
+    const hasNextPage = draftsRes.data.length > limit;
+
+    return {
+      drafts: draftsRes.data.slice(0, limit),
+      hasNextPage,
+      draftsCount: draftsCountRes.count || 0,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      drafts: [],
+      hasNextPage: false,
+      draftsCount: 0,
+    };
+  }
+};
+
+export const fetchDraftByIdOnServer = async (
+  draftId: string
+): Promise<StoryDraft | null> => {
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const { data: draft, error: draftError } = await supabase
+      .from("stories")
+      .select(
+        "id, user_id, title, description, created_at, updated_at, json_content, words_count"
+      )
+      .eq("id", draftId)
+      .single();
+    if (draftError || !draft) {
+      console.error(draftError);
+      throw new Error("Failed to fetch draft.");
+    }
+
+    return draft;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 };
