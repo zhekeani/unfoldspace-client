@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { fetchUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { Bell, Search } from "lucide-react";
 import Link from "next/link";
 import HeaderNewStoryBtn from "./components/NewStoryBtn";
 import HeaderUserDropdown from "./components/UserDropdown";
 
 const ProtectedHeader = async () => {
-  const response = await fetchUserOnServer();
+  const response = await fetchActiveUserOnServer();
 
   if (!response) {
     return null;

@@ -1,9 +1,9 @@
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
 import { ServiceUser, UserWFollowStatus } from "@/types/database.types";
 
-export const fetchUserOnServer = async (): Promise<{
+export async function fetchActiveUserOnServer(): Promise<{
   serviceUser: ServiceUser;
-} | null> => {
+} | null> {
   try {
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
@@ -23,7 +23,7 @@ export const fetchUserOnServer = async (): Promise<{
     console.error(error);
     return null;
   }
-};
+}
 
 export const fetchUserByUsernameOnServer = async (
   username: string

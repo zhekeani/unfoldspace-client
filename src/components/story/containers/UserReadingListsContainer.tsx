@@ -9,8 +9,9 @@ import {
   QueryClient,
   QueryClientProvider,
   useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type UserReadingListsContainerProps = {
   readingLists: ExtendedReadingList[];
@@ -33,6 +34,7 @@ const InnerUserReadingListsContainer = ({
   limit,
   currentPage,
 }: UserReadingListsContainerProps) => {
+  const queryClient = useQueryClient();
   const { data: readingListsRes, error: readingListsError } = useQuery({
     queryKey: ["reading_lists", username],
     queryFn: () =>
@@ -50,6 +52,23 @@ const InnerUserReadingListsContainer = ({
     refetchOnMount: false,
     refetchOnWindowFocus: true,
   });
+
+  useEffect(() => {
+    queryClient.setQueryData(["reading_lists", username], () => {
+      return {
+        readingLists: initialReadingLists,
+        hasNextPage: initialHasNextPage,
+        readingListsCount: initialListsCount,
+      };
+    });
+  }, [
+    initialHasNextPage,
+    initialListsCount,
+    queryClient,
+    username,
+    currentPage,
+    initialReadingLists,
+  ]);
 
   if (readingListsError || !readingListsRes) return null;
 

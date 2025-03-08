@@ -103,6 +103,7 @@ export const fetchUserStoriesOnServer = async (
   stories: StoryItemStory[];
   hasNextPage: boolean;
   storiesCount: number;
+  targetUserId: string;
 }> => {
   try {
     const supabase = await getSupabaseCookiesUtilClient();
@@ -151,6 +152,7 @@ export const fetchUserStoriesOnServer = async (
       stories: storiesRes.data.slice(0, limit),
       hasNextPage,
       storiesCount: storiesCountRes.count || 0,
+      targetUserId: userId,
     };
   } catch (error) {
     console.error(error);
@@ -158,6 +160,7 @@ export const fetchUserStoriesOnServer = async (
       stories: [],
       hasNextPage: false,
       storiesCount: 0,
+      targetUserId: "",
     };
   }
 };

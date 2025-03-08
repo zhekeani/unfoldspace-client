@@ -66,6 +66,8 @@ const UserListsPage = async ({
 
   if (!data) return null;
 
+  console.log(data.readingLists);
+
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <div style={{ minHeight: "calc(100vh - 400px)" }}>

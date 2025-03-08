@@ -1,4 +1,3 @@
-import GeneralPagination from "@/components/pagination/GeneralPagination";
 import UserStoriesContainer from "@/components/story/containers/UserStoriesContainer";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchActiveUserIdOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
@@ -22,6 +21,7 @@ const fetchPageInitialData = async (
   activeUserId: string;
   hasNextPage: boolean;
   storiesCount: number;
+  targetUserId: string;
 } | null> => {
   const [storiesRes, activeUserIdRes] = await Promise.all([
     fetchUserStoriesOnServer(username, limit, page),
@@ -56,22 +56,15 @@ const UserHomePage = async ({
     return null;
   }
 
-  const { stories, storiesCount, hasNextPage, activeUserId } = data;
-
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <div style={{ minHeight: "calc(100vh - 260px)" }}>
-        <UserStoriesContainer stories={stories} activeUserId={activeUserId} />
+        <UserStoriesContainer
+          limit={limit}
+          currentPage={currentPage}
+          {...data}
+        />
       </div>
-      {storiesCount > 0 && (
-        <div className="my-6">
-          <GeneralPagination
-            currentPage={currentPage}
-            hasNextPage={hasNextPage}
-            storiesCount={storiesCount}
-          />
-        </div>
-      )}
     </main>
   );
 };
