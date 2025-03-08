@@ -23,3 +23,23 @@ export const fetchStoryByIdOnClient = async (
     return null;
   }
 };
+
+export const fetchActiveUserLastSavedStoriesOnClient = async () => {
+  try {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) throw new Error("Database client unavailable.");
+
+    const { data, error } = await supabase.rpc(
+      "get_active_user_last_saved_stories"
+    );
+    if (error || !data || data.length === 0) {
+      console.error(error);
+      throw new Error("Failed to fetch stories.");
+    }
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

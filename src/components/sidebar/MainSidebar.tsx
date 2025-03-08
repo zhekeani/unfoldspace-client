@@ -5,6 +5,7 @@ import SidebarAdviceBanner from "./components/AdviceBanner";
 import SidebarFooter from "./components/SidebarFooter";
 import SidebarStoryItem from "./components/SidebarStoryItem";
 import SideBarSubsectionWrapper from "./components/SidebarSubsectionWrapper";
+import SidebarLastSavedStoriesSection from "./components/SidebarLastSavedStoriesSection";
 
 const MainSidebar = async () => {
   const response = await fetchMainSidebarData();
@@ -57,20 +58,10 @@ const MainSidebar = async () => {
         </Link>
       </SideBarSubsectionWrapper>
 
-      <SideBarSubsectionWrapper heading="Lastly saved">
-        <div className="mb-4 flex flex-col gap-5">
-          {lastSavedStories.map((story) => (
-            <SidebarStoryItem
-              key={story.id}
-              story={story}
-              activeUserId={activeUserId}
-            />
-          ))}
-        </div>
-        <Link href={"/"} className="text-sub-text text-sm hover:underline">
-          See all({lastSavedStories.length})
-        </Link>
-      </SideBarSubsectionWrapper>
+      <SidebarLastSavedStoriesSection
+        initialStories={lastSavedStories}
+        activeUserId={activeUserId}
+      />
 
       <SidebarFooter />
     </div>
