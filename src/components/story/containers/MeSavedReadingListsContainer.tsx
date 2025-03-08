@@ -4,7 +4,7 @@ import GeneralPagination from "@/components/pagination/GeneralPagination";
 import ReadingListItem, {
   ExtendedReadingList,
 } from "@/components/reading-list/ReadingListItem";
-import { fetchUserDetailedReadingListsByIdOnClient } from "@/lib/component-fetches/reading-list/fetchReadingListsClient";
+import { fetchActiveUserSavedReadingListsOnClient } from "@/lib/component-fetches/reading-list/fetchReadingListsClient";
 import {
   QueryClient,
   QueryClientProvider,
@@ -13,33 +13,31 @@ import {
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-type UserReadingListsContainerProps = {
+type MeSavedReadingListsContainerProps = {
   readingLists: ExtendedReadingList[];
   activeUserId: string;
-  targetUserId: string;
-  username: string;
+  activeUserUsername: string;
   limit: number;
   hasNextPage: boolean;
   currentPage: number;
   readingListsCount: number;
 };
 
-const InnerUserReadingListsContainer = ({
+const InnerMeSavedReadingListsContainer = ({
   readingLists: initialReadingLists,
   hasNextPage: initialHasNextPage,
   readingListsCount: initialListsCount,
   activeUserId,
-  targetUserId,
-  username,
+  activeUserUsername: username,
   limit,
   currentPage,
-}: UserReadingListsContainerProps) => {
+}: MeSavedReadingListsContainerProps) => {
   const queryClient = useQueryClient();
   const { data: readingListsRes, error: readingListsError } = useQuery({
-    queryKey: ["reading_lists", username],
+    queryKey: ["saved_reading_lists", activeUserId],
     queryFn: () =>
-      fetchUserDetailedReadingListsByIdOnClient(
-        targetUserId,
+      fetchActiveUserSavedReadingListsOnClient(
+        activeUserId,
         limit,
         currentPage
       ),
@@ -54,7 +52,7 @@ const InnerUserReadingListsContainer = ({
   });
 
   useEffect(() => {
-    queryClient.setQueryData(["reading_lists", username], () => {
+    queryClient.setQueryData(["saved_reading_lists", activeUserId], () => {
       return {
         readingLists: initialReadingLists,
         hasNextPage: initialHasNextPage,
@@ -65,9 +63,9 @@ const InnerUserReadingListsContainer = ({
     initialHasNextPage,
     initialListsCount,
     queryClient,
-    username,
     currentPage,
     initialReadingLists,
+    activeUserId,
   ]);
 
   if (readingListsError || !readingListsRes) return null;
@@ -76,10 +74,10 @@ const InnerUserReadingListsContainer = ({
 
   return (
     <>
-      <div className="w-full px-6 pb-2 ">
+      <div className="w-full px-6 pb-2">
         {readingLists.length === 0 && (
           <p className="text-center text-sub-text mt-[100px]">
-            No public reading lists found
+            No saved reading lists found
           </p>
         )}
         {readingLists.length > 0 && (
@@ -108,14 +106,16 @@ const InnerUserReadingListsContainer = ({
   );
 };
 
-const UserReadingListsContainer = (props: UserReadingListsContainerProps) => {
+const MeSavedReadingListsContainer = (
+  props: MeSavedReadingListsContainerProps
+) => {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      <InnerUserReadingListsContainer {...props} />
+      <InnerMeSavedReadingListsContainer {...props} />
     </QueryClientProvider>
   );
 };
 
-export default UserReadingListsContainer;
+export default MeSavedReadingListsContainer;

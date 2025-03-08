@@ -81,7 +81,7 @@ const InnerMeReadingListsContainer = ({
           </p>
         )}
         {readingLists.length > 0 && (
-          <div className="w-full flex flex-col gap-9 items-center">
+          <div className="w-full flex flex-col gap-9 items-center min-h-[400px]">
             {readingLists.map((readingList) => (
               <ReadingListItem
                 username={username}
@@ -93,7 +93,7 @@ const InnerMeReadingListsContainer = ({
           </div>
         )}
       </div>
-      {readingListsCount > 0 && (
+      {readingListsCount > 0 && hasNextPage && (
         <div className="my-6">
           <GeneralPagination
             currentPage={currentPage}

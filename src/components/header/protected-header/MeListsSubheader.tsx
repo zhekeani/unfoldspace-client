@@ -36,7 +36,6 @@ const MeListsSubheader = async () => {
           >
             New list
           </Button>
-          ;
         </div>
       </div>
       <SubsectionTabsCarousel subsectionTabs={subsectionTabs} />

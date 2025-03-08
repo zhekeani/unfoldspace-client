@@ -67,7 +67,7 @@ export const fetchUserDetailedReadingListsByIdOnServer = async (
     const hasNextPage = readingListRes.data.length > limit;
 
     return {
-      readingLists: readingListRes.data,
+      readingLists: readingListRes.data.slice(0, limit),
       hasNextPage,
       readingListsCount: countRes.count || 0,
     };
@@ -77,12 +77,12 @@ export const fetchUserDetailedReadingListsByIdOnServer = async (
   }
 };
 
-export const fetchActiveUserReadingListsOnServer = async (
+export const fetchActiveUserSavedReadingListsOnServer = async (
   userId: string,
   limit: number,
   page: number
 ): Promise<{
-  readingLists: ReadingList[];
+  readingLists: ExtendedReadingList[];
   hasNextPage: boolean;
   readingListsCount: number;
 } | null> => {
@@ -91,39 +91,32 @@ export const fetchActiveUserReadingListsOnServer = async (
     if (!supabase) {
       throw new Error("Database client unavailable.");
     }
-
     const offset = (page - 1) * limit;
 
     const [readingListRes, countRes] = await Promise.all([
+      supabase.rpc("get_active_user_saved_reading_lists", {
+        limit_param: limit + 1,
+        offset_param: offset,
+      }),
       supabase
-        .from("reading_lists")
-        .select("*")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .range(offset, offset + limit),
-
-      supabase
-        .from("reading_lists")
+        .from("saved_reading_lists")
         .select("*", { count: "exact", head: true })
         .eq("user_id", userId),
     ]);
 
     if (readingListRes.error) {
       console.error(readingListRes.error);
-      throw new Error("Failed to fetch user reading lists.");
+      throw new Error("Failed to fetch saved reading lists.");
     }
     if (countRes.error) {
       console.error(countRes.error);
-      throw new Error("Failed to fetch reading list count.");
+      throw new Error("Failed to fetch saved reading list count.");
     }
 
     const hasNextPage = readingListRes.data.length > limit;
-    const readingLists = hasNextPage
-      ? readingListRes.data.slice(0, limit)
-      : readingListRes.data;
 
     return {
-      readingLists,
+      readingLists: readingListRes.data.slice(0, limit),
       hasNextPage,
       readingListsCount: countRes.count || 0,
     };

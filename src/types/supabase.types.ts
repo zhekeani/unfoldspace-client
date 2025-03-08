@@ -778,6 +778,30 @@ export type Database = {
           author_username: string
         }[]
       }
+      get_active_user_saved_reading_lists: {
+        Args: {
+          limit_param?: number
+          offset_param?: number
+        }
+        Returns: {
+          id: string
+          created_at: string
+          user_id: string
+          title: string
+          visibility: Database["public"]["Enums"]["reading_list_visibility"]
+          is_default: boolean
+          updated_at: string
+          description: string
+          claps_count: number
+          responses_count: number
+          owner_name: string
+          owner_profile_picture: string
+          recent_story_covers: Json
+          stories_count: number
+          owner_username: string
+          is_saved: boolean
+        }[]
+      }
       get_follow_status_by_id: {
         Args: {
           param_user_id: string
@@ -1049,32 +1073,6 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: Json
       }
-      get_user_reading_lists: {
-        Args: {
-          target_user: string
-          active_user: string
-        }
-        Returns: {
-          id: string
-          created_at: string
-          user_id: string
-          title: string
-          visibility: Database["public"]["Enums"]["reading_list_visibility"]
-          is_default: boolean
-          updated_at: string
-          description: string
-          claps_count: number
-          responses_count: number
-          owner_name: string
-          owner_profile_picture: string
-          recent_story_covers: Json
-          stories_count: number
-          owner_username: string
-          is_saved: boolean
-          has_clapped: boolean
-          has_responded: boolean
-        }[]
-      }
       get_user_reading_lists_by_id: {
         Args: {
           target_user_id: string
@@ -1099,8 +1097,6 @@ export type Database = {
           stories_count: number
           owner_username: string
           is_saved: boolean
-          has_clapped: boolean
-          has_responded: boolean
         }[]
       }
       get_user_reading_lists_with_saved_status: {

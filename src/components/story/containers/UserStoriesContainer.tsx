@@ -71,7 +71,7 @@ const InnerUserStoriesContainer = ({
 
   return (
     <>
-      <div className="pt-[8px] pb-2 flex-1 flex flex-col gap-6">
+      <div className="pt-[8px] pb-2 flex-1 flex flex-col gap-6 min-h-[400px]">
         {stories.length === 0 ? (
           <p className="text-center text-sub-text mt-[100px]">
             No stories found.
@@ -88,7 +88,7 @@ const InnerUserStoriesContainer = ({
           ))
         )}
       </div>
-      {storiesCount > 0 && (
+      {storiesCount > 0 && hasNextPage && (
         <div className="my-6">
           <GeneralPagination
             currentPage={currentPage}

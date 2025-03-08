@@ -8,7 +8,7 @@ import Link from "next/link";
 import { HTMLAttributes } from "react";
 
 export type ExtendedReadingList =
-  Database["public"]["Functions"]["get_user_reading_lists"]["Returns"][number];
+  Database["public"]["Functions"]["get_user_reading_lists_by_id"]["Returns"][number];
 
 type CoverImageItemProps = HTMLAttributes<HTMLDivElement> & {
   coverImageUrl?: string;
