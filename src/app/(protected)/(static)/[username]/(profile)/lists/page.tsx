@@ -1,7 +1,6 @@
-import GeneralPagination from "@/components/pagination/GeneralPagination";
 import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import UserReadingListsContainer from "@/components/story/containers/UserReadingListsContainer";
-import { fetchUserDetailedReadingListsById } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
+import { fetchUserDetailedReadingListsByIdOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
 import {
   fetchActiveUserIdOnServer,
   fetchUserIdByUsernameOnServer,
@@ -23,6 +22,7 @@ const fetchPageInitialData = async (
 ): Promise<{
   readingLists: ExtendedReadingList[];
   activeUserId: string;
+  targetUserId: string;
   hasNextPage: boolean;
   readingListsCount: number;
 } | null> => {
@@ -34,7 +34,7 @@ const fetchPageInitialData = async (
     return null;
   }
 
-  const readingListsRes = await fetchUserDetailedReadingListsById(
+  const readingListsRes = await fetchUserDetailedReadingListsByIdOnServer(
     targetUserId,
     limit,
     page
@@ -44,6 +44,7 @@ const fetchPageInitialData = async (
   return {
     ...readingListsRes,
     activeUserId,
+    targetUserId,
   };
 };
 
@@ -65,26 +66,16 @@ const UserListsPage = async ({
 
   if (!data) return null;
 
-  const { readingLists, readingListsCount, hasNextPage, activeUserId } = data;
-
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <div style={{ minHeight: "calc(100vh - 400px)" }}>
         <UserReadingListsContainer
-          readingLists={readingLists}
-          activeUserId={activeUserId}
           username={username}
+          limit={limit}
+          currentPage={currentPage}
+          {...data}
         />
       </div>
-      {readingListsCount > 0 && (
-        <div className="my-6">
-          <GeneralPagination
-            currentPage={currentPage}
-            hasNextPage={hasNextPage}
-            storiesCount={readingListsCount}
-          />
-        </div>
-      )}
     </main>
   );
 };

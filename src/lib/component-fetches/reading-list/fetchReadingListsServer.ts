@@ -27,7 +27,7 @@ export const fetchUserReadingListsById = async (
   }
 };
 
-export const fetchUserDetailedReadingListsById = async (
+export const fetchUserDetailedReadingListsByIdOnServer = async (
   userId: string,
   limit: number,
   page: number
@@ -68,6 +68,62 @@ export const fetchUserDetailedReadingListsById = async (
 
     return {
       readingLists: readingListRes.data,
+      hasNextPage,
+      readingListsCount: countRes.count || 0,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const fetchActiveUserReadingListsOnServer = async (
+  userId: string,
+  limit: number,
+  page: number
+): Promise<{
+  readingLists: ReadingList[];
+  hasNextPage: boolean;
+  readingListsCount: number;
+} | null> => {
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const offset = (page - 1) * limit;
+
+    const [readingListRes, countRes] = await Promise.all([
+      supabase
+        .from("reading_lists")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .range(offset, offset + limit),
+
+      supabase
+        .from("reading_lists")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId),
+    ]);
+
+    if (readingListRes.error) {
+      console.error(readingListRes.error);
+      throw new Error("Failed to fetch user reading lists.");
+    }
+    if (countRes.error) {
+      console.error(countRes.error);
+      throw new Error("Failed to fetch reading list count.");
+    }
+
+    const hasNextPage = readingListRes.data.length > limit;
+    const readingLists = hasNextPage
+      ? readingListRes.data.slice(0, limit)
+      : readingListRes.data;
+
+    return {
+      readingLists,
       hasNextPage,
       readingListsCount: countRes.count || 0,
     };
