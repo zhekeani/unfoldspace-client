@@ -19,6 +19,7 @@ export const fetchMainSidebarData = async (): Promise<{
           .from("stories")
           .select("*")
           .eq("user_id", "ec37a113-9d04-42a1-a662-fe36b2e4d4cf")
+          .eq("visibility", "published")
           .order("published_at", { ascending: false })
           .limit(3),
         supabase.from("topics").select("*").eq("depth_level", 1),

@@ -1,6 +1,7 @@
 import MeListsSubheader from "@/components/header/protected-header/MeListsSubheader";
 import MainSidebar from "@/components/sidebar/MainSidebar";
 import MainSidebarSkeleton from "@/components/sidebar/skeletons/MainSidebarSkeleton";
+import MePageSpinner from "@/components/skeleton/MePageSpinner";
 import { ReactNode, Suspense } from "react";
 
 const MeListsLayout = ({ children }: { children: ReactNode }) => {
@@ -8,7 +9,7 @@ const MeListsLayout = ({ children }: { children: ReactNode }) => {
     <div className="base-wrapper">
       <div className="left-content min-h-[800px]">
         <MeListsSubheader />
-        {children}
+        <Suspense fallback={<MePageSpinner />}>{children}</Suspense>
       </div>
       <div className="right-content">
         <Suspense fallback={<MainSidebarSkeleton />}>
