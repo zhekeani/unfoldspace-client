@@ -1,7 +1,7 @@
-import React, { ReactNode, Suspense } from "react";
-import MainSidebarSkeleton from "../../../../../components/sidebar/skeletons/MainSidebarSkeleton";
-import MainSidebar from "../../../../../components/sidebar/MainSidebar";
-import MeListsSubheader from "../../../../../components/header/protected-header/MeListsSubheader";
+import MeListsSubheader from "@/components/header/protected-header/MeListsSubheader";
+import MainSidebar from "@/components/sidebar/MainSidebar";
+import MainSidebarSkeleton from "@/components/sidebar/skeletons/MainSidebarSkeleton";
+import { ReactNode, Suspense } from "react";
 
 const MeListsLayout = ({ children }: { children: ReactNode }) => {
   return (
