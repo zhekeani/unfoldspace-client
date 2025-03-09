@@ -26,7 +26,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Key } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
-import ReadingListCreationDialog from "../../reading-list/dialogs/ReadingListCreationDialog";
+import ReadingListCreationDialog from "@/components/reading-list/dialogs/ReadingListCreationDialog";
 
 export type StoryBookmarkReadingList = Pick<
   ReadingList,

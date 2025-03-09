@@ -1,4 +1,5 @@
 import { createReadingList } from "@/actions/reading-list/createReadingList";
+import { StoryBookmarkReadingList } from "@/components/story/popovers/StoryBookmarkPopover";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -15,14 +16,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { StoryBookmarkReadingList } from "../../story/popovers/StoryBookmarkPopover";
-import { Textarea } from "../../ui/textarea";
 
 const formSchema = z.object({
   name: z
