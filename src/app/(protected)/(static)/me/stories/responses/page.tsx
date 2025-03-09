@@ -1,6 +1,6 @@
 import React from "react";
 
-const MeListsReadingHistoryPage = () => {
+const MeStoriesResponsesPage = () => {
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <div style={{ minHeight: "calc(100vh - 400px)" }}>
@@ -20,4 +20,4 @@ const MeListsReadingHistoryPage = () => {
   );
 };
 
-export default MeListsReadingHistoryPage;
+export default MeStoriesResponsesPage;
