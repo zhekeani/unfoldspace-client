@@ -1,6 +1,7 @@
 "use client";
 
 import { deletePublishedStory } from "@/actions/story/deleteStory";
+import UserPopover from "@/components/popover/UserPopover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { fetchStoryWInteractionsByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
@@ -18,7 +19,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import UserPopover from "../popover/UserPopover";
 import StoryActionsPopover from "./popovers/StoryActionsPopover";
 import StoryBookmarkPopover from "./popovers/StoryBookmarkPopover";
 

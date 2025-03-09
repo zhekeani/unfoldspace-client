@@ -3,6 +3,7 @@ import {
   PopoverDivider,
   PopoverGroup,
 } from "@/components/popover/components/ExtendedPopover";
+import StoryDeletionAlertDialog from "@/components/story/dialogs/StoryDeletionAlertDialog";
 import {
   Popover,
   PopoverContent,
@@ -15,7 +16,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ReactNode } from "react";
-import StoryDeletionAlertDialog from "../dialogs/StoryDeletionAlertDialog";
 
 type StoryActionsPopoverProps = {
   storyId: string;

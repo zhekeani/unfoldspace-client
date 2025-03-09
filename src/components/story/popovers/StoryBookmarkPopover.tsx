@@ -1,27 +1,31 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Key } from "lucide-react";
-import { ReactNode, useEffect, useState } from "react";
-import { toast } from "sonner";
-import { updateReadingListStory } from "../../../actions/reading-list/updateReadingListStory";
-import { fetchActiveUserReadingListsByStoryId } from "../../../lib/component-fetches/reading-list/fetchReadingListsClient";
-import { ReadingList } from "../../../types/database.types";
-import PulseSpinner from "../../loading/PulseSpinner";
+import { updateReadingListStory } from "@/actions/reading-list/updateReadingListStory";
+import PulseSpinner from "@/components/loading/PulseSpinner";
 import {
   PopoverButton,
   PopoverDivider,
   PopoverGroup,
-} from "../../popover/components/ExtendedPopover";
-import { Checkbox } from "../../ui/checkbox";
-import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
+} from "@/components/popover/components/ExtendedPopover";
+import { StoryItemStory } from "@/components/story/StoryItem";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../../ui/tooltip";
-import { StoryItemStory } from "../StoryItem";
+} from "@/components/ui/tooltip";
+import { fetchActiveUserReadingListsByStoryId } from "@/lib/component-fetches/reading-list/fetchReadingListsClient";
+import { ReadingList } from "@/types/database.types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Key } from "lucide-react";
+import { ReactNode, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export type StoryBookmarkReadingList = Pick<
   ReadingList,

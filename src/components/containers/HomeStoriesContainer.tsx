@@ -1,5 +1,8 @@
 "use client";
 
+import GeneralPagination from "@/components/pagination/GeneralPagination";
+import StoryItem, { StoryItemStory } from "@/components/story/StoryItem";
+import { fetchStoriesByTopicOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import {
   QueryClient,
   QueryClientProvider,
@@ -7,9 +10,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import StoryItem, { StoryItemStory } from "../story/StoryItem";
-import { fetchStoriesByTopicOnClient } from "../../lib/component-fetches/story/fetchStoriesClient";
-import GeneralPagination from "../pagination/GeneralPagination";
 
 type HomeStoriesContainerProps = {
   topic: string | undefined;

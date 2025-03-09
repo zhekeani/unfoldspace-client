@@ -1,10 +1,10 @@
 import TopicsCarousel from "@/components/carousel/TopicCarousel";
 import HomeStoriesContainer from "@/components/containers/HomeStoriesContainer";
 import { StoryItemStory } from "@/components/story/StoryItem";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchStoriesByTopicOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { fetchHomeTopicsOnServer } from "@/lib/component-fetches/topic/fetchTopicsServer";
 import { Topic } from "@/types/database.types";
-import { fetchActiveUserOnServer } from "../../../../lib/component-fetches/service-user/fetchUserServer";
 
 type SearchParams = {
   tag?: string;
