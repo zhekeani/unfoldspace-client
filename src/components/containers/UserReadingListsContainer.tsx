@@ -11,7 +11,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type UserReadingListsContainerProps = {
   readingLists: ExtendedReadingList[];
@@ -35,8 +35,10 @@ const InnerUserReadingListsContainer = ({
   currentPage,
 }: UserReadingListsContainerProps) => {
   const queryClient = useQueryClient();
+
+  const queryKey = useMemo(() => ["reading_lists", username], [username]);
   const { data: readingListsRes, error: readingListsError } = useQuery({
-    queryKey: ["reading_lists", username],
+    queryKey: queryKey,
     queryFn: () =>
       fetchUserDetailedReadingListsByIdOnClient(
         targetUserId,
@@ -52,9 +54,8 @@ const InnerUserReadingListsContainer = ({
     refetchOnMount: false,
     refetchOnWindowFocus: true,
   });
-
   useEffect(() => {
-    queryClient.setQueryData(["reading_lists", username], () => {
+    queryClient.setQueryData(queryKey, () => {
       return {
         readingLists: initialReadingLists,
         hasNextPage: initialHasNextPage,
@@ -68,6 +69,7 @@ const InnerUserReadingListsContainer = ({
     username,
     currentPage,
     initialReadingLists,
+    queryKey,
   ]);
 
   if (readingListsError || !readingListsRes) return null;
@@ -86,6 +88,7 @@ const InnerUserReadingListsContainer = ({
           <div className="w-full flex flex-col gap-9 items-center min-h-[400px]">
             {readingLists.map((readingList) => (
               <ReadingListItem
+                readingListsQueryKey={queryKey}
                 username={username}
                 key={readingList.id}
                 initialReadingList={readingList}

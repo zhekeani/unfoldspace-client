@@ -11,21 +11,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ReactNode } from "react";
 
-type StoryDeletionAlertDialogProps = {
+type ListDeletionAlertDialogProps = {
+  children: ReactNode;
   isDeleting: boolean;
   handleDelete: () => void;
-  children: ReactNode;
-  type?: "published" | "draft";
 };
 
-const StoryDeletionAlertDialog = ({
+const ReadingListDeletionAlertDialog = ({
+  children,
   isDeleting,
   handleDelete,
-  children,
-  type = "published",
-}: StoryDeletionAlertDialogProps) => {
-  const entity = type === "published" ? "published story" : "draft";
-
+}: ListDeletionAlertDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
@@ -35,8 +31,8 @@ const StoryDeletionAlertDialog = ({
             Are you absolutely sure?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            {entity} and remove your {entity}&apos;s data from our servers.
+            This action cannot be undone. This will permanently delete your list
+            and remove your list&apos;s data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-6">
@@ -48,9 +44,7 @@ const StoryDeletionAlertDialog = ({
             disabled={isDeleting}
             className="bg-destructive font-normal transition-colors rounded-full"
           >
-            {isDeleting
-              ? "Deleting.."
-              : `Delete ${type === "published" ? "story" : "draft"}`}
+            {isDeleting ? "Deleting.." : `Delete list`}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -58,4 +52,4 @@ const StoryDeletionAlertDialog = ({
   );
 };
 
-export default StoryDeletionAlertDialog;
+export default ReadingListDeletionAlertDialog;

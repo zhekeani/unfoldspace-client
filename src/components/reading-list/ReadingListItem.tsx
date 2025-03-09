@@ -1,11 +1,15 @@
+import { deleteReadingList } from "@/actions/reading-list/deleteReadingList";
+import { updateReadingListVisibility } from "@/actions/reading-list/updateReadingList";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { fetchReadingListDetailOnClient } from "@/lib/component-fetches/reading-list/fetchReadingListsClient";
 import { Database } from "@/types/supabase.types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, BookmarkPlus, Ellipsis, Key } from "lucide-react";
 import Link from "next/link";
 import { HTMLAttributes } from "react";
+import { toast } from "sonner";
+import ReadingListActionsPopover from "./popovers/ReadingListActionsPopover";
 
 export type ExtendedReadingList =
   Database["public"]["Functions"]["get_user_reading_lists_by_id"]["Returns"][number];
@@ -21,7 +25,7 @@ const CoverImageItem = ({ coverImageUrl, index }: CoverImageItemProps) => {
       {coverImageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={coverImageUrl}
+          src={coverImageUrl || undefined}
           alt="reading list item"
           className="object-cover h-full w-full"
         />
@@ -37,20 +41,80 @@ type ReadingListItemProps = {
   isOwned: boolean;
   initialReadingList: ExtendedReadingList;
   username: string;
+  readingListsQueryKey: string[];
 };
 
 const ReadingListItem = ({
   initialReadingList,
   isOwned,
   username,
+  readingListsQueryKey,
 }: ReadingListItemProps) => {
+  const queryClient = useQueryClient();
+
+  const queryKey = ["reading_list", initialReadingList.id];
   const { data: readingList, error: readingListError } = useQuery({
-    queryKey: ["reading_list", initialReadingList.id],
+    queryKey: queryKey,
     queryFn: () => fetchReadingListDetailOnClient(initialReadingList.id),
     initialData: initialReadingList,
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+  });
+
+  const { mutate: updateVisibilityMutation, isPending: isUpdating } =
+    useMutation({
+      mutationFn: (visibility: "private" | "public") =>
+        updateReadingListVisibility(initialReadingList.id, visibility),
+
+      onMutate: (visibility: "private" | "public") => {
+        queryClient.setQueryData(queryKey, (oldData?: ExtendedReadingList) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            visibility,
+          };
+        });
+      },
+
+      onSuccess: (res) => {
+        if (!res.success) {
+          toast.error(res.error);
+        } else {
+          toast.success("Successfully updated list");
+        }
+        queryClient.invalidateQueries({ queryKey: queryKey });
+      },
+    });
+
+  const { mutate: deleteMutation, isPending: isDeleting } = useMutation({
+    mutationFn: () => deleteReadingList(initialReadingList.id),
+
+    onMutate: () => {
+      queryClient.setQueryData(
+        readingListsQueryKey,
+        (oldData?: { readingLists: ExtendedReadingList[] }) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            readingLists: oldData.readingLists.filter(
+              (readingList) => readingList.id !== initialReadingList.id
+            ),
+          };
+        }
+      );
+    },
+
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.error);
+      } else {
+        toast.success("Successfully deleted list");
+      }
+      queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
+    },
   });
 
   if (readingListError || !readingList) {
@@ -62,31 +126,33 @@ const ReadingListItem = ({
     : [];
 
   return (
-    <Link
-      href={`/%40${username}/lists/${readingList.id}`}
-      className="w-[294px] mobile:w-full h-[288px] mobile:h-[144px] border-[1px] border-accent/70 flex flex-col mobile:flex-row bg-accent/50 overflow-hidden rounded-sm"
-    >
+    <div className="w-[294px] mobile:w-full h-[288px] mobile:h-[144px] border-[1px] border-accent/70 flex flex-col mobile:flex-row bg-accent/50 overflow-hidden rounded-sm">
       {/* User info */}
       <div className="flex-1 px-6 pt-6 pb-[10px]">
-        <div className="flex gap-2 items-center">
-          <Avatar className="w-6 h-6">
-            <AvatarImage
-              className="w-full h-full object-cover"
-              src={readingList.owner_profile_picture || ""}
-            />
-            <AvatarFallback className="text-xs rounded-full bg-gray-200">
-              {readingList.owner_username?.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
+        <Link href={`/%40${username}/lists/${readingList.id}`}>
+          <div className="flex gap-2 items-center">
+            <Avatar className="w-6 h-6">
+              <AvatarImage
+                className="w-full h-full object-cover"
+                src={readingList.owner_profile_picture || undefined}
+              />
+              <AvatarFallback className="text-xs rounded-full bg-gray-200">
+                {readingList.owner_username?.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
 
-          <p className="text-sm">{readingList.owner_name}</p>
-        </div>
+            <p className="text-sm">{readingList.owner_name}</p>
+          </div>
 
-        <h4 className="mt-3 text-xl font-medium line-clamp-1">
-          {readingList.title}
-        </h4>
-        <div className="h-10 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <h4 className="mt-3 text-xl font-medium line-clamp-1">
+            {readingList.title}
+          </h4>
+        </Link>
+        <div className="h-10 flex  items-center">
+          <Link
+            href={`/%40${username}/lists/${readingList.id}`}
+            className="flex flex-1 items-center gap-2"
+          >
             <p className="text-sm text-sub-text">
               {readingList.stories_count === 0
                 ? "No"
@@ -101,19 +167,15 @@ const ReadingListItem = ({
                 className="stroke-sub-text"
               />
             )}
-          </div>
+          </Link>
 
-          <div className="flex items-center">
+          <div className="flex items-center ">
             {!isOwned && readingList.is_saved && (
               <Button
                 role="button"
                 variant="ghost"
                 className="rounded-full group"
                 size="icon"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }}
               >
                 <Bookmark
                   strokeWidth={1.5}
@@ -127,10 +189,6 @@ const ReadingListItem = ({
                 variant="ghost"
                 className="rounded-full group"
                 size="icon"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }}
               >
                 <BookmarkPlus
                   strokeWidth={1.5}
@@ -138,27 +196,36 @@ const ReadingListItem = ({
                 />
               </Button>
             )}
-            <Button
-              role="button"
-              variant="ghost"
-              className="rounded-full group"
-              size="icon"
-              onClick={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
+            <ReadingListActionsPopover
+              isOwned={isOwned}
+              isDefault={readingList.is_default}
+              visibility={readingList.visibility}
+              isDeleting={isDeleting}
+              isUpdating={isUpdating}
+              deleteMutation={deleteMutation}
+              updateVisibilityMutation={updateVisibilityMutation}
             >
-              <Ellipsis
-                strokeWidth={1.5}
-                className="stroke-sub-text group-hover:stroke-main-text transition-colors"
-              />
-            </Button>
+              <Button
+                role="button"
+                variant="ghost"
+                className="rounded-full group"
+                size="icon"
+              >
+                <Ellipsis
+                  strokeWidth={2}
+                  className="stroke-sub-text group-hover:stroke-main-text transition-colors"
+                />
+              </Button>
+            </ReadingListActionsPopover>
           </div>
         </div>
       </div>
 
       {/* Stories' cover images */}
-      <div className="flex-1 mobile:flex-none w-[294px] grid grid-cols-[50%_30%_20%]">
+      <Link
+        href={`/%40${username}/lists/${readingList.id}`}
+        className="flex-1 mobile:flex-none w-[294px] grid grid-cols-[50%_30%_20%]"
+      >
         {recentCoversUrls.map((storyCover, index) => (
           <CoverImageItem
             index={index}
@@ -171,8 +238,8 @@ const ReadingListItem = ({
         {Array.from({ length: 3 - recentCoversUrls.length }).map((_, index) => (
           <CoverImageItem key={index} index={recentCoversUrls.length + index} />
         ))}
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

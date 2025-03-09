@@ -50,15 +50,11 @@ const MeListsPage = async ({
   if (!data) return null;
 
   return (
-    <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
-      <div style={{ minHeight: "calc(100vh - 400px)" }}>
-        <MeReadingListsContainer
-          limit={limit}
-          currentPage={currentPage}
-          {...data}
-        />
-      </div>
-    </main>
+    <MeReadingListsContainer
+      limit={limit}
+      currentPage={currentPage}
+      {...data}
+    />
   );
 };
 

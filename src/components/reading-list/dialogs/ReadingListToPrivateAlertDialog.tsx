@@ -11,32 +11,27 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ReactNode } from "react";
 
-type StoryDeletionAlertDialogProps = {
-  isDeleting: boolean;
-  handleDelete: () => void;
+type ListToPrivateAlertDialogProps = {
   children: ReactNode;
-  type?: "published" | "draft";
+  isUpdating: boolean;
+  handleUpdate: () => void;
 };
 
-const StoryDeletionAlertDialog = ({
-  isDeleting,
-  handleDelete,
+const ReadingListToPrivateAlertDialog = ({
   children,
-  type = "published",
-}: StoryDeletionAlertDialogProps) => {
-  const entity = type === "published" ? "published story" : "draft";
-
+  isUpdating,
+  handleUpdate,
+}: ListToPrivateAlertDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent className="rounded-none">
         <AlertDialogHeader>
           <AlertDialogTitle className="font-medium">
-            Are you absolutely sure?
+            Make List Private
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            {entity} and remove your {entity}&apos;s data from our servers.
+            If others saved this list, it will be removed from their library.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="mt-6">
@@ -44,13 +39,11 @@ const StoryDeletionAlertDialog = ({
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            onClick={handleDelete}
-            disabled={isDeleting}
-            className="bg-destructive font-normal transition-colors rounded-full"
+            onClick={handleUpdate}
+            disabled={isUpdating}
+            className="bg-main-green font-normal transition-colors rounded-full"
           >
-            {isDeleting
-              ? "Deleting.."
-              : `Delete ${type === "published" ? "story" : "draft"}`}
+            {isUpdating ? "Updating.." : `Make private`}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -58,4 +51,4 @@ const StoryDeletionAlertDialog = ({
   );
 };
 
-export default StoryDeletionAlertDialog;
+export default ReadingListToPrivateAlertDialog;

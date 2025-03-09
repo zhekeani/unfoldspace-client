@@ -2,6 +2,7 @@
 
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
 import { ActionResponse } from "@/types/server-action.types";
+import { ReadingList } from "../../types/database.types";
 
 /**
  * Server action to create a reading list
@@ -10,7 +11,7 @@ export async function createReadingList(
   name: string,
   description: string | null,
   visibility: "public" | "private"
-): Promise<ActionResponse<{ readingListId: string }>> {
+): Promise<ActionResponse<{ readingList: ReadingList }>> {
   try {
     const supabase = await getSupabaseCookiesUtilClient();
     if (!supabase) {
@@ -40,7 +41,7 @@ export async function createReadingList(
         visibility,
         description,
       })
-      .select("id")
+      .select("*")
       .single();
 
     if (readingListError || !readingListData || !readingListData.id) {
@@ -52,7 +53,7 @@ export async function createReadingList(
 
     return {
       success: true,
-      data: { readingListId: readingListData.id },
+      data: { readingList: readingListData },
     };
   } catch (error) {
     console.error("Error in createReadingList:", error);

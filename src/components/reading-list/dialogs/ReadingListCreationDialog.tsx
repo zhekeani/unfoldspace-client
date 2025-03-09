@@ -1,5 +1,4 @@
 import { createReadingList } from "@/actions/reading-list/createReadingList";
-import { StoryBookmarkReadingList } from "@/components/story/popovers/StoryBookmarkPopover";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -23,6 +22,7 @@ import { ReactNode, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ReadingList } from "../../../types/database.types";
 
 const formSchema = z.object({
   name: z
@@ -42,7 +42,9 @@ const formSchema = z.object({
 
 type ReadingListCreationDialogProps = {
   children: ReactNode;
-  onCreationSuccessCb?: (readingList: StoryBookmarkReadingList) => void;
+  onCreationSuccessCb?: (
+    readingList: ReadingList & { is_saved: boolean }
+  ) => void;
 };
 
 const ReadingListCreationDialog = ({
@@ -103,10 +105,7 @@ const ReadingListCreationDialog = ({
         setIsCreating(false);
         if (onCreationSuccessCb) {
           onCreationSuccessCb({
-            id: response.data.readingListId,
-            title: values.name,
-            visibility: values.visibility,
-            is_default: false,
+            ...response.data.readingList,
             is_saved: false,
           });
         }

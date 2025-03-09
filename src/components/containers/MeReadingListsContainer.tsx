@@ -11,7 +11,8 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import MeListsPrimarySubheader from "../header/protected-header/MeListsPrimarySubheader";
 
 type MeReadingListsContainerProps = {
   readingLists: ExtendedReadingList[];
@@ -31,10 +32,12 @@ const InnerMeReadingListsContainer = ({
   activeUserUsername: username,
   limit,
   currentPage,
-}: MeReadingListsContainerProps) => {
+  queryKey,
+}: MeReadingListsContainerProps & { queryKey: string[] }) => {
   const queryClient = useQueryClient();
+
   const { data: readingListsRes, error: readingListsError } = useQuery({
-    queryKey: ["reading_lists", activeUserId],
+    queryKey: queryKey,
     queryFn: () =>
       fetchUserDetailedReadingListsByIdOnClient(
         activeUserId,
@@ -52,7 +55,7 @@ const InnerMeReadingListsContainer = ({
   });
 
   useEffect(() => {
-    queryClient.setQueryData(["reading_lists", activeUserId], () => {
+    queryClient.setQueryData(queryKey, () => {
       return {
         readingLists: initialReadingLists,
         hasNextPage: initialHasNextPage,
@@ -66,6 +69,7 @@ const InnerMeReadingListsContainer = ({
     currentPage,
     initialReadingLists,
     activeUserId,
+    queryKey,
   ]);
 
   if (readingListsError || !readingListsRes) return null;
@@ -84,6 +88,7 @@ const InnerMeReadingListsContainer = ({
           <div className="w-full flex flex-col gap-9 items-center min-h-[400px]">
             {readingLists.map((readingList) => (
               <ReadingListItem
+                readingListsQueryKey={queryKey}
                 username={username}
                 key={readingList.id}
                 initialReadingList={readingList}
@@ -108,10 +113,19 @@ const InnerMeReadingListsContainer = ({
 
 const MeReadingListsContainer = (props: MeReadingListsContainerProps) => {
   const [queryClient] = useState(() => new QueryClient());
+  const queryKey = useMemo(
+    () => ["reading_lists", props.activeUserId],
+    [props.activeUserId]
+  );
 
   return (
     <QueryClientProvider client={queryClient}>
-      <InnerMeReadingListsContainer {...props} />
+      <MeListsPrimarySubheader queyKey={queryKey} />
+      <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
+        <div style={{ minHeight: "calc(100vh - 400px)" }}>
+          <InnerMeReadingListsContainer {...props} queryKey={queryKey} />
+        </div>
+      </main>
     </QueryClientProvider>
   );
 };

@@ -71,8 +71,9 @@ const StoryItem = ({
     onSuccess: (res) => {
       if (!res.success) {
         toast.error(res.error);
+      } else {
+        toast.success("Successfully deleted story");
       }
-      toast.success("Successfully deleted story");
       queryClient.invalidateQueries({ queryKey: storiesQueryKey });
     },
   });
@@ -234,7 +235,7 @@ const StoryItem = ({
                 >
                   <Ellipsis
                     className="!w-5 !h-5 stroke-sub-text group-hover:stroke-main-text group-hover:fill-main-text"
-                    strokeWidth={1}
+                    strokeWidth={1.5}
                   />
                 </Button>
               </StoryActionsPopover>
