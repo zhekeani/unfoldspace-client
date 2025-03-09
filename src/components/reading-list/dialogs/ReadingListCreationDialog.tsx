@@ -17,12 +17,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { ReadingList } from "@/types/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReactNode, useEffect, useState, useTransition } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { StoryBookmarkReadingList } from "../../story/popovers/StoryBookmarkPopover";
+import { ExtendedReadingList } from "../ReadingListItem";
 
 const formSchema = z.object({
   name: z
@@ -42,27 +44,30 @@ const formSchema = z.object({
 
 type ReadingListCreationDialogProps = {
   children: ReactNode;
-  onCreationSuccessCb?: (
-    readingList: ReadingList & { is_saved: boolean }
-  ) => void;
+  actionType?: "create" | "update";
+  readingListType?: "extended" | "preview";
+  initialValues?: z.infer<typeof formSchema>;
+  readingListsQueryKey: string[];
 };
 
 const ReadingListCreationDialog = ({
   children,
-  onCreationSuccessCb,
+  actionType = "create",
+  readingListType = "extended",
+  readingListsQueryKey,
+  initialValues = {
+    name: "",
+    description: "",
+    visibility: "public",
+  },
 }: ReadingListCreationDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const [isCreating, setIsCreating] = useState(false);
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onChange",
-    defaultValues: {
-      name: "",
-      description: "",
-      visibility: "public",
-    },
+    defaultValues: initialValues,
   });
 
   const {
@@ -81,41 +86,60 @@ const ReadingListCreationDialog = ({
 
   const onClose = () => {
     if (isOpen) {
-      reset({ name: "", description: "", visibility: "public" });
+      reset(initialValues);
     }
     setIsOpen((prev) => !prev);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setIsCreating(true);
-    startTransition(async () => {
-      try {
-        const response = await createReadingList(
-          values.name,
-          values.description || null,
-          values.visibility
+  const { mutate: createMutation, isPending: isCreating } = useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) =>
+      createReadingList(
+        values.name,
+        values.description || null,
+        values.visibility
+      ),
+
+    onSuccess: (res) => {
+      if (!res.success) {
+        console.error(res.error);
+        toast.error(res.error);
+      } else {
+        toast.success("Successfully created a new reading list");
+
+        queryClient.setQueryData(
+          readingListsQueryKey,
+          (oldData?: {
+            readingLists: ExtendedReadingList[] | StoryBookmarkReadingList[];
+          }) => {
+            if (!oldData || !oldData.readingLists) return oldData;
+
+            return {
+              readingLists: [
+                ...oldData.readingLists,
+                {
+                  ...res.data.readingList,
+                  is_saved: false,
+                  has_clapped:
+                    readingListType === "extended" ? false : undefined,
+                  has_responded:
+                    readingListType === "extended" ? false : undefined,
+                },
+              ],
+            };
+          }
         );
-
-        if (!response.success) {
-          toast.error(response.error);
-          throw new Error("Failed to create reading list");
-        }
-
-        toast.success("Successfully create a new reading list");
-        setIsCreating(false);
-        if (onCreationSuccessCb) {
-          onCreationSuccessCb({
-            ...response.data.readingList,
-            is_saved: false,
-          });
-        }
-        onClose();
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsCreating(false);
       }
-    });
+      queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
+      onClose();
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if (actionType === "create") {
+      createMutation(values);
+    }
+    if (actionType === "update") {
+    }
   };
 
   useEffect(() => {
@@ -239,7 +263,7 @@ const ReadingListCreationDialog = ({
                     onClick={onClose}
                     type="submit"
                     variant="outline"
-                    disabled={isPending || isCreating}
+                    disabled={isCreating}
                     className="rounded-full text-sub-text border-sub-text font-normal"
                   >
                     Cancel
@@ -247,10 +271,10 @@ const ReadingListCreationDialog = ({
 
                   <Button
                     type="submit"
-                    disabled={!isValid || isPending || isCreating}
+                    disabled={!isValid || isCreating}
                     className=" bg-main-green text-white rounded-full font-normal"
                   >
-                    {isPending || isCreating ? "Creating..." : "Create List"}
+                    {isCreating ? "Creating..." : "Create List"}
                   </Button>
                 </div>
               </form>

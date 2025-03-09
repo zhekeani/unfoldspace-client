@@ -120,7 +120,7 @@ const MeReadingListsContainer = (props: MeReadingListsContainerProps) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MeListsPrimarySubheader queyKey={queryKey} />
+      <MeListsPrimarySubheader queryKey={queryKey} />
       <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
         <div style={{ minHeight: "calc(100vh - 400px)" }}>
           <InnerMeReadingListsContainer {...props} queryKey={queryKey} />

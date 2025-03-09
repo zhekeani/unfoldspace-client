@@ -4,11 +4,8 @@ import SubsectionTabsCarousel, {
   SubsectionTab,
 } from "@/components/carousel/SubsectionTabsCarousel";
 import ReadingListCreationDialog from "@/components/reading-list/dialogs/ReadingListCreationDialog";
-import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { ReadingList } from "@/types/database.types";
-import { useQueryClient } from "@tanstack/react-query";
 
 export const meListSubsectionTabs: SubsectionTab[] = [
   {
@@ -26,33 +23,12 @@ export const meListSubsectionTabs: SubsectionTab[] = [
 ];
 
 type MeListsPrimarySubheaderProps = {
-  queyKey: string[];
+  queryKey: string[];
 };
 
-const MeListsPrimarySubheader = ({ queyKey }: MeListsPrimarySubheaderProps) => {
-  const queryClient = useQueryClient();
-  const readingListCreationCb = (readingList: ReadingList) => {
-    queryClient.setQueryData(
-      queyKey,
-      (oldData?: { readingLists: ExtendedReadingList[] }) => {
-        if (!oldData || !oldData.readingLists) return oldData;
-
-        return {
-          readingLists: [
-            ...oldData.readingLists,
-            {
-              ...readingList,
-              is_saved: false,
-              has_clapped: false,
-              has_responded: false,
-            },
-          ],
-        };
-      }
-    );
-    queryClient.invalidateQueries({ queryKey: queyKey });
-  };
-
+const MeListsPrimarySubheader = ({
+  queryKey,
+}: MeListsPrimarySubheaderProps) => {
   return (
     <div className="w-auto mt-6 mb-6 tablet:mt-[52px] tablet:mb-6 px-6">
       <div className="mb-6 tablet:mb-10 flex justify-between items-center">
@@ -61,9 +37,7 @@ const MeListsPrimarySubheader = ({ queyKey }: MeListsPrimarySubheaderProps) => {
         </div>
 
         <div>
-          <ReadingListCreationDialog
-            onCreationSuccessCb={readingListCreationCb}
-          >
+          <ReadingListCreationDialog readingListsQueryKey={queryKey}>
             <Button
               className={cn(
                 "rounded-full bg-main-green font-normal",

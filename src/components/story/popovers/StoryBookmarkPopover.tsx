@@ -7,6 +7,7 @@ import {
   PopoverDivider,
   PopoverGroup,
 } from "@/components/popover/components/ExtendedPopover";
+import ReadingListCreationDialog from "@/components/reading-list/dialogs/ReadingListCreationDialog";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -26,7 +27,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Key } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
-import ReadingListCreationDialog from "@/components/reading-list/dialogs/ReadingListCreationDialog";
 
 export type StoryBookmarkReadingList = Pick<
   ReadingList,
@@ -125,19 +125,6 @@ const StoryBookmarkPopover = ({
       },
     });
 
-  const readingListCreationCb = (readingList: StoryBookmarkReadingList) => {
-    queryClient.setQueryData(
-      popoverQueryKey,
-      (oldData?: { readingLists: StoryBookmarkReadingList[] }) => {
-        if (!oldData || !oldData.readingLists) return oldData;
-        return {
-          readingLists: [...oldData.readingLists, readingList],
-        };
-      }
-    );
-    queryClient.invalidateQueries({ queryKey: popoverQueryKey });
-  };
-
   useEffect(() => {
     if (
       readingListsError ||
@@ -214,7 +201,9 @@ const StoryBookmarkPopover = ({
 
             <PopoverGroup className="px-3 py-4">
               <ReadingListCreationDialog
-                onCreationSuccessCb={readingListCreationCb}
+                readingListsQueryKey={popoverQueryKey}
+                actionType="create"
+                readingListType="preview"
               >
                 <PopoverButton variant="success" className="text-base">
                   Create a new list
