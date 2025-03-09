@@ -972,6 +972,19 @@ export type Database = {
           has_followed: boolean
         }[]
       }
+      get_single_reading_list_with_saved_status: {
+        Args: {
+          story_id_param: string
+          reading_list_id_param: string
+        }
+        Returns: {
+          id: string
+          title: string
+          is_saved: boolean
+          is_default: boolean
+          visibility: Database["public"]["Enums"]["reading_list_visibility"]
+        }[]
+      }
       get_stories_by_topic: {
         Args: {
           topic_name?: string

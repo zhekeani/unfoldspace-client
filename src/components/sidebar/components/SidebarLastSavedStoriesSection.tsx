@@ -39,9 +39,9 @@ const InnerSidebarLastSavedStoriesSection = ({
   return (
     <SideBarSubsectionWrapper heading="Lastly saved">
       <div className="mb-4 flex flex-col gap-5">
-        {stories.map((story) => (
+        {stories.map((story, index) => (
           <SidebarStoryItem
-            key={story.id}
+            key={`${story.id}_${index}`}
             story={story}
             activeUserId={activeUserId}
           />

@@ -6,13 +6,19 @@ import { fetchStoryWInteractionsByIdOnClient } from "@/lib/component-fetches/sto
 import { timeAgo } from "@/lib/story/calculateReadTime";
 import { Story } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
-import { Ellipsis, Heart, MessageCircle } from "lucide-react";
+import {
+  Bookmark,
+  BookmarkPlus,
+  Ellipsis,
+  Heart,
+  MessageCircle,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import UserPopover from "../popover/UserPopover";
-import StoryBookmarkPopover from "./components/StoryBookmarkPopover";
 import StoryActionsPopover from "./popovers/StoryActionsPopover";
+import StoryBookmarkPopover from "./popovers/StoryBookmarkPopover";
 
 export type StoryItemStory = Story & { is_saved: boolean };
 
@@ -157,10 +163,28 @@ const StoryItem = ({
             <div className="flex h-full">
               {!hideBookmark && (
                 <StoryBookmarkPopover
-                  isStorySaved={story.is_saved}
                   storyId={story.id}
                   activeUserId={activeUserId}
-                />
+                  isStorySaved={story.is_saved}
+                >
+                  <Button
+                    variant="ghost"
+                    className="h-full px-3 hidden tablet:block group"
+                  >
+                    {!story.is_saved && (
+                      <BookmarkPlus
+                        className="!w-5 !h-5 stroke-sub-text group-hover:stroke-main-text"
+                        strokeWidth={1}
+                      />
+                    )}
+                    {story.is_saved && (
+                      <Bookmark
+                        className="!w-5 !h-5 stroke-sub-text fill-sub-text group-hover:stroke-main-text group-hover:fill-main-text"
+                        strokeWidth={1}
+                      />
+                    )}
+                  </Button>
+                </StoryBookmarkPopover>
               )}
 
               <StoryActionsPopover
