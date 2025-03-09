@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import UserPopover from "../popover/UserPopover";
 import StoryBookmarkPopover from "./components/StoryBookmarkPopover";
+import StoryActionsPopover from "./popovers/StoryActionsPopover";
 
 export type StoryItemStory = Story & { is_saved: boolean };
 
@@ -162,16 +163,24 @@ const StoryItem = ({
                 />
               )}
 
-              <Button
-                onClick={(e) => e.stopPropagation()}
-                variant="ghost"
-                className="h-full px-2 group"
+              <StoryActionsPopover
+                storyId={story.id}
+                isOwned={story.user_id === activeUserId}
+                storyUserId={story.user_id}
+                storyUserUsername={story.author_username!}
+                activeUserId={activeUserId}
               >
-                <Ellipsis
-                  className="!w-5 !h-5 stroke-sub-text group-hover:stroke-main-text group-hover:fill-main-text"
-                  strokeWidth={1}
-                />
-              </Button>
+                <Button
+                  onClick={(e) => e.stopPropagation()}
+                  variant="ghost"
+                  className="h-full px-2 group"
+                >
+                  <Ellipsis
+                    className="!w-5 !h-5 stroke-sub-text group-hover:stroke-main-text group-hover:fill-main-text"
+                    strokeWidth={1}
+                  />
+                </Button>
+              </StoryActionsPopover>
             </div>
           </div>
         </div>

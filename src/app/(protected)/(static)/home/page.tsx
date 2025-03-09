@@ -5,6 +5,7 @@ import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchStoriesByTopicOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { fetchHomeTopicsOnServer } from "@/lib/component-fetches/topic/fetchTopicsServer";
 import { Topic } from "@/types/database.types";
+import { fetchActiveUserOnServer } from "../../../../lib/component-fetches/service-user/fetchUserServer";
 
 type SearchParams = {
   tag?: string;
@@ -19,19 +20,24 @@ const fetchHomePageInitialData = async (
   stories: StoryItemStory[];
   topics: Pick<Topic, "id" | "name">[];
   activeUserId: string;
+  activeUserUsername: string;
   hasNextPage: boolean;
   storiesCount: number;
 } | null> => {
-  const [storiesRes, topicsRes] = await Promise.all([
+  const [storiesRes, topicsRes, activeUserRes] = await Promise.all([
     fetchStoriesByTopicOnServer(topic, limit, page),
     fetchHomeTopicsOnServer(),
+    fetchActiveUserOnServer(),
   ]);
 
-  if (topicsRes.length === 0 || !storiesRes.activeUserId) return null;
+  if (topicsRes.length === 0 || !activeUserRes || !activeUserRes.serviceUser)
+    return null;
 
   return {
     ...storiesRes,
     topics: topicsRes,
+    activeUserId: activeUserRes.serviceUser.id,
+    activeUserUsername: activeUserRes.serviceUser.username,
   };
 };
 
@@ -50,14 +56,24 @@ const HomePage = async ({
     return null;
   }
 
-  const { stories, activeUserId, topics, storiesCount, hasNextPage } =
-    initialData;
+  const {
+    stories,
+    activeUserId,
+    topics,
+    storiesCount,
+    hasNextPage,
+    activeUserUsername,
+  } = initialData;
 
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <TopicsCarousel activeTopic={tag} topics={topics} />
       <div style={{ minHeight: "calc(100vh - 260px)" }}>
-        <HomeStoriesContainer stories={stories} activeUserId={activeUserId} />
+        <HomeStoriesContainer
+          stories={stories}
+          activeUserId={activeUserId}
+          activeUserUsername={activeUserUsername}
+        />
       </div>
       {storiesCount > 0 && (
         <div className="my-6">

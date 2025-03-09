@@ -7,6 +7,7 @@ import StoryItem, { StoryItemStory } from "../story/StoryItem";
 type HomeStoriesContainerProps = {
   stories: StoryItemStory[];
   activeUserId: string;
+  activeUserUsername: string;
 };
 
 const InnerHomeStoriesContainer = ({

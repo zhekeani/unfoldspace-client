@@ -14,6 +14,7 @@ import StoryItem, { StoryItemStory } from "../story/StoryItem";
 type UserStoriesContainerProps = {
   stories: StoryItemStory[];
   activeUserId: string;
+  activeUserUsername: string;
   targetUserId: string;
   limit: number;
   currentPage: number;

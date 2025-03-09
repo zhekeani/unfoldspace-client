@@ -105,56 +105,61 @@ const InnerUserPopover = ({
       </PopoverTrigger>
 
       <PopoverContent
-        className="!py-6 !px-5"
+        className=""
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {isLoading ? (
-          <UserPopoverSkeleton />
-        ) : error || !data || !data.user ? null : (
-          <>
-            <div className="flex justify-between items-end">
-              <Link href={`%40${data.user.username}`} className="rounded-full">
-                <Avatar className="w-16 h-16">
-                  <AvatarImage
-                    className="w-full h-full object-cover"
-                    src={data.user.profile_picture || ""}
-                  />
-                  <AvatarFallback>
-                    {data.user.username.slice(0, 2).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              </Link>
-              <Button
-                onClick={onFollow}
-                disabled={isDisabled}
-                variant={data.user.has_followed ? "secondary" : "default"}
-                size="sm"
-                className="rounded-full font-normal"
-              >
-                {data.user.has_followed ? "Unfollow" : "Follow"}
-              </Button>
-            </div>
-            <div className="mt-3">
-              <Link
-                href={`%40${data.user.username}`}
-                className="text-main-text font-medium"
-              >
-                {data.user.name}
-              </Link>
-              <p className="text-xs-sm text-main-text mt-1.5 font-light">
-                {data.user.followers_count}{" "}
-                <span className="text-sub-text">Followers</span>
-              </p>
-            </div>
+        <div className="!py-6 !px-5 w-[260px]">
+          {isLoading ? (
+            <UserPopoverSkeleton />
+          ) : error || !data || !data.user ? null : (
+            <>
+              <div className="flex justify-between items-end">
+                <Link
+                  href={`%40${data.user.username}`}
+                  className="rounded-full"
+                >
+                  <Avatar className="w-16 h-16">
+                    <AvatarImage
+                      className="w-full h-full object-cover"
+                      src={data.user.profile_picture || ""}
+                    />
+                    <AvatarFallback>
+                      {data.user.username.slice(0, 2).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Link>
+                <Button
+                  onClick={onFollow}
+                  disabled={isDisabled}
+                  variant={data.user.has_followed ? "secondary" : "default"}
+                  size="sm"
+                  className="rounded-full font-normal"
+                >
+                  {data.user.has_followed ? "Unfollow" : "Follow"}
+                </Button>
+              </div>
+              <div className="mt-3">
+                <Link
+                  href={`%40${data.user.username}`}
+                  className="text-main-text font-medium"
+                >
+                  {data.user.name}
+                </Link>
+                <p className="text-xs-sm text-main-text mt-1.5 font-light">
+                  {data.user.followers_count}{" "}
+                  <span className="text-sub-text">Followers</span>
+                </p>
+              </div>
 
-            <div className="mt-3">
-              <p className="font-light text-xs-sm text-black">
-                {data.user.short_bio}
-              </p>
-            </div>
-          </>
-        )}
+              <div className="mt-3">
+                <p className="font-light text-xs-sm text-black">
+                  {data.user.short_bio}
+                </p>
+              </div>
+            </>
+          )}
+        </div>
       </PopoverContent>
     </Popover>
   );

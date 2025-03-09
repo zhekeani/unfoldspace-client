@@ -1,6 +1,6 @@
 import UserStoriesContainer from "@/components/containers/UserStoriesContainer";
 import { StoryItemStory } from "@/components/story/StoryItem";
-import { fetchActiveUserIdOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchUserStoriesWInteractionsOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
 
@@ -19,20 +19,22 @@ const fetchPageInitialData = async (
 ): Promise<{
   stories: StoryItemStory[];
   activeUserId: string;
+  activeUserUsername: string;
   hasNextPage: boolean;
   storiesCount: number;
   targetUserId: string;
 } | null> => {
-  const [storiesRes, activeUserIdRes] = await Promise.all([
+  const [storiesRes, activeUserRes] = await Promise.all([
     fetchUserStoriesWInteractionsOnServer(username, limit, page),
-    fetchActiveUserIdOnServer(),
+    fetchActiveUserOnServer(),
   ]);
 
-  if (!activeUserIdRes) return null;
+  if (!activeUserRes || !activeUserRes.serviceUser) return null;
 
   return {
     ...storiesRes,
-    activeUserId: activeUserIdRes,
+    activeUserId: activeUserRes.serviceUser.id,
+    activeUserUsername: activeUserRes.serviceUser.username,
   };
 };
 

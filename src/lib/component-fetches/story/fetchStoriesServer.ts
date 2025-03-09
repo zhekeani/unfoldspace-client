@@ -9,7 +9,6 @@ export const fetchStoriesByTopicOnServer = async (
   page: number // Page number instead of cursor
 ): Promise<{
   stories: StoryItemStory[];
-  activeUserId: string;
   hasNextPage: boolean;
   storiesCount: number;
 }> => {
@@ -19,13 +18,6 @@ export const fetchStoriesByTopicOnServer = async (
       throw new Error("Database client unavailable.");
     }
 
-    const activeUserRes = await supabase.rpc("get_active_service_user_id");
-    if (activeUserRes.error || !activeUserRes.data) {
-      console.error(activeUserRes.error);
-      throw new Error("Failed to fetch active service user ID.");
-    }
-
-    const activeServiceUserId = activeUserRes.data;
     const offset = (page - 1) * limit;
 
     let topicId: string | undefined;
@@ -51,7 +43,6 @@ export const fetchStoriesByTopicOnServer = async (
       if (!topicId) {
         return {
           stories: [],
-          activeUserId: activeServiceUserId,
           hasNextPage: false,
           storiesCount: 0,
         };
@@ -82,7 +73,6 @@ export const fetchStoriesByTopicOnServer = async (
 
     return {
       stories: storiesRes.data.slice(0, limit),
-      activeUserId: activeServiceUserId,
       hasNextPage,
       storiesCount: storiesCountRes.count || 0,
     };
@@ -90,7 +80,6 @@ export const fetchStoriesByTopicOnServer = async (
     console.error(error);
     return {
       stories: [],
-      activeUserId: "",
       hasNextPage: false,
       storiesCount: 0,
     };
