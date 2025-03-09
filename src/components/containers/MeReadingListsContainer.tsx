@@ -1,5 +1,6 @@
 "use client";
 
+import MeListsPrimarySubheader from "@/components/header/protected-header/MeListsPrimarySubheader";
 import GeneralPagination from "@/components/pagination/GeneralPagination";
 import ReadingListItem, {
   ExtendedReadingList,
@@ -12,7 +13,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import MeListsPrimarySubheader from "../header/protected-header/MeListsPrimarySubheader";
 
 type MeReadingListsContainerProps = {
   readingLists: ExtendedReadingList[];

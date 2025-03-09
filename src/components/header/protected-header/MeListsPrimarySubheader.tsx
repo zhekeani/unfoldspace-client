@@ -1,14 +1,14 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
-import { cn } from "../../../lib/utils";
-import { ReadingList } from "../../../types/database.types";
 import SubsectionTabsCarousel, {
   SubsectionTab,
-} from "../../carousel/SubsectionTabsCarousel";
-import ReadingListCreationDialog from "../../reading-list/dialogs/ReadingListCreationDialog";
-import { ExtendedReadingList } from "../../reading-list/ReadingListItem";
-import { Button } from "../../ui/button";
+} from "@/components/carousel/SubsectionTabsCarousel";
+import ReadingListCreationDialog from "@/components/reading-list/dialogs/ReadingListCreationDialog";
+import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ReadingList } from "@/types/database.types";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const meListSubsectionTabs: SubsectionTab[] = [
   {

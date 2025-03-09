@@ -1,4 +1,4 @@
-import SubsectionTabsCarousel from "../../carousel/SubsectionTabsCarousel";
+import SubsectionTabsCarousel from "@/components/carousel/SubsectionTabsCarousel";
 import { meListSubsectionTabs } from "./MeListsPrimarySubheader";
 
 const MeListsSecondarySubheader = () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import GeneralPagination from "@/components/pagination/GeneralPagination";
+import StoryPublishedItem from "@/components/story/StoryPublishedItem";
 import { fetchUserStoriesByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import { Story } from "@/types/database.types";
 import {
@@ -10,7 +11,6 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import StoryPublishedItem from "../story/StoryPublishedItem";
 
 type MePublishedStoriesContainerProps = {
   stories: Story[];

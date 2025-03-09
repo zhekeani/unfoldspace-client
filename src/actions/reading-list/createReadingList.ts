@@ -1,8 +1,8 @@
 "use server";
 
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
+import { ReadingList } from "@/types/database.types";
 import { ActionResponse } from "@/types/server-action.types";
-import { ReadingList } from "../../types/database.types";
 
 /**
  * Server action to create a reading list

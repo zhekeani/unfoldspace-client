@@ -17,12 +17,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { ReadingList } from "@/types/database.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ReactNode, useEffect, useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { ReadingList } from "../../../types/database.types";
 
 const formSchema = z.object({
   name: z
