@@ -149,14 +149,14 @@ const StoryBookmarkPopover = ({
       </TooltipProvider>
       <PopoverContent>
         {isLoading && (
-          <div>
+          <div className="h-[160px] flex w-full justify-center items-center">
             <PulseSpinner size="small" />
           </div>
         )}
         {!isLoading && data && (
           <div className="w-[300px] flex flex-col items-start">
             <PopoverGroup className="w-full px-6 py-6">
-              <div className="w-full flex flex-col gap-2.5">
+              <div className="w-full flex flex-col gap-3">
                 {currentReadingLists.map((readingList) => (
                   <div
                     key={readingList.id}
@@ -166,7 +166,7 @@ const StoryBookmarkPopover = ({
                       <Checkbox
                         disabled={isUpdatingReadingList}
                         checked={readingList.is_saved}
-                        className="cursor-pointer disabled:cursor-none disabled:opacity-100 data-[state=checked]:bg-main-green rounded-none border-0"
+                        className="cursor-pointer disabled:cursor-none disabled:opacity-100 data-[state=checked]:bg-main-green rounded-none border-gray-200"
                         onCheckedChange={() =>
                           saveMutation({
                             readingListId: readingList.id,

@@ -1,6 +1,5 @@
 import TopicsCarousel from "@/components/carousel/TopicCarousel";
 import HomeStoriesContainer from "@/components/containers/HomeStoriesContainer";
-import GeneralPagination from "@/components/pagination/GeneralPagination";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchStoriesByTopicOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { fetchHomeTopicsOnServer } from "@/lib/component-fetches/topic/fetchTopicsServer";
@@ -20,7 +19,6 @@ const fetchHomePageInitialData = async (
   stories: StoryItemStory[];
   topics: Pick<Topic, "id" | "name">[];
   activeUserId: string;
-  activeUserUsername: string;
   hasNextPage: boolean;
   storiesCount: number;
 } | null> => {
@@ -37,7 +35,6 @@ const fetchHomePageInitialData = async (
     ...storiesRes,
     topics: topicsRes,
     activeUserId: activeUserRes.serviceUser.id,
-    activeUserUsername: activeUserRes.serviceUser.username,
   };
 };
 
@@ -56,34 +53,17 @@ const HomePage = async ({
     return null;
   }
 
-  const {
-    stories,
-    activeUserId,
-    topics,
-    storiesCount,
-    hasNextPage,
-    activeUserUsername,
-  } = initialData;
-
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
-      <TopicsCarousel activeTopic={tag} topics={topics} />
+      <TopicsCarousel activeTopic={tag} topics={initialData.topics} />
       <div style={{ minHeight: "calc(100vh - 260px)" }}>
         <HomeStoriesContainer
-          stories={stories}
-          activeUserId={activeUserId}
-          activeUserUsername={activeUserUsername}
+          topic={tag}
+          limit={limit}
+          currentPage={currentPage}
+          {...initialData}
         />
       </div>
-      {storiesCount > 0 && (
-        <div className="my-6">
-          <GeneralPagination
-            currentPage={currentPage}
-            hasNextPage={hasNextPage}
-            itemsCount={storiesCount}
-          />
-        </div>
-      )}
     </main>
   );
 };

@@ -8,7 +8,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import StoryItem, { StoryItemStory } from "../story/StoryItem";
 
 type UserStoriesContainerProps = {
@@ -32,8 +32,10 @@ const InnerUserStoriesContainer = ({
   currentPage,
 }: UserStoriesContainerProps) => {
   const queryClient = useQueryClient();
+  const queryKey = useMemo(() => ["stories", targetUserId], [targetUserId]);
+
   const { data: storiesRes, error: storiesError } = useQuery({
-    queryKey: ["stories", targetUserId],
+    queryKey: queryKey,
     queryFn: () =>
       fetchUserStoriesWInteractionsByIdOnClient(
         targetUserId,
@@ -51,7 +53,7 @@ const InnerUserStoriesContainer = ({
   });
 
   useEffect(() => {
-    queryClient.setQueryData(["stories", targetUserId], () => {
+    queryClient.setQueryData(queryKey, () => {
       return {
         stories: initialStories,
         hasNextPage: initialHasNextPage,
@@ -65,6 +67,7 @@ const InnerUserStoriesContainer = ({
     targetUserId,
     initialStories,
     initialStoriesCount,
+    queryKey,
   ]);
 
   if (storiesError || !storiesRes) {
@@ -89,6 +92,7 @@ const InnerUserStoriesContainer = ({
               isOwned={activeUserId === story.user_id}
               activeUserId={activeUserId}
               showProfile={false}
+              storiesQueryKey={queryKey}
             />
           ))
         )}

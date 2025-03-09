@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ReactNode } from "react";
+import StoryDeletionAlertDialog from "../dialogs/StoryDeletionAlertDialog";
 
 type StoryActionsPopoverProps = {
   storyId: string;
@@ -23,13 +24,15 @@ type StoryActionsPopoverProps = {
   storyUserUsername: string;
   activeUserId: string;
   children: ReactNode;
-
-  deleteStoryCb?: (storyId: string) => void;
+  deleteMutation: () => void;
+  isDeleting: boolean;
 };
 
 const StoryActionsPopover = ({
   children,
   isOwned,
+  deleteMutation,
+  isDeleting,
 }: StoryActionsPopoverProps) => {
   return (
     <Popover>
@@ -57,7 +60,12 @@ const StoryActionsPopover = ({
             <PopoverDivider />
             <PopoverGroup>
               <PopoverButton>Hide responses</PopoverButton>
-              <PopoverButton variant="danger">Delete story</PopoverButton>
+              <StoryDeletionAlertDialog
+                isDeleting={isDeleting}
+                handleDelete={deleteMutation}
+              >
+                <PopoverButton variant="danger">Delete story</PopoverButton>
+              </StoryDeletionAlertDialog>
             </PopoverGroup>
           </div>
         )}

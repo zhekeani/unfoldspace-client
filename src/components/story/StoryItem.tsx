@@ -1,11 +1,12 @@
 "use client";
 
+import { deletePublishedStory } from "@/actions/story/deleteStory";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { fetchStoryWInteractionsByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import { timeAgo } from "@/lib/story/calculateReadTime";
 import { Story } from "@/types/database.types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Bookmark,
   BookmarkPlus,
@@ -16,6 +17,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import UserPopover from "../popover/UserPopover";
 import StoryActionsPopover from "./popovers/StoryActionsPopover";
 import StoryBookmarkPopover from "./popovers/StoryBookmarkPopover";
@@ -27,15 +29,18 @@ type StoryItemProps = {
   isOwned: boolean;
   activeUserId: string;
   showProfile?: boolean;
+  storiesQueryKey: string[];
 };
 
 const StoryItem = ({
   initialStory,
   activeUserId,
   showProfile = true,
+  storiesQueryKey,
 }: StoryItemProps) => {
   const rowRef = useRef<HTMLDivElement | null>(null);
   const [rowWidth, setRowWidth] = useState<number>(0);
+  const queryClient = useQueryClient();
 
   const { data: story, error: storyError } = useQuery({
     queryKey: ["story", initialStory.id],
@@ -44,6 +49,32 @@ const StoryItem = ({
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+  });
+
+  const { mutate: deleteMutation, isPending: isDeleting } = useMutation({
+    mutationFn: () => deletePublishedStory(initialStory.id),
+    onMutate: () => {
+      queryClient.setQueryData(
+        storiesQueryKey,
+        (oldData?: { stories: StoryItemStory[] }) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            stories: oldData.stories.filter(
+              (story) => story.id !== initialStory.id
+            ),
+          };
+        }
+      );
+    },
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.error);
+      }
+      toast.success("Successfully deleted story");
+      queryClient.invalidateQueries({ queryKey: storiesQueryKey });
+    },
   });
 
   useEffect(() => {
@@ -193,6 +224,8 @@ const StoryItem = ({
                 storyUserId={story.user_id}
                 storyUserUsername={story.author_username!}
                 activeUserId={activeUserId}
+                deleteMutation={deleteMutation}
+                isDeleting={isDeleting}
               >
                 <Button
                   onClick={(e) => e.stopPropagation()}
