@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { fetchStoryByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
+import { fetchStoryWInteractionsByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import { timeAgo } from "@/lib/story/calculateReadTime";
 import { Story } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
@@ -32,7 +32,7 @@ const StoryItem = ({
 
   const { data: story, error: storyError } = useQuery({
     queryKey: ["story", initialStory.id],
-    queryFn: () => fetchStoryByIdOnClient(initialStory.id),
+    queryFn: () => fetchStoryWInteractionsByIdOnClient(initialStory.id),
     initialData: initialStory,
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,

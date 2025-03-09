@@ -1,6 +1,7 @@
 import { StoryDraft } from "@/components/story/StoryDraftItem";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
+import { Story } from "@/types/database.types";
 
 export const fetchStoriesByTopicOnServer = async (
   topic: string | undefined,
@@ -96,7 +97,7 @@ export const fetchStoriesByTopicOnServer = async (
   }
 };
 
-export const fetchUserStoriesOnServer = async (
+export const fetchUserStoriesWInteractionsOnServer = async (
   username: string,
   limit: number,
   page: number
@@ -133,7 +134,7 @@ export const fetchUserStoriesOnServer = async (
       }),
       supabase
         .from("stories")
-        .select("*", { count: "exact" })
+        .select("*", { count: "exact", head: true })
         .eq("user_id", userId)
         .eq("visibility", "published"),
     ]);
@@ -221,6 +222,64 @@ export const fetchActiveUserDraftsOnServer = async (
   }
 };
 
+export const fetchUserStoriesByIdOnServer = async (
+  userId: string,
+  limit: number,
+  page: number
+): Promise<{
+  stories: Story[];
+  hasNextPage: boolean;
+  storiesCount: number;
+} | null> => {
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const offset = (page - 1) * limit;
+
+    const [storiesRes, countRes] = await Promise.all([
+      supabase
+        .from("stories")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("visibility", "published")
+        .order("created_at", { ascending: false })
+        .range(offset, offset + limit),
+
+      supabase
+        .from("stories")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId)
+        .eq("visibility", "published"),
+    ]);
+
+    if (storiesRes.error) {
+      console.error(storiesRes.error);
+      throw new Error("Failed to fetch stories.");
+    }
+    if (countRes.error) {
+      console.error(countRes.error);
+      throw new Error("Failed to fetch stories count.");
+    }
+
+    const hasNextPage = storiesRes.data.length > limit;
+    const stories = hasNextPage
+      ? storiesRes.data.slice(0, limit)
+      : storiesRes.data;
+
+    return {
+      stories,
+      hasNextPage,
+      storiesCount: countRes.count || 0,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 export const fetchDraftByIdOnServer = async (
   draftId: string
 ): Promise<StoryDraft | null> => {
@@ -243,6 +302,32 @@ export const fetchDraftByIdOnServer = async (
     }
 
     return draft;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const fetchStoryByIdOnServer = async (
+  storyId: string
+): Promise<Story | null> => {
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const { data: story, error: storyError } = await supabase
+      .from("stories")
+      .select("*")
+      .eq("id", storyId)
+      .single();
+    if (storyError || !story) {
+      console.error(storyError);
+      throw new Error("Failed to fetch story.");
+    }
+
+    return story;
   } catch (error) {
     console.error(error);
     return null;

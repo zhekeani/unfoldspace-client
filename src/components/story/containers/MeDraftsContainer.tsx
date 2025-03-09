@@ -86,7 +86,7 @@ const InnerMeDraftsContainer = ({
           <GeneralPagination
             currentPage={currentPage}
             hasNextPage={hasNextPage}
-            storiesCount={draftsCount}
+            itemsCount={draftsCount}
           />
         </div>
       )}

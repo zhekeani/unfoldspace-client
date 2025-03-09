@@ -1,7 +1,7 @@
 "use client";
 
 import GeneralPagination from "@/components/pagination/GeneralPagination";
-import { fetchUserStoriesByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
+import { fetchUserStoriesWInteractionsByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import {
   QueryClient,
   QueryClientProvider,
@@ -34,7 +34,11 @@ const InnerUserStoriesContainer = ({
   const { data: storiesRes, error: storiesError } = useQuery({
     queryKey: ["stories", targetUserId],
     queryFn: () =>
-      fetchUserStoriesByIdOnClient(targetUserId, limit, currentPage),
+      fetchUserStoriesWInteractionsByIdOnClient(
+        targetUserId,
+        limit,
+        currentPage
+      ),
     initialData: {
       stories: initialStories,
       hasNextPage: initialHasNextPage,
@@ -93,7 +97,7 @@ const InnerUserStoriesContainer = ({
           <GeneralPagination
             currentPage={currentPage}
             hasNextPage={hasNextPage}
-            storiesCount={storiesCount}
+            itemsCount={storiesCount}
           />
         </div>
       )}

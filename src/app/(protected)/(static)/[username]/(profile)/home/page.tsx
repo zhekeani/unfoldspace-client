@@ -1,7 +1,7 @@
 import UserStoriesContainer from "@/components/story/containers/UserStoriesContainer";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchActiveUserIdOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
-import { fetchUserStoriesOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
+import { fetchUserStoriesWInteractionsOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
 
 type PageParams = {
@@ -24,7 +24,7 @@ const fetchPageInitialData = async (
   targetUserId: string;
 } | null> => {
   const [storiesRes, activeUserIdRes] = await Promise.all([
-    fetchUserStoriesOnServer(username, limit, page),
+    fetchUserStoriesWInteractionsOnServer(username, limit, page),
     fetchActiveUserIdOnServer(),
   ]);
 

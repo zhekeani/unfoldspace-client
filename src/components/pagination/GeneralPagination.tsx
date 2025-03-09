@@ -14,18 +14,18 @@ import { cn } from "@/lib/utils";
 type GeneralPaginationProps = {
   currentPage: number;
   hasNextPage: boolean;
-  storiesCount: number;
+  itemsCount: number;
 };
 
 const GeneralPagination = ({
   currentPage,
   hasNextPage,
-  storiesCount,
+  itemsCount,
 }: GeneralPaginationProps) => {
   const itemsPerPage = 5;
 
   const showPrevDots = itemsPerPage * currentPage > 15;
-  const showNextDots = storiesCount - itemsPerPage * currentPage > 5;
+  const showNextDots = itemsCount - itemsPerPage * currentPage > 5;
 
   return (
     <Pagination>

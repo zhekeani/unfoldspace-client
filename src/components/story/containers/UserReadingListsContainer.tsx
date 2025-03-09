@@ -100,7 +100,7 @@ const InnerUserReadingListsContainer = ({
           <GeneralPagination
             currentPage={currentPage}
             hasNextPage={hasNextPage}
-            storiesCount={readingListsCount}
+            itemsCount={readingListsCount}
           />
         </div>
       )}
