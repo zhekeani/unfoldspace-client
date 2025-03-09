@@ -1,13 +1,13 @@
-import Link from "next/link";
-import { Story } from "../../types/database.types";
-import convertIsoDate from "../../lib/story/convertIsoDate";
+import { Button } from "@/components/ui/button";
+import { fetchStoryByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
+import calculateReadTime from "@/lib/story/calculateReadTime";
+import convertIsoDate from "@/lib/story/convertIsoDate";
+import { extractFirstParagraph } from "@/lib/tiptap/extractFirstParagraph";
+import { Story } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
-import { fetchStoryByIdOnClient } from "../../lib/component-fetches/story/fetchStoriesClient";
-import { extractFirstParagraph } from "../../lib/tiptap/extractFirstParagraph";
 import { JSONContent } from "@tiptap/react";
-import calculateReadTime from "../../lib/story/calculateReadTime";
 import { Dot, Ellipsis, Share } from "lucide-react";
-import { Button } from "../ui/button";
+import Link from "next/link";
 
 type StoryPublishedItemProps = {
   story: Story;

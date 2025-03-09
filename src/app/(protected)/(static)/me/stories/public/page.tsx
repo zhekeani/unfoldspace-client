@@ -1,7 +1,7 @@
-import MePublishedStoriesContainer from "../../../../../../components/story/containers/MePublishedStoriesContainer";
-import { fetchActiveUserOnServer } from "../../../../../../lib/component-fetches/service-user/fetchUserServer";
-import { fetchUserStoriesByIdOnServer } from "../../../../../../lib/component-fetches/story/fetchStoriesServer";
-import { Story } from "../../../../../../types/database.types";
+import MePublishedStoriesContainer from "@/components/story/containers/MePublishedStoriesContainer";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { fetchUserStoriesByIdOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
+import { Story } from "@/types/database.types";
 
 type SearchParams = {
   page?: string;
