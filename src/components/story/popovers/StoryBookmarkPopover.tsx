@@ -26,6 +26,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Key } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
+import ReadingListCreationDialog from "../../reading-list/dialogs/ReadingListCreationDialog";
 
 export type StoryBookmarkReadingList = Pick<
   ReadingList,
@@ -48,13 +49,15 @@ const StoryBookmarkPopover = ({
     StoryBookmarkReadingList[]
   >([]);
 
+  const popoverQueryKey = ["bookmark_popover", storyId];
+
   const queryClient = useQueryClient();
   const {
     data,
     error: readingListsError,
     isLoading,
   } = useQuery({
-    queryKey: ["bookmark_popover", storyId],
+    queryKey: popoverQueryKey,
     queryFn: () => fetchActiveUserReadingListsByStoryId(storyId),
     enabled: isOpen,
     staleTime: 5 * 60 * 1000,
@@ -74,7 +77,7 @@ const StoryBookmarkPopover = ({
 
       onMutate: async ({ readingListId, actionType }) => {
         queryClient.setQueryData(
-          ["bookmark_popover", storyId],
+          popoverQueryKey,
           (oldData?: { readingLists: StoryBookmarkReadingList[] }) => {
             if (!oldData || !oldData.readingLists) return oldData;
 
@@ -114,13 +117,26 @@ const StoryBookmarkPopover = ({
           toast.error(res.error);
         }
         queryClient.invalidateQueries({
-          queryKey: ["bookmark_popover", storyId],
+          queryKey: popoverQueryKey,
         });
         queryClient.invalidateQueries({
           queryKey: ["story", storyId],
         });
       },
     });
+
+  const readingListCreationCb = (readingList: StoryBookmarkReadingList) => {
+    queryClient.setQueryData(
+      popoverQueryKey,
+      (oldData?: { readingLists: StoryBookmarkReadingList[] }) => {
+        if (!oldData || !oldData.readingLists) return oldData;
+        return {
+          readingLists: [...oldData.readingLists, readingList],
+        };
+      }
+    );
+    queryClient.invalidateQueries({ queryKey: popoverQueryKey });
+  };
 
   useEffect(() => {
     if (
@@ -197,9 +213,13 @@ const StoryBookmarkPopover = ({
             <PopoverDivider />
 
             <PopoverGroup className="px-3 py-4">
-              <PopoverButton variant="success" className="text-base">
-                Create a new list
-              </PopoverButton>
+              <ReadingListCreationDialog
+                onCreationSuccessCb={readingListCreationCb}
+              >
+                <PopoverButton variant="success" className="text-base">
+                  Create a new list
+                </PopoverButton>
+              </ReadingListCreationDialog>
             </PopoverGroup>
           </div>
         )}
