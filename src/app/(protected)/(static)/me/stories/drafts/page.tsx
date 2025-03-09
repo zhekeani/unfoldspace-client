@@ -1,7 +1,7 @@
-import MeDraftsContainer from "../../../../../../components/story/containers/MeDraftsContainer";
-import { StoryDraft } from "../../../../../../components/story/StoryDraftItem";
-import { fetchActiveUserOnServer } from "../../../../../../lib/component-fetches/service-user/fetchUserServer";
-import { fetchActiveUserDraftsOnServer } from "../../../../../../lib/component-fetches/story/fetchStoriesServer";
+import MeDraftsContainer from "@/components/containers/MeDraftsContainer";
+import { StoryDraft } from "@/components/story/StoryDraftItem";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { fetchActiveUserDraftsOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 
 type SearchParams = {
   page?: string;

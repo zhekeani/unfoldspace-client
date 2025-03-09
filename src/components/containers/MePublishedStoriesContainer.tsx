@@ -1,7 +1,8 @@
 "use client";
 
 import GeneralPagination from "@/components/pagination/GeneralPagination";
-import { fetchUserStoriesWInteractionsByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
+import { fetchUserStoriesByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
+import { Story } from "@/types/database.types";
 import {
   QueryClient,
   QueryClientProvider,
@@ -9,48 +10,43 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import StoryItem, { StoryItemStory } from "../StoryItem";
+import StoryPublishedItem from "../story/StoryPublishedItem";
 
-type UserStoriesContainerProps = {
-  stories: StoryItemStory[];
+type MePublishedStoriesContainerProps = {
+  stories: Story[];
   activeUserId: string;
-  targetUserId: string;
+  activeUserUsername: string;
   limit: number;
-  currentPage: number;
   hasNextPage: boolean;
+  currentPage: number;
   storiesCount: number;
 };
 
-const InnerUserStoriesContainer = ({
+const InnerMePublishedStoriesContainer = ({
   stories: initialStories,
-  hasNextPage: initialHasNextPage,
   storiesCount: initialStoriesCount,
-  activeUserId,
-  targetUserId,
+  hasNextPage: initialHasNextPage,
   limit,
   currentPage,
-}: UserStoriesContainerProps) => {
+  activeUserId,
+}: MePublishedStoriesContainerProps) => {
   const queryClient = useQueryClient();
   const { data: storiesRes, error: storiesError } = useQuery({
-    queryKey: ["stories", targetUserId],
+    queryKey: ["stories"],
     queryFn: () =>
-      fetchUserStoriesWInteractionsByIdOnClient(
-        targetUserId,
-        limit,
-        currentPage
-      ),
+      fetchUserStoriesByIdOnClient(activeUserId, limit, currentPage),
     initialData: {
       stories: initialStories,
       hasNextPage: initialHasNextPage,
       storiesCount: initialStoriesCount,
     },
     staleTime: 5 * 60 * 1000,
-    refetchOnMount: true,
+    refetchOnMount: false,
     refetchOnWindowFocus: true,
   });
 
   useEffect(() => {
-    queryClient.setQueryData(["stories", targetUserId], () => {
+    queryClient.setQueryData(["saved_reading_lists", activeUserId], () => {
       return {
         stories: initialStories,
         hasNextPage: initialHasNextPage,
@@ -59,40 +55,34 @@ const InnerUserStoriesContainer = ({
     });
   }, [
     initialHasNextPage,
+    initialStoriesCount,
     queryClient,
     currentPage,
-    targetUserId,
+    activeUserId,
     initialStories,
-    initialStoriesCount,
   ]);
 
-  if (storiesError || !storiesRes) {
-    console.error(storiesError);
-    return null;
-  }
+  if (storiesError || !storiesRes) return null;
 
   const { stories, hasNextPage, storiesCount } = storiesRes;
 
   return (
     <>
-      <div className="pt-[8px] pb-2 flex-1 flex flex-col gap-6 min-h-[400px]">
-        {stories.length === 0 ? (
+      <div className="w-full px-6 pb-2">
+        {stories.length === 0 && (
           <p className="text-center text-sub-text mt-[100px]">
-            No stories found.
+            No saved reading lists found
           </p>
-        ) : (
-          stories.map((story) => (
-            <StoryItem
-              key={story.id}
-              initialStory={story}
-              isOwned={activeUserId === story.user_id}
-              activeUserId={activeUserId}
-              showProfile={false}
-            />
-          ))
+        )}
+        {stories.length > 0 && (
+          <div className="w-full flex flex-col gap-9 items-start min-h-[400px]">
+            {stories.map((story) => (
+              <StoryPublishedItem key={story.id} story={story} />
+            ))}
+          </div>
         )}
       </div>
-      {storiesCount > 0 && hasNextPage && (
+      {stories.length > 0 && hasNextPage && (
         <div className="my-6">
           <GeneralPagination
             currentPage={currentPage}
@@ -105,14 +95,16 @@ const InnerUserStoriesContainer = ({
   );
 };
 
-const UserStoriesContainer = (props: UserStoriesContainerProps) => {
+const MePublishedStoriesContainer = (
+  props: MePublishedStoriesContainerProps
+) => {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      <InnerUserStoriesContainer {...props} />
+      <InnerMePublishedStoriesContainer {...props} />
     </QueryClientProvider>
   );
 };
 
-export default UserStoriesContainer;
+export default MePublishedStoriesContainer;

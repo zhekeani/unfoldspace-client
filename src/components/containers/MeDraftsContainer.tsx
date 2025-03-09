@@ -7,9 +7,9 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { fetchActiveUserDraftsOnClient } from "../../../lib/component-fetches/story/fetchStoriesClient";
-import GeneralPagination from "../../pagination/GeneralPagination";
-import StoryDraftItem, { StoryDraft } from "../StoryDraftItem";
+import { fetchActiveUserDraftsOnClient } from "../../lib/component-fetches/story/fetchStoriesClient";
+import GeneralPagination from "../pagination/GeneralPagination";
+import StoryDraftItem, { StoryDraft } from "../story/StoryDraftItem";
 
 type MeDraftsContainerProps = {
   drafts: StoryDraft[];

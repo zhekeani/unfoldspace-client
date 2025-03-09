@@ -1,6 +1,6 @@
 import TopicsCarousel from "@/components/carousel/TopicCarousel";
+import HomeStoriesContainer from "@/components/containers/HomeStoriesContainer";
 import GeneralPagination from "@/components/pagination/GeneralPagination";
-import HomeStoriesContainer from "@/components/story/containers/HomeStoriesContainer";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchStoriesByTopicOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { fetchHomeTopicsOnServer } from "@/lib/component-fetches/topic/fetchTopicsServer";
@@ -64,7 +64,7 @@ const HomePage = async ({
           <GeneralPagination
             currentPage={currentPage}
             hasNextPage={hasNextPage}
-            storiesCount={storiesCount}
+            itemsCount={storiesCount}
           />
         </div>
       )}

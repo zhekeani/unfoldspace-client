@@ -1,4 +1,4 @@
-import MePublishedStoriesContainer from "@/components/story/containers/MePublishedStoriesContainer";
+import MePublishedStoriesContainer from "@/components/containers/MePublishedStoriesContainer";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchUserStoriesByIdOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { Story } from "@/types/database.types";

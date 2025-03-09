@@ -1,5 +1,5 @@
 import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
-import MeSavedReadingListsContainer from "@/components/story/containers/MeSavedReadingListsContainer";
+import MeSavedReadingListsContainer from "@/components/containers/MeSavedReadingListsContainer";
 import { fetchActiveUserSavedReadingListsOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 

@@ -1,11 +1,10 @@
-import React from "react";
-import { extractUsernameFromUrl } from "../../../../../../lib/components/subsection-tab/extractUsername";
-import { UserWFollowStatus } from "../../../../../../types/database.types";
+import UserAboutContainer from "@/components/containers/UserAboutContainer";
 import {
   fetchActiveUserIdOnServer,
   fetchUserByUsernameOnServer,
-} from "../../../../../../lib/component-fetches/service-user/fetchUserServer";
-import UserAboutContainer from "../../../../../../components/story/containers/UserAboutContainer";
+} from "@/lib/component-fetches/service-user/fetchUserServer";
+import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
+import { UserWFollowStatus } from "@/types/database.types";
 
 type PageParams = {
   username: string;

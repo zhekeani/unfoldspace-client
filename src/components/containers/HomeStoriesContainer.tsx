@@ -2,7 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import StoryItem, { StoryItemStory } from "../StoryItem";
+import StoryItem, { StoryItemStory } from "../story/StoryItem";
 
 type HomeStoriesContainerProps = {
   stories: StoryItemStory[];

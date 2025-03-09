@@ -1,7 +1,7 @@
-import { ExtendedReadingList } from "../../../../../components/reading-list/ReadingListItem";
-import MeReadingListsContainer from "../../../../../components/story/containers/MeReadingListsContainer";
-import { fetchUserDetailedReadingListsByIdOnServer } from "../../../../../lib/component-fetches/reading-list/fetchReadingListsServer";
-import { fetchActiveUserOnServer } from "../../../../../lib/component-fetches/service-user/fetchUserServer";
+import MeReadingListsContainer from "@/components/containers/MeReadingListsContainer";
+import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
+import { fetchUserDetailedReadingListsByIdOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 
 type SearchParams = {
   page?: string;

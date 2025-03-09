@@ -1,4 +1,4 @@
-import UserStoriesContainer from "@/components/story/containers/UserStoriesContainer";
+import UserStoriesContainer from "@/components/containers/UserStoriesContainer";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchActiveUserIdOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchUserStoriesWInteractionsOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
