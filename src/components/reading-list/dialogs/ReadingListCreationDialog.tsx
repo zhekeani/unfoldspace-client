@@ -1,4 +1,6 @@
 import { createReadingList } from "@/actions/reading-list/createReadingList";
+import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
+import { StoryBookmarkReadingList } from "@/components/story/popovers/StoryBookmarkPopover";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -23,8 +25,6 @@ import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
-import { StoryBookmarkReadingList } from "../../story/popovers/StoryBookmarkPopover";
-import { ExtendedReadingList } from "../ReadingListItem";
 
 const formSchema = z.object({
   name: z

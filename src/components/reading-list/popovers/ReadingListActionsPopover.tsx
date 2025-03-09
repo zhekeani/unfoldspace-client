@@ -2,6 +2,8 @@ import {
   PopoverButton,
   PopoverGroup,
 } from "@/components/popover/components/ExtendedPopover";
+import ReadingListDeletionAlertDialog from "@/components/reading-list/dialogs/ReadingListDeletionAlertDialog";
+import ReadingListToPrivateAlertDialog from "@/components/reading-list/dialogs/ReadingListToPrivateAlertDialog";
 import {
   Popover,
   PopoverContent,
@@ -15,8 +17,6 @@ import {
 } from "@/components/ui/tooltip";
 import { ReadingListVisibility } from "@/types/database.types";
 import { ReactNode, useState } from "react";
-import ReadingListDeletionAlertDialog from "../dialogs/ReadingListDeletionAlertDialog";
-import ReadingListToPrivateAlertDialog from "../dialogs/ReadingListToPrivateAlertDialog";
 
 type ReadingListActionsPopoverProps = {
   children: ReactNode;

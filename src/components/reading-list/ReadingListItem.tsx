@@ -1,5 +1,6 @@
 import { deleteReadingList } from "@/actions/reading-list/deleteReadingList";
 import { updateReadingListVisibility } from "@/actions/reading-list/updateReadingList";
+import ReadingListActionsPopover from "@/components/reading-list/popovers/ReadingListActionsPopover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { fetchReadingListDetailOnClient } from "@/lib/component-fetches/reading-list/fetchReadingListsClient";
@@ -9,7 +10,6 @@ import { Bookmark, BookmarkPlus, Ellipsis, Key } from "lucide-react";
 import Link from "next/link";
 import { HTMLAttributes } from "react";
 import { toast } from "sonner";
-import ReadingListActionsPopover from "./popovers/ReadingListActionsPopover";
 
 export type ExtendedReadingList =
   Database["public"]["Functions"]["get_user_reading_lists_by_id"]["Returns"][number];
