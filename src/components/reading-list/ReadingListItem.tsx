@@ -198,6 +198,8 @@ const ReadingListItem = ({
             )}
             <ReadingListActionsPopover
               isOwned={isOwned}
+              readingList={readingList}
+              readingListsQueryKey={queryKey}
               isDefault={readingList.is_default}
               visibility={readingList.visibility}
               isDeleting={isDeleting}

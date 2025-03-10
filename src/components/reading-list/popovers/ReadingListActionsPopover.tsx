@@ -15,11 +15,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ReadingListVisibility } from "@/types/database.types";
+import { ReadingList, ReadingListVisibility } from "@/types/database.types";
 import { ReactNode, useState } from "react";
+import ReadingListCreationDialog from "../dialogs/ReadingListCreationDialog";
 
 type ReadingListActionsPopoverProps = {
   children: ReactNode;
+  readingList: ReadingList;
+  readingListsQueryKey: string[];
   isOwned: boolean;
   isDefault: boolean;
   visibility: ReadingListVisibility;
@@ -31,6 +34,8 @@ type ReadingListActionsPopoverProps = {
 
 const ReadingListActionsPopover = ({
   children,
+  readingList,
+  readingListsQueryKey,
   isOwned,
   isDefault,
   visibility,
@@ -65,13 +70,18 @@ const ReadingListActionsPopover = ({
               >
                 Copy link
               </PopoverButton>
-              <PopoverButton
-                onClick={() => {
-                  setIsOpen(false);
+              <ReadingListCreationDialog
+                actionType="update"
+                readingListId={readingList.id}
+                initialValues={{
+                  name: readingList.title,
+                  description: readingList.description || "",
+                  visibility: readingList.visibility,
                 }}
+                readingListsQueryKey={readingListsQueryKey}
               >
-                Edit list info
-              </PopoverButton>
+                <PopoverButton>Edit list info</PopoverButton>
+              </ReadingListCreationDialog>
               <PopoverButton
                 onClick={() => {
                   setIsOpen(false);

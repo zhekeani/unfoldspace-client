@@ -25,6 +25,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { updateReadingList } from "../../../actions/reading-list/updateReadingList";
 
 const formSchema = z.object({
   name: z
@@ -42,19 +43,32 @@ const formSchema = z.object({
   visibility: z.enum(["private", "public"]),
 });
 
-type ReadingListCreationDialogProps = {
+type BaseProps = {
   children: ReactNode;
-  actionType?: "create" | "update";
   readingListType?: "extended" | "preview";
-  initialValues?: z.infer<typeof formSchema>;
   readingListsQueryKey: string[];
 };
+
+type CreateActionProps = BaseProps & {
+  actionType?: "create";
+  readingListId?: string;
+  initialValues?: z.infer<typeof formSchema>;
+};
+
+type UpdateActionProps = BaseProps & {
+  actionType?: "update";
+  readingListId: string;
+  initialValues: z.infer<typeof formSchema>;
+};
+
+type ReadingListCreationDialogProps = CreateActionProps | UpdateActionProps;
 
 const ReadingListCreationDialog = ({
   children,
   actionType = "create",
   readingListType = "extended",
   readingListsQueryKey,
+  readingListId,
   initialValues = {
     name: "",
     description: "",
@@ -83,6 +97,7 @@ const ReadingListCreationDialog = ({
 
   const nameValue = watch("name");
   const descriptionValue = watch("description");
+  const isCreateAction = actionType === "create";
 
   const onClose = () => {
     if (isOpen) {
@@ -134,11 +149,59 @@ const ReadingListCreationDialog = ({
     },
   });
 
+  const { mutate: updateMutation, isPending: isUpdating } = useMutation({
+    mutationFn: (args: {
+      listId: string;
+      values: z.infer<typeof formSchema>;
+    }) =>
+      updateReadingList(args.listId, {
+        title: args.values.name,
+        description: args.values.description || null,
+        visibility: args.values.visibility,
+      }),
+
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.error);
+      } else {
+        toast.success("Successfully updated reading list info.");
+        const updatedList = res.data.readingList;
+
+        queryClient.setQueryData(
+          readingListsQueryKey,
+          (oldData?: {
+            readingLists: ExtendedReadingList[] | StoryBookmarkReadingList[];
+          }) => {
+            if (!oldData || !oldData.readingLists) return oldData;
+
+            return {
+              readingLists: oldData.readingLists.map((readingList) => {
+                if (readingList.id === updatedList.id) {
+                  return {
+                    ...readingList,
+                    title: updatedList.title,
+                    description: updatedList.description,
+                    visibility: updatedList.visibility,
+                  };
+                } else {
+                  return readingList;
+                }
+              }),
+            };
+          }
+        );
+      }
+      queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
+      onClose();
+    },
+  });
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (actionType === "create") {
       createMutation(values);
     }
     if (actionType === "update") {
+      updateMutation({ listId: readingListId!, values });
     }
   };
 
@@ -158,7 +221,7 @@ const ReadingListCreationDialog = ({
         <div className="tablet:px-14 tablet:py-11 px-[7px] py-8 flex justify-center">
           <div className="w-full tablet:max-w-[400px] max-w-[210px]">
             <DialogTitle className="font-medium text-main-text text-2xl">
-              Create new list
+              {isCreateAction ? "Create new" : "Update"} list
             </DialogTitle>
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="mt-[60px]">
@@ -274,7 +337,13 @@ const ReadingListCreationDialog = ({
                     disabled={!isValid || isCreating}
                     className=" bg-main-green text-white rounded-full font-normal"
                   >
-                    {isCreating ? "Creating..." : "Create List"}
+                    {isCreating || isUpdating
+                      ? isCreateAction
+                        ? "Creating..."
+                        : "Updating..."
+                      : isCreateAction
+                        ? "Create list"
+                        : "Update list"}
                   </Button>
                 </div>
               </form>

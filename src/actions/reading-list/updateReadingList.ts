@@ -48,10 +48,8 @@ export async function updateReadingListVisibility(
 
 export async function updateReadingList(
   listId: string,
-  readingList: Partial<
-    Pick<ReadingList, "title" | "description" | "visibility">
-  >
-) {
+  readingList: Pick<ReadingList, "title" | "description" | "visibility">
+): Promise<ActionResponse<{ readingList: ReadingList }>> {
   try {
     const supabase = await getSupabaseCookiesUtilClient();
     if (!supabase) {
@@ -65,7 +63,7 @@ export async function updateReadingList(
       .from("reading_lists")
       .update(readingList)
       .eq("id", listId)
-      .select("id")
+      .select("*")
       .single();
     if (error || !data || !data.id) {
       return {
@@ -77,7 +75,7 @@ export async function updateReadingList(
     return {
       success: true,
       data: {
-        listId: data.id,
+        readingList: data,
       },
     };
   } catch (error) {
