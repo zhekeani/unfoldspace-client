@@ -146,6 +146,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          item_order: number | null
           note: string | null
           reading_list_id: string
           story_id: string
@@ -153,6 +154,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          item_order?: number | null
           note?: string | null
           reading_list_id: string
           story_id: string
@@ -160,6 +162,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          item_order?: number | null
           note?: string | null
           reading_list_id?: string
           story_id?: string
@@ -868,6 +871,38 @@ export type Database = {
           has_responded: boolean
         }[]
       }
+      get_reading_list_item_by_id: {
+        Args: {
+          list_item_id: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          reading_list_id: string
+          story_id: string
+          note: string
+          item_order: number
+          story_created_at: string
+          story_updated_at: string
+          user_id: string
+          cover_image: string
+          claps_count: number
+          responses_count: number
+          title: string
+          description: string
+          visibility: Database["public"]["Enums"]["story_visibility"]
+          published_at: string
+          words_count: number
+          html_content: string
+          json_content: Json
+          author_name: string
+          author_profile_picture: string
+          recent_top_response_ids: Json
+          topic_ids: Json
+          author_username: string
+          is_saved: boolean
+        }[]
+      }
       get_reading_list_items: {
         Args: {
           list_id_param: string
@@ -896,6 +931,41 @@ export type Database = {
           recent_top_response_ids: Json
           topic_ids: Json
           author_username: string
+        }[]
+      }
+      get_reading_list_items_by_list_id: {
+        Args: {
+          list_id: string
+          limit_param?: number
+          offset_param?: number
+          cursor?: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          reading_list_id: string
+          story_id: string
+          note: string
+          item_order: number
+          story_created_at: string
+          story_updated_at: string
+          user_id: string
+          cover_image: string
+          claps_count: number
+          responses_count: number
+          title: string
+          description: string
+          visibility: Database["public"]["Enums"]["story_visibility"]
+          published_at: string
+          words_count: number
+          html_content: string
+          json_content: Json
+          author_name: string
+          author_profile_picture: string
+          recent_top_response_ids: Json
+          topic_ids: Json
+          author_username: string
+          is_saved: boolean
         }[]
       }
       get_response_by_id: {

@@ -1,6 +1,6 @@
 import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import { getSupabaseCookiesUtilClient } from "@/supabase-utils/cookiesUtilClient";
-import { ReadingList } from "@/types/database.types";
+import { ReadingList, ReadingListDetail } from "@/types/database.types";
 
 export const fetchUserReadingListsById = async (
   userId: string
@@ -119,6 +119,34 @@ export const fetchActiveUserSavedReadingListsOnServer = async (
       readingLists: readingListRes.data.slice(0, limit),
       hasNextPage,
       readingListsCount: countRes.count || 0,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const fetchReadingListDetailByIdOnServer = async (
+  listId: string
+): Promise<{
+  readingList: ReadingListDetail;
+} | null> => {
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const { data, error } = await supabase.rpc("get_reading_list_detail", {
+      list_id_param: listId,
+    });
+    if (error || !data) {
+      console.error(error);
+      throw new Error("Failed to fetch reading list.");
+    }
+
+    return {
+      readingList: data[0],
     };
   } catch (error) {
     console.error(error);

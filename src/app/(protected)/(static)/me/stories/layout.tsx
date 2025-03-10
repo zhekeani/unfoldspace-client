@@ -7,7 +7,7 @@ import { ReactNode, Suspense } from "react";
 const MeStoriesLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="base-wrapper">
-      <div className="left-content min-h-[800px]">
+      <div className="left-content ">
         <MeStoriesSubheader />
         <Suspense fallback={<MePageSpinner />}>{children}</Suspense>
       </div>

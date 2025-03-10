@@ -21,29 +21,55 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
+import { ExtendedReadingListItem } from "../reading-list/ReadingListStoryItem";
 
 export type StoryItemStory = Story & { is_saved: boolean };
 
-type StoryItemProps = {
+type BaseProps = {
   initialStory: StoryItemStory;
   isOwned: boolean;
   activeUserId: string;
   showProfile?: boolean;
-  storiesQueryKey: string[];
 };
+
+type StoryItemTypeProps = BaseProps & {
+  itemType?: "story";
+  storiesQueryKey: string[];
+  listId?: string;
+  listItemId?: string;
+  listItemsQueryKey?: string[];
+  listDetailQueryKey?: string[];
+};
+
+type ListItemTypeProps = BaseProps & {
+  itemType?: "list-item";
+  storiesQueryKey?: string[];
+  listId: string;
+  listItemId: string;
+  listItemsQueryKey: string[];
+  listDetailQueryKey: string[];
+};
+
+type StoryItemProps = StoryItemTypeProps | ListItemTypeProps;
 
 const StoryItem = ({
   initialStory,
   activeUserId,
   showProfile = true,
   storiesQueryKey,
+  listId,
+  listItemId,
+  listItemsQueryKey,
+  listDetailQueryKey,
+  itemType = "story",
 }: StoryItemProps) => {
   const rowRef = useRef<HTMLDivElement | null>(null);
   const [rowWidth, setRowWidth] = useState<number>(0);
   const queryClient = useQueryClient();
 
+  const storyQueryKey = ["story", initialStory.id];
   const { data: story, error: storyError } = useQuery({
-    queryKey: ["story", initialStory.id],
+    queryKey: storyQueryKey,
     queryFn: () => fetchStoryWInteractionsByIdOnClient(initialStory.id),
     initialData: initialStory,
     staleTime: 5 * 60 * 1000,
@@ -54,19 +80,37 @@ const StoryItem = ({
   const { mutate: deleteMutation, isPending: isDeleting } = useMutation({
     mutationFn: () => deletePublishedStory(initialStory.id),
     onMutate: () => {
-      queryClient.setQueryData(
-        storiesQueryKey,
-        (oldData?: { stories: StoryItemStory[] }) => {
-          if (!oldData) return oldData;
+      if (itemType === "story") {
+        queryClient.setQueryData(
+          storiesQueryKey!,
+          (oldData?: { stories: StoryItemStory[] }) => {
+            if (!oldData) return oldData;
 
-          return {
-            ...oldData,
-            stories: oldData.stories.filter(
-              (story) => story.id !== initialStory.id
-            ),
-          };
-        }
-      );
+            return {
+              ...oldData,
+              stories: oldData.stories.filter(
+                (story) => story.id !== initialStory.id
+              ),
+            };
+          }
+        );
+      }
+
+      if (itemType === "list-item") {
+        queryClient.setQueryData(
+          listItemsQueryKey!,
+          (oldData?: { listItems: ExtendedReadingListItem[] }) => {
+            if (!oldData) return oldData;
+
+            return {
+              ...oldData,
+              listItems: oldData.listItems.filter(
+                (listItem) => listItem.reading_list_id !== listId
+              ),
+            };
+          }
+        );
+      }
     },
     onSuccess: (res) => {
       if (!res.success) {
@@ -74,7 +118,14 @@ const StoryItem = ({
       } else {
         toast.success("Successfully deleted story");
       }
-      queryClient.invalidateQueries({ queryKey: storiesQueryKey });
+      if (itemType === "story") {
+        queryClient.invalidateQueries({ queryKey: storiesQueryKey });
+      }
+
+      if (itemType === "list-item") {
+        queryClient.invalidateQueries({ queryKey: listItemsQueryKey });
+        queryClient.invalidateQueries({ queryKey: listDetailQueryKey });
+      }
     },
   });
 
@@ -196,8 +247,14 @@ const StoryItem = ({
               {!hideBookmark && (
                 <StoryBookmarkPopover
                   storyId={story.id}
+                  storyQueryKey={storyQueryKey}
                   activeUserId={activeUserId}
                   isStorySaved={story.is_saved}
+                  itemType={itemType as "story"}
+                  listId={listId}
+                  listItemId={listItemId}
+                  listItemsQueryKey={listItemsQueryKey}
+                  listDetailQueryKey={listDetailQueryKey}
                 >
                   <Button
                     variant="ghost"

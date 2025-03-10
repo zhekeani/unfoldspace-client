@@ -78,7 +78,10 @@ const InnerMeReadingListsContainer = ({
 
   return (
     <>
-      <div className="w-full px-6 pb-2">
+      <div
+        style={{ minHeight: "calc(100vh - 260px)" }}
+        className="w-full px-6 pb-2"
+      >
         {readingLists.length === 0 && (
           <p className="text-center text-sub-text mt-[100px]">
             No public reading lists found

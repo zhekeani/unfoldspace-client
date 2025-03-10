@@ -56,7 +56,7 @@ const HomePage = async ({
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
       <TopicsCarousel activeTopic={tag} topics={initialData.topics} />
-      <div style={{ minHeight: "calc(100vh - 260px)" }}>
+      <div>
         <HomeStoriesContainer
           topic={tag}
           limit={limit}

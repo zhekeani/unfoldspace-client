@@ -31,7 +31,7 @@ const CoverImageItem = ({ coverImageUrl, index }: CoverImageItemProps) => {
         />
       )}
       {index !== 2 && (
-        <div className="absolute h-full w-[3px] right-0 bg-white outline-none border-none" />
+        <div className="absolute h-full w-[3px] top-0 right-0 bg-white outline-none border-none" />
       )}
     </div>
   );
@@ -101,6 +101,27 @@ const ReadingListItem = ({
           is_saved: args.actionType === "save",
         };
       });
+
+      if (args.actionType === "unsave") {
+        queryClient.setQueryData(
+          readingListsQueryKey,
+          (oldData?: { readingLists: ExtendedReadingList[] }) => {
+            if (
+              !oldData ||
+              !oldData.readingLists ||
+              oldData.readingLists.length === 0
+            )
+              return oldData;
+
+            return {
+              ...oldData,
+              readingLists: oldData.readingLists.filter(
+                (readingList) => readingList.id !== args.listId
+              ),
+            };
+          }
+        );
+      }
     },
 
     onSuccess: (res, { actionType }) => {
@@ -113,6 +134,9 @@ const ReadingListItem = ({
         );
       }
       queryClient.invalidateQueries({ queryKey: queryKey });
+      if (actionType === "unsave") {
+        queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
+      }
     },
   });
 
@@ -128,7 +152,7 @@ const ReadingListItem = ({
     <div className="w-[294px] mobile:w-full h-[288px] mobile:h-[144px] border-[1px] border-accent/70 flex flex-col mobile:flex-row bg-accent/50 overflow-hidden rounded-sm">
       {/* User info */}
       <div className="flex-1 px-6 pt-6 pb-[10px]">
-        <Link href={`/%40${username}/lists/${readingList.id}`}>
+        <Link href={`/%40${username}/list/${readingList.id}`}>
           <div className="flex gap-2 items-center">
             <Avatar className="w-6 h-6">
               <AvatarImage
@@ -149,7 +173,7 @@ const ReadingListItem = ({
         </Link>
         <div className="h-10 flex  items-center">
           <Link
-            href={`/%40${username}/lists/${readingList.id}`}
+            href={`/%40${username}/list/${readingList.id}`}
             className="flex flex-1 items-center gap-2"
           >
             <p className="text-sm text-sub-text">
@@ -231,7 +255,7 @@ const ReadingListItem = ({
 
       {/* Stories' cover images */}
       <Link
-        href={`/%40${username}/lists/${readingList.id}`}
+        href={`/%40${username}/list/${readingList.id}`}
         className="flex-1 mobile:flex-none w-[294px] grid grid-cols-[50%_30%_20%]"
       >
         {recentCoversUrls.map((storyCover, index) => (

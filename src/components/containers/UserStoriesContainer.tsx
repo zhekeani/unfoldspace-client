@@ -79,7 +79,10 @@ const InnerUserStoriesContainer = ({
 
   return (
     <>
-      <div className="pt-[8px] pb-2 flex-1 flex flex-col gap-6 min-h-[400px]">
+      <div
+        style={{ minHeight: "calc(100vh - 260px)" }}
+        className="pt-[8px] pb-2 flex-1 flex flex-col gap-6 min-h-[400px]"
+      >
         {stories.length === 0 ? (
           <p className="text-center text-sub-text mt-[100px]">
             No stories found.

@@ -2,6 +2,7 @@ import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 
 import { StoryBookmarkReadingList } from "@/components/story/popovers/StoryBookmarkPopover";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
+import { ReadingListDetail } from "@/types/database.types";
 
 export const fetchReadingListDetailOnClient = async (
   readingListId: string
@@ -146,6 +147,34 @@ export const fetchActiveUserReadingListsByStoryId = async (
 
     return {
       readingLists: data,
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const fetchReadingListDetailByIdOnClient = async (
+  listId: string
+): Promise<{
+  readingList: ReadingListDetail;
+} | null> => {
+  try {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) {
+      throw new Error("Database client unavailable.");
+    }
+
+    const { data, error } = await supabase.rpc("get_reading_list_detail", {
+      list_id_param: listId,
+    });
+    if (error || !data) {
+      console.error(error);
+      throw new Error("Failed to fetch reading list.");
+    }
+
+    return {
+      readingList: data[0],
     };
   } catch (error) {
     console.error(error);

@@ -27,22 +27,48 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Key } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { ExtendedReadingListItem } from "../../reading-list/ReadingListStoryItem";
 
 export type StoryBookmarkReadingList = Pick<
   ReadingList,
   "id" | "title" | "is_default" | "visibility"
 > & { is_saved: boolean };
 
-type StoryBookmarkPopoverProps = {
+type BaseProps = {
   isStorySaved: boolean;
   storyId: string;
   activeUserId: string;
   children: ReactNode;
+  storyQueryKey: string[];
 };
+
+type StoryItemTypeProps = BaseProps & {
+  itemType?: "story";
+  listId?: string;
+  listItemId?: string;
+  listItemsQueryKey?: string[];
+  listDetailQueryKey?: string[];
+};
+
+type ListItemTypeProps = BaseProps & {
+  itemType?: "list-item";
+  listId: string;
+  listItemId: string;
+  listItemsQueryKey: string[];
+  listDetailQueryKey: string[];
+};
+
+type StoryBookmarkPopoverProps = StoryItemTypeProps | ListItemTypeProps;
 
 const StoryBookmarkPopover = ({
   storyId,
   children,
+  storyQueryKey,
+  listId,
+  listItemId,
+  listItemsQueryKey,
+  listDetailQueryKey,
+  itemType = "story",
 }: StoryBookmarkPopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentReadingLists, setCurrentReadingLists] = useState<
@@ -93,26 +119,40 @@ const StoryBookmarkPopover = ({
           }
         );
 
-        queryClient.setQueryData(
-          ["story", storyId],
-          (oldData: StoryItemStory) => {
-            if (!oldData) return oldData;
+        queryClient.setQueryData(storyQueryKey, (oldData: StoryItemStory) => {
+          if (!oldData) return oldData;
 
-            const totalSaved = data?.readingLists?.filter(
-              (r) => r.is_saved
-            ).length;
-            const isBecomingUnsaved =
-              totalSaved === 1 && actionType === "unsave";
+          const totalSaved = data?.readingLists?.filter(
+            (r) => r.is_saved
+          ).length;
+          const isBecomingUnsaved = totalSaved === 1 && actionType === "unsave";
 
-            return {
-              ...oldData,
-              is_saved: !isBecomingUnsaved,
-            };
+          return {
+            ...oldData,
+            is_saved: !isBecomingUnsaved,
+          };
+        });
+
+        if (itemType === "list-item") {
+          if (readingListId === listId && actionType === "unsave") {
+            queryClient.setQueryData(
+              listItemsQueryKey!,
+              (oldData?: { listItems: ExtendedReadingListItem[] }) => {
+                if (!oldData) return oldData;
+
+                return {
+                  ...oldData,
+                  listItems: oldData.listItems.filter(
+                    (listItem) => listItem.id !== listItemId
+                  ),
+                };
+              }
+            );
           }
-        );
+        }
       },
 
-      onSuccess: (res) => {
+      onSuccess: (res, { readingListId, actionType }) => {
         if (!res.success) {
           toast.error(res.error);
         }
@@ -122,6 +162,18 @@ const StoryBookmarkPopover = ({
         queryClient.invalidateQueries({
           queryKey: ["story", storyId],
         });
+        if (itemType === "list-item") {
+          if (readingListId === listId && actionType === "unsave") {
+            console.log("The reading list detail should get revalidated");
+
+            queryClient.invalidateQueries({
+              queryKey: listItemsQueryKey,
+            });
+            queryClient.invalidateQueries({
+              queryKey: listDetailQueryKey,
+            });
+          }
+        }
       },
     });
 

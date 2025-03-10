@@ -8,3 +8,5 @@ export type ReadingListVisibility =
   Database["public"]["Enums"]["reading_list_visibility"];
 
 export type UserWFollowStatus = ServiceUser & { has_followed: boolean };
+export type ReadingListDetail =
+  Database["public"]["Functions"]["get_reading_list_detail"]["Returns"][number];
