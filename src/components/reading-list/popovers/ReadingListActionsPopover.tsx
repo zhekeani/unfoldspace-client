@@ -22,26 +22,24 @@ import ReadingListCreationDialog from "../dialogs/ReadingListCreationDialog";
 type ReadingListActionsPopoverProps = {
   children: ReactNode;
   readingList: ReadingList;
-  readingListsQueryKey: string[];
+  listQueryKey: string[];
+  listsQueryKey: string[];
   isOwned: boolean;
   isDefault: boolean;
   visibility: ReadingListVisibility;
-  isDeleting: boolean;
   isUpdating: boolean;
-  deleteMutation: () => void;
   updateVisibilityMutation: (visibility: "public" | "private") => void;
 };
 
 const ReadingListActionsPopover = ({
   children,
   readingList,
-  readingListsQueryKey,
+  listQueryKey,
+  listsQueryKey,
   isOwned,
   isDefault,
   visibility,
-  isDeleting,
   isUpdating,
-  deleteMutation,
   updateVisibilityMutation,
 }: ReadingListActionsPopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +76,8 @@ const ReadingListActionsPopover = ({
                   description: readingList.description || "",
                   visibility: readingList.visibility,
                 }}
-                readingListsQueryKey={readingListsQueryKey}
+                listsQueryKey={listsQueryKey}
+                listQueryKey={listQueryKey}
               >
                 <PopoverButton>Edit list info</PopoverButton>
               </ReadingListCreationDialog>
@@ -114,8 +113,8 @@ const ReadingListActionsPopover = ({
 
               {!isDefault && (
                 <ReadingListDeletionAlertDialog
-                  isDeleting={isDeleting}
-                  handleDelete={deleteMutation}
+                  listId={readingList.id}
+                  listsQueryKey={listsQueryKey}
                 >
                   <PopoverButton variant="danger">Delete list</PopoverButton>
                 </ReadingListDeletionAlertDialog>

@@ -46,17 +46,19 @@ const formSchema = z.object({
 type BaseProps = {
   children: ReactNode;
   readingListType?: "extended" | "preview";
-  readingListsQueryKey: string[];
+  listsQueryKey: string[];
 };
 
 type CreateActionProps = BaseProps & {
   actionType?: "create";
   readingListId?: string;
+  listQueryKey?: string[];
   initialValues?: z.infer<typeof formSchema>;
 };
 
 type UpdateActionProps = BaseProps & {
   actionType?: "update";
+  listQueryKey: string[];
   readingListId: string;
   initialValues: z.infer<typeof formSchema>;
 };
@@ -67,7 +69,8 @@ const ReadingListCreationDialog = ({
   children,
   actionType = "create",
   readingListType = "extended",
-  readingListsQueryKey,
+  listQueryKey,
+  listsQueryKey,
   readingListId,
   initialValues = {
     name: "",
@@ -122,7 +125,7 @@ const ReadingListCreationDialog = ({
         toast.success("Successfully created a new reading list");
 
         queryClient.setQueryData(
-          readingListsQueryKey,
+          listsQueryKey,
           (oldData?: {
             readingLists: ExtendedReadingList[] | StoryBookmarkReadingList[];
           }) => {
@@ -144,7 +147,7 @@ const ReadingListCreationDialog = ({
           }
         );
       }
-      queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
+      queryClient.invalidateQueries({ queryKey: listsQueryKey });
       onClose();
     },
   });
@@ -168,30 +171,20 @@ const ReadingListCreationDialog = ({
         const updatedList = res.data.readingList;
 
         queryClient.setQueryData(
-          readingListsQueryKey,
-          (oldData?: {
-            readingLists: ExtendedReadingList[] | StoryBookmarkReadingList[];
-          }) => {
-            if (!oldData || !oldData.readingLists) return oldData;
+          listsQueryKey,
+          (oldData?: ExtendedReadingList | StoryBookmarkReadingList) => {
+            if (!oldData) return oldData;
 
             return {
-              readingLists: oldData.readingLists.map((readingList) => {
-                if (readingList.id === updatedList.id) {
-                  return {
-                    ...readingList,
-                    title: updatedList.title,
-                    description: updatedList.description,
-                    visibility: updatedList.visibility,
-                  };
-                } else {
-                  return readingList;
-                }
-              }),
+              ...oldData,
+              title: updatedList.title,
+              description: updatedList.description,
+              visibility: updatedList.visibility,
             };
           }
         );
       }
-      queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
+      queryClient.invalidateQueries({ queryKey: listQueryKey });
       onClose();
     },
   });

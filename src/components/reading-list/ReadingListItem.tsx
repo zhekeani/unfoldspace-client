@@ -1,4 +1,3 @@
-import { deleteReadingList } from "@/actions/reading-list/deleteReadingList";
 import { updateReadingListVisibility } from "@/actions/reading-list/updateReadingList";
 import ReadingListActionsPopover from "@/components/reading-list/popovers/ReadingListActionsPopover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -88,35 +87,6 @@ const ReadingListItem = ({
       },
     });
 
-  const { mutate: deleteMutation, isPending: isDeleting } = useMutation({
-    mutationFn: () => deleteReadingList(initialReadingList.id),
-
-    onMutate: () => {
-      queryClient.setQueryData(
-        readingListsQueryKey,
-        (oldData?: { readingLists: ExtendedReadingList[] }) => {
-          if (!oldData) return oldData;
-
-          return {
-            ...oldData,
-            readingLists: oldData.readingLists.filter(
-              (readingList) => readingList.id !== initialReadingList.id
-            ),
-          };
-        }
-      );
-    },
-
-    onSuccess: (res) => {
-      if (!res.success) {
-        toast.error(res.error);
-      } else {
-        toast.success("Successfully deleted list");
-      }
-      queryClient.invalidateQueries({ queryKey: readingListsQueryKey });
-    },
-  });
-
   if (readingListError || !readingList) {
     return null;
   }
@@ -199,12 +169,11 @@ const ReadingListItem = ({
             <ReadingListActionsPopover
               isOwned={isOwned}
               readingList={readingList}
-              readingListsQueryKey={queryKey}
+              listsQueryKey={readingListsQueryKey}
+              listQueryKey={queryKey}
               isDefault={readingList.is_default}
               visibility={readingList.visibility}
-              isDeleting={isDeleting}
               isUpdating={isUpdating}
-              deleteMutation={deleteMutation}
               updateVisibilityMutation={updateVisibilityMutation}
             >
               <Button

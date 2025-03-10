@@ -37,7 +37,7 @@ const MeListsPrimarySubheader = ({
         </div>
 
         <div>
-          <ReadingListCreationDialog readingListsQueryKey={queryKey}>
+          <ReadingListCreationDialog listsQueryKey={queryKey}>
             <Button
               className={cn(
                 "rounded-full bg-main-green font-normal",
