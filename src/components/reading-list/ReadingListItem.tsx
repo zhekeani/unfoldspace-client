@@ -1,4 +1,5 @@
 import { updateReadingListVisibility } from "@/actions/reading-list/updateReadingList";
+import { updateSavedReadingLists } from "@/actions/reading-list/updateSavedReadingList";
 import ReadingListActionsPopover from "@/components/reading-list/popovers/ReadingListActionsPopover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,34 @@ const ReadingListItem = ({
       },
     });
 
+  const { mutate: saveMutation, isPending: isSavingList } = useMutation({
+    mutationFn: (args: { listId: string; actionType: "save" | "unsave" }) =>
+      updateSavedReadingLists(args.listId, args.actionType),
+
+    onMutate: (args: { listId: string; actionType: "save" | "unsave" }) => {
+      queryClient.setQueryData(queryKey, (oldData?: ExtendedReadingList) => {
+        if (!oldData) return oldData;
+
+        return {
+          ...oldData,
+          is_saved: args.actionType === "save",
+        };
+      });
+    },
+
+    onSuccess: (res, { actionType }) => {
+      if (!res.success) {
+        console.error(res.error);
+        toast.error(res.error);
+      } else {
+        toast.success(
+          `Successfully ${actionType === "save" ? "saved" : "unsaved"} reading list`
+        );
+      }
+      queryClient.invalidateQueries({ queryKey: queryKey });
+    },
+  });
+
   if (readingListError || !readingList) {
     return null;
   }
@@ -142,10 +171,14 @@ const ReadingListItem = ({
           <div className="flex items-center ">
             {!isOwned && readingList.is_saved && (
               <Button
+                disabled={isSavingList}
                 role="button"
                 variant="ghost"
                 className="rounded-full group"
                 size="icon"
+                onClick={() =>
+                  saveMutation({ listId: readingList.id, actionType: "unsave" })
+                }
               >
                 <Bookmark
                   strokeWidth={1.5}
@@ -155,10 +188,14 @@ const ReadingListItem = ({
             )}
             {!isOwned && !readingList.is_saved && (
               <Button
+                disabled={isSavingList}
                 role="button"
                 variant="ghost"
                 className="rounded-full group"
                 size="icon"
+                onClick={() =>
+                  saveMutation({ listId: readingList.id, actionType: "save" })
+                }
               >
                 <BookmarkPlus
                   strokeWidth={1.5}
