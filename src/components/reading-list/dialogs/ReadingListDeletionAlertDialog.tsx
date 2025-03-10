@@ -1,3 +1,5 @@
+import { deleteReadingList } from "@/actions/reading-list/deleteReadingList";
+import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,8 +14,6 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ReactNode } from "react";
 import { toast } from "sonner";
-import { deleteReadingList } from "../../../actions/reading-list/deleteReadingList";
-import { ExtendedReadingList } from "../ReadingListItem";
 
 type ListDeletionAlertDialogProps = {
   children: ReactNode;
