@@ -1,4 +1,5 @@
 import { updateReadingListVisibility } from "@/actions/reading-list/updateReadingList";
+import { updateReadingListClap } from "@/actions/reading-list/updateReadingListClap";
 import { updateSavedReadingLists } from "@/actions/reading-list/updateSavedReadingList";
 import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
 import ReadingListActionsPopover from "@/components/reading-list/popovers/ReadingListActionsPopover";
@@ -8,7 +9,6 @@ import { ReadingListDetail } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, BookmarkPlus, Ellipsis } from "lucide-react";
 import { toast } from "sonner";
-import { updateReadingListClap } from "../../../../actions/reading-list/updateReadingListClap";
 import ItemDetailActionButton from "./DetailActionsButtons";
 
 type ReadingListDetailActionsBarProps = {

@@ -73,7 +73,7 @@ const StoryActionsPopover = ({
         {!isOwned && (
           <div>
             <PopoverGroup>
-              <PopoverButton>Follow author</PopoverButton>
+              <PopoverButton>Copy link</PopoverButton>
             </PopoverGroup>
           </div>
         )}

@@ -15,6 +15,7 @@ import {
 } from "@tanstack/react-query";
 import { Ellipsis, MailPlus } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -27,6 +28,7 @@ const InnerSidebarUserSection = ({
   initialUser,
   isSameUser,
 }: SidebarUserSectionProps) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   const {
     data: user,
@@ -64,6 +66,7 @@ const InnerSidebarUserSection = ({
         toast.error(res.error);
       }
       queryClient.invalidateQueries({ queryKey: ["user", initialUser.id] });
+      router.refresh();
     },
   });
 
