@@ -6,6 +6,7 @@ import { ReadingListDetail } from "../../../types/database.types";
 import { useReadingListDetail } from "../../context/ReadingListDetailContext";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import ReadingListDetailActionsBar from "./components/ListDetailActionsBar";
+import ListDetailRemoveItemsBtn from "./components/ListDetailRemoveItemsBtn";
 import ListDetailReorderButton from "./components/ListDetailReorderButton";
 
 type ReadingListDetailSubheaderProps = {
@@ -36,6 +37,7 @@ const ReadingListDetailSubheader = ({
   const { readingList } = listDetailData;
   const isNoAction = !pageActionType;
   const isReorderAction = pageActionType === "reorder";
+  const isRemoveAction = pageActionType === "remove";
 
   return (
     <div>
@@ -71,6 +73,7 @@ const ReadingListDetailSubheader = ({
           {isReorderAction && (
             <ListDetailReorderButton listId={readingList.id} />
           )}
+          {isRemoveAction && <ListDetailRemoveItemsBtn />}
         </header>
       </div>
       <div className="mx-6">

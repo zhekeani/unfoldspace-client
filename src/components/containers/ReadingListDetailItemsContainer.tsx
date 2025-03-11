@@ -5,6 +5,7 @@ import GeneralPagination from "../pagination/GeneralPagination";
 import ReadingListStoryItem, {
   ExtendedReadingListItem,
 } from "../reading-list/ReadingListStoryItem";
+import ListItemsRemoveContainer from "./components/ListItemsRemoveContainer";
 import ListItemsReorderContainer from "./components/ListItemsReorderContainer";
 
 type ContainerProps = {
@@ -87,6 +88,7 @@ const ReadingListDetailItemsContainer = ({
         </>
       )}
       {isReorder && <ListItemsReorderContainer listItems={listItems} />}
+      {isRemove && <ListItemsRemoveContainer listItems={listItems} />}
     </>
   );
 };

@@ -10,6 +10,8 @@ export const fetchListItemsByListIdOnClient = async (
   hasNextPage: boolean;
   listItemsCount: number;
 } | null> => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   try {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
@@ -61,7 +63,7 @@ export const fetchListItemByIdOnClient = async (
     }
 
     const { data, error } = await supabase.rpc("get_reading_list_item_by_id", {
-      list_item_id_param: listItemId,
+      list_item_id: listItemId,
     });
     if (error || !data || data.length === 0) {
       console.error(error);

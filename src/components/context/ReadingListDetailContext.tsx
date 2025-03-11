@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { ReadingListItem } from "../../types/database.types";
+import { ExtendedReadingListItem } from "../reading-list/ReadingListStoryItem";
 
 export type ListDetailActionType = "remove" | "reorder" | null;
 
@@ -24,6 +25,11 @@ type ReadingListDetailContextType = {
   isOrderChange: boolean;
   setReorderedItems: (items: ReorderedItem[]) => void;
   resetReorderedItems: () => void;
+
+  listItemsToRemove: ExtendedReadingListItem[] | null;
+  hasItemToRemove: boolean;
+  setItemsToRemove: (items: ExtendedReadingListItem[]) => void;
+  resetItemsToRemove: () => void;
 };
 
 const ReadingListDetailContext = createContext<
@@ -49,8 +55,16 @@ export const ReadingListDetailProvider = ({
   const [reorderedItems, setReorderedItems] = useState<ReorderedItem[] | null>(
     null
   );
+  const [listItemsToRemove, setListItemsToRemove] = useState<
+    ExtendedReadingListItem[] | null
+  >(null);
+
   const isOrderChange = reorderedItems
     ? checkIsOrderChange(reorderedItems)
+    : false;
+
+  const hasItemToRemove = listItemsToRemove
+    ? listItemsToRemove.length > 0
     : false;
 
   return (
@@ -65,6 +79,11 @@ export const ReadingListDetailProvider = ({
         isOrderChange,
         setReorderedItems,
         resetReorderedItems: () => setReorderedItems(null),
+
+        listItemsToRemove,
+        hasItemToRemove,
+        setItemsToRemove: setListItemsToRemove,
+        resetItemsToRemove: () => setListItemsToRemove(null),
       }}
     >
       {children}

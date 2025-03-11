@@ -50,7 +50,7 @@ const ListItemsReorderContainer = ({
   }, [items, setReorderedItems]);
 
   return (
-    <div className="flex-1 ">
+    <div className="flex-1">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

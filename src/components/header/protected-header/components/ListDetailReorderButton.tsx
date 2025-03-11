@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { updateListItemsOrder } from "../../../../actions/reading-list-item/updateListItem";
 import { useReadingListDetail } from "../../../context/ReadingListDetailContext";
 import { Spinner } from "../../../loading/Spinner";
+import { ExtendedReadingListItem } from "../../../reading-list/ReadingListStoryItem";
 import { Button } from "../../../ui/button";
 
 type ListDetailReorderButtonProps = {
@@ -40,6 +41,25 @@ const ListDetailReorderButton = ({ listId }: ListDetailReorderButtonProps) => {
         toast.error(res.error);
       } else {
         toast.success("Successfully reordered list items");
+
+        queryClient.setQueryData(
+          listItemsQueryKey,
+          (oldData?: { listItems: ExtendedReadingListItem[] }) => {
+            if (!oldData) return oldData;
+
+            const reorderedMap = new Map(
+              reorderedListItems!.map((item, index) => [item.id, index])
+            );
+
+            const newListItems = reorderedListItems!.map((item) => ({
+              ...oldData.listItems.find((oldItem) => oldItem.id === item.id),
+              item_order: reorderedMap.get(item.id) ?? item.item_order,
+            }));
+
+            return { listItems: newListItems };
+          }
+        );
+
         queryClient.invalidateQueries({ queryKey: listItemsQueryKey });
         closeReorder();
       }

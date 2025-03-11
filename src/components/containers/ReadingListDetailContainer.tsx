@@ -53,7 +53,7 @@ const InnerReadingListDetailContainer = ({
 
   return (
     <ReadingListDetailProvider
-      initialPageActionType={pageActionType}
+      initialPageActionType={"remove"}
       listDetailQueryKey={listDetailQueryKey}
       listItemsQueryKey={listItemsQueryKey}
     >

@@ -24,7 +24,7 @@ const ListItemReorderItem = ({ listItem }: ListItemReorderItemProps) => {
       className="py-6 m-[5px] rounded-none  cursor-grab border-b-[1px] border-b-gray-200"
     >
       <div className="w-full flex justify-between items-center">
-        <p className="text-normal line-clamp-1">{listItem.title}</p>
+        <p className="text-base line-clamp-1">{listItem.title}</p>
         <Button variant={"ghost"} size={"icon"} className="">
           <GripHorizontal
             strokeWidth={2}

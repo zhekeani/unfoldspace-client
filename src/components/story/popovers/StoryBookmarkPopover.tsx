@@ -225,7 +225,7 @@ const StoryBookmarkPopover = ({
                       <Checkbox
                         disabled={isUpdatingReadingList}
                         checked={readingList.is_saved}
-                        className="cursor-pointer disabled:cursor-none disabled:opacity-100 data-[state=checked]:bg-main-green rounded-none border-gray-200"
+                        className="cursor-pointer disabled:cursor-none disabled:opacity-100 data-[state=checked]:bg-main-green rounded-none data-[state=checked]:border-none border-gray-200"
                         onCheckedChange={() =>
                           saveMutation({
                             readingListId: readingList.id,
