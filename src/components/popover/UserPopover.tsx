@@ -39,14 +39,15 @@ const InnerUserPopover = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const queryClient = useQueryClient();
-  const { data, error, isLoading, isRefetching, isFetching } = useQuery({
-    queryKey: ["user-popover", userId],
-    queryFn: () => fetchUserPreviewByIdOnClient(userId),
-    enabled: isOpen, // Initially disabled, fetch only when opened
-    staleTime: 5 * 60 * 1000,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+  const { data, error, isLoading, isRefetching, isFetching, refetch } =
+    useQuery({
+      queryKey: ["user-popover", userId],
+      queryFn: () => fetchUserPreviewByIdOnClient(userId),
+      enabled: isOpen, // Initially disabled, fetch only when opened
+      staleTime: 5 * 60 * 1000,
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+    });
 
   const { mutate: followMutation, isPending: isUpdateFollowing } = useMutation({
     mutationFn: async (actionType: "follow" | "unfollow") =>
@@ -83,6 +84,7 @@ const InnerUserPopover = ({
       clearTimeout(timeoutRef.current);
     }
     setIsOpen(true);
+    refetch();
   };
 
   const handleMouseLeave = () => {
