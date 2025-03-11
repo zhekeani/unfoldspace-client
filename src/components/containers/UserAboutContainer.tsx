@@ -1,5 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { fetchUserByUsernameOnClient } from "@/lib/component-fetches/service-user/fetchUserClient";
+import convertIsoDate from "@/lib/story/convertIsoDate";
+import { UserWFollowStatus } from "@/types/database.types";
 import {
   QueryClient,
   QueryClientProvider,
@@ -7,10 +11,6 @@ import {
 } from "@tanstack/react-query";
 import { Dot } from "lucide-react";
 import { useState } from "react";
-import { fetchUserByUsernameOnClient } from "@/lib/component-fetches/service-user/fetchUserClient";
-import convertIsoDate from "@/lib/story/convertIsoDate";
-import { UserWFollowStatus } from "@/types/database.types";
-import { Button } from "@/components/ui/button";
 
 type UserAboutPageContainerProps = {
   initialUser: UserWFollowStatus;

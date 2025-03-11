@@ -1,17 +1,13 @@
-import UserSidebar from "@/components/sidebar/UserSidebar";
+import UserSidebarSkeleton from "@/components/sidebar/skeletons/UserSidebarSkeleton";
+import { cn } from "@/lib/utils";
 import { ReactNode, Suspense } from "react";
-import { cn } from "../../lib/utils";
-import UserSidebarSkeleton from "../sidebar/skeletons/UserSidebarSkeleton";
 
 type UserLayoutWrapperProps = {
   children: ReactNode;
   username: string;
 };
 
-const UserLayoutWrapper = async ({
-  children,
-  username,
-}: UserLayoutWrapperProps) => {
+const UserLayoutWrapper = async ({ children }: UserLayoutWrapperProps) => {
   return (
     <div className="w-full flex-1 max-w-[1336px] mx-auto flex desktop:flex-row justify-evenly items-center desktop:items-start flex-col-reverse">
       <div className="left-content">{children}</div>
@@ -22,7 +18,7 @@ const UserLayoutWrapper = async ({
         )}
       >
         <Suspense fallback={<UserSidebarSkeleton />}>
-          <UserSidebar username={username} />
+          {/* <UserSidebar username={username} /> */}
         </Suspense>
       </div>
     </div>

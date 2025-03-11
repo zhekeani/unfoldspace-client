@@ -1,3 +1,5 @@
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
 import {
   closestCenter,
   DndContext,
@@ -15,9 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { useEffect, useState } from "react";
-import { ExtendedReadingListItem } from "../../reading-list/ReadingListStoryItem";
 import ListItemReorderItem from "./ListItemReorderItem";
-import { useReadingListDetail } from "../../context/ReadingListDetailContext";
 
 type ListItemsReorderContainerProps = {
   listItems: ExtendedReadingListItem[];

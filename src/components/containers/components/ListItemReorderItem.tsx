@@ -1,7 +1,7 @@
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { Button } from "@/components/ui/button";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { ExtendedReadingListItem } from "../../reading-list/ReadingListStoryItem";
-import { Button } from "../../ui/button";
 import { GripHorizontal } from "lucide-react";
 
 type ListItemReorderItemProps = {

@@ -1,15 +1,15 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ReadingListDetail } from "../../types/database.types";
 import {
   ListDetailActionType,
   ReadingListDetailProvider,
-} from "../context/ReadingListDetailContext";
-import ReadingListDetailSubheader from "../header/protected-header/ReadingListDetailSubheader";
-import { ExtendedReadingListItem } from "../reading-list/ReadingListStoryItem";
+} from "@/components/context/ReadingListDetailContext";
+import ReadingListDetailSubheader from "@/components/header/protected-header/ReadingListDetailSubheader";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { ReadingListDetail } from "@/types/database.types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import ReadingListDetailItemsContainer from "./ReadingListDetailItemsContainer";
 
 type ReadingListDetailContainerProps = {
@@ -53,7 +53,7 @@ const InnerReadingListDetailContainer = ({
 
   return (
     <ReadingListDetailProvider
-      initialPageActionType={"remove"}
+      initialPageActionType={pageActionType}
       listDetailQueryKey={listDetailQueryKey}
       listItemsQueryKey={listItemsQueryKey}
     >

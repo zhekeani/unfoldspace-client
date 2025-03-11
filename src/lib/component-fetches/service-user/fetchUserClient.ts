@@ -1,6 +1,6 @@
 import { UserPopoverServiceUser } from "@/components/popover/UserPopover";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
-import { UserWFollowStatus } from "../../../types/database.types";
+import { UserWFollowStatus } from "@/types/database.types";
 
 export const fetchUserPreviewByIdOnClient = async (
   userId: string

@@ -1,15 +1,15 @@
-import { ReactNode, Suspense } from "react";
-import UserSidebarSkeleton from "../../../../../components/sidebar/skeletons/UserSidebarSkeleton";
-import UserSidebar from "../../../../../components/sidebar/UserSidebar";
-import UserPageSpinner from "../../../../../components/skeleton/UserPageSpinner";
+import UserSidebarSkeleton from "@/components/sidebar/skeletons/UserSidebarSkeleton";
+import UserSidebar from "@/components/sidebar/UserSidebar";
+import UserPageSpinner from "@/components/skeleton/UserPageSpinner";
 import {
   fetchActiveUserIdOnServer,
   fetchUserByUsernameOnServer,
   fetchUserIdByUsernameOnServer,
-} from "../../../../../lib/component-fetches/service-user/fetchUserServer";
-import { extractUsernameFromUrl } from "../../../../../lib/components/subsection-tab/extractUsername";
-import { cn } from "../../../../../lib/utils";
-import { UserWFollowStatus } from "../../../../../types/database.types";
+} from "@/lib/component-fetches/service-user/fetchUserServer";
+import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
+import { cn } from "@/lib/utils";
+import { UserWFollowStatus } from "@/types/database.types";
+import { ReactNode, Suspense } from "react";
 
 type PageParams = {
   username: string;

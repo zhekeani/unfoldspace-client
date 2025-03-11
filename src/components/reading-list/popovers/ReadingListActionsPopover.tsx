@@ -1,3 +1,4 @@
+import { ListDetailActionType } from "@/components/context/ReadingListDetailContext";
 import {
   PopoverButton,
   PopoverGroup,
@@ -19,7 +20,6 @@ import {
 import { ReadingList, ReadingListVisibility } from "@/types/database.types";
 import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { ListDetailActionType } from "../../context/ReadingListDetailContext";
 
 type ReadingListActionsPopoverProps = {
   children: ReactNode;

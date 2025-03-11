@@ -1,8 +1,8 @@
+import UserPopover from "@/components/popover/UserPopover";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { timeAgo } from "@/lib/story/calculateReadTime";
 import { Story } from "@/types/database.types";
 import Link from "next/link";
-import UserPopover from "../../popover/UserPopover";
 
 type SidebarStoryItemProps = {
   story: Story;

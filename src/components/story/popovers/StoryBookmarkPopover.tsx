@@ -8,6 +8,7 @@ import {
   PopoverGroup,
 } from "@/components/popover/components/ExtendedPopover";
 import ReadingListCreationDialog from "@/components/reading-list/dialogs/ReadingListCreationDialog";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
 import { StoryItemStory } from "@/components/story/StoryItem";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -27,7 +28,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Key } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { ExtendedReadingListItem } from "../../reading-list/ReadingListStoryItem";
 
 export type StoryBookmarkReadingList = Pick<
   ReadingList,

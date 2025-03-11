@@ -1,12 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { fetchListItemsByListIdOnClient } from "../../lib/component-fetches/reading-list-item/fetchReadingListItemsClient";
-import { useReadingListDetail } from "../context/ReadingListDetailContext";
-import GeneralPagination from "../pagination/GeneralPagination";
+import ListItemsRemoveContainer from "@/components/containers/components/ListItemsRemoveContainer";
+import ListItemsReorderContainer from "@/components/containers/components/ListItemsReorderContainer";
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import GeneralPagination from "@/components/pagination/GeneralPagination";
 import ReadingListStoryItem, {
   ExtendedReadingListItem,
-} from "../reading-list/ReadingListStoryItem";
-import ListItemsRemoveContainer from "./components/ListItemsRemoveContainer";
-import ListItemsReorderContainer from "./components/ListItemsReorderContainer";
+} from "@/components/reading-list/ReadingListStoryItem";
+import { fetchListItemsByListIdOnClient } from "@/lib/component-fetches/reading-list-item/fetchReadingListItemsClient";
+import { useQuery } from "@tanstack/react-query";
 
 type ContainerProps = {
   listItems: ExtendedReadingListItem[];

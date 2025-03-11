@@ -1,4 +1,4 @@
-import { SubsectionTab } from "../../../components/carousel/SubsectionTabsCarousel";
+import { SubsectionTab } from "@/components/carousel/SubsectionTabsCarousel";
 
 export const generateUserSubsectionTabs = (
   username: string

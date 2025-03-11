@@ -1,4 +1,4 @@
-import PulseSpinner from "../loading/PulseSpinner";
+import PulseSpinner from "@/components/loading/PulseSpinner";
 
 const MePageSpinner = () => {
   return (

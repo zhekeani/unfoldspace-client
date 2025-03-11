@@ -1,13 +1,13 @@
+import { updateReadingListVisibility } from "@/actions/reading-list/updateReadingList";
+import { updateSavedReadingLists } from "@/actions/reading-list/updateSavedReadingList";
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import ReadingListActionsPopover from "@/components/reading-list/popovers/ReadingListActionsPopover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { ReadingListDetail } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, BookmarkPlus, Ellipsis } from "lucide-react";
 import { toast } from "sonner";
-import { updateReadingListVisibility } from "../../../../actions/reading-list/updateReadingList";
-import { updateSavedReadingLists } from "../../../../actions/reading-list/updateSavedReadingList";
-import { cn } from "../../../../lib/utils";
-import { ReadingListDetail } from "../../../../types/database.types";
-import { useReadingListDetail } from "../../../context/ReadingListDetailContext";
-import ReadingListActionsPopover from "../../../reading-list/popovers/ReadingListActionsPopover";
-import { Button } from "../../../ui/button";
 import ItemDetailActionButton from "./DetailActionsButtons";
 
 type ReadingListDetailActionsBarProps = {

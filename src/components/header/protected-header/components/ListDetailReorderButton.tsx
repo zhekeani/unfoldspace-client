@@ -1,10 +1,10 @@
+import { updateListItemsOrder } from "@/actions/reading-list-item/updateListItem";
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import { Spinner } from "@/components/loading/Spinner";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { Button } from "@/components/ui/button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { updateListItemsOrder } from "../../../../actions/reading-list-item/updateListItem";
-import { useReadingListDetail } from "../../../context/ReadingListDetailContext";
-import { Spinner } from "../../../loading/Spinner";
-import { ExtendedReadingListItem } from "../../../reading-list/ReadingListStoryItem";
-import { Button } from "../../../ui/button";
 
 type ListDetailReorderButtonProps = {
   listId: string;

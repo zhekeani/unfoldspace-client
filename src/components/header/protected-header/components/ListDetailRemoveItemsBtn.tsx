@@ -1,12 +1,12 @@
+import { deleteMultipleListItems } from "@/actions/reading-list-item/deleteListItem";
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import { Spinner } from "@/components/loading/Spinner";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { Button } from "@/components/ui/button";
+import { ReadingListDetail } from "@/types/database.types";
+import { ActionResponse } from "@/types/server-action.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { deleteMultipleListItems } from "../../../../actions/reading-list-item/deleteListItem";
-import { ReadingListDetail } from "../../../../types/database.types";
-import { ActionResponse } from "../../../../types/server-action.types";
-import { useReadingListDetail } from "../../../context/ReadingListDetailContext";
-import { Spinner } from "../../../loading/Spinner";
-import { ExtendedReadingListItem } from "../../../reading-list/ReadingListStoryItem";
-import { Button } from "../../../ui/button";
 
 const ListDetailRemoveItemsBtn = () => {
   const queryClient = useQueryClient();

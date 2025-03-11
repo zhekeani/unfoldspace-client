@@ -1,10 +1,10 @@
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { fetchReadingListDetailByIdOnClient } from "@/lib/component-fetches/reading-list/fetchReadingListsClient";
+import convertIsoDate from "@/lib/story/convertIsoDate";
+import { ReadingListDetail } from "@/types/database.types";
 import { useQuery } from "@tanstack/react-query";
 import { Dot, Key } from "lucide-react";
-import { fetchReadingListDetailByIdOnClient } from "../../../lib/component-fetches/reading-list/fetchReadingListsClient";
-import convertIsoDate from "../../../lib/story/convertIsoDate";
-import { ReadingListDetail } from "../../../types/database.types";
-import { useReadingListDetail } from "../../context/ReadingListDetailContext";
-import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import ReadingListDetailActionsBar from "./components/ListDetailActionsBar";
 import ListDetailRemoveItemsBtn from "./components/ListDetailRemoveItemsBtn";
 import ListDetailReorderButton from "./components/ListDetailReorderButton";

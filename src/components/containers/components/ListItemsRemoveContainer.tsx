@@ -1,7 +1,7 @@
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
-import { useReadingListDetail } from "../../context/ReadingListDetailContext";
-import { ExtendedReadingListItem } from "../../reading-list/ReadingListStoryItem";
-import { Checkbox } from "../../ui/checkbox";
 
 type ListItemsRemoveContainerProps = {
   listItems: ExtendedReadingListItem[];

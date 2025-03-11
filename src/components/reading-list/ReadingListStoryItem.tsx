@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
+import StoryItem from "@/components/story/StoryItem";
 import { Database } from "@/types/supabase.types";
-import StoryItem from "../story/StoryItem";
 import ReadingListStoryNote from "./components/ReadingListStoryNote";
-import { useReadingListDetail } from "../context/ReadingListDetailContext";
 
 export type ExtendedReadingListItem =
   Database["public"]["Functions"]["get_reading_list_items_by_list_id"]["Returns"][number];

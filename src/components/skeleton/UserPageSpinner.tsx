@@ -1,5 +1,4 @@
-import React from "react";
-import PulseSpinner from "../loading/PulseSpinner";
+import PulseSpinner from "@/components/loading/PulseSpinner";
 
 const UserPageSpinner = () => {
   return (

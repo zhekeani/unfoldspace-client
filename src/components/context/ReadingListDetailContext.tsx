@@ -1,6 +1,6 @@
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { ReadingListItem } from "@/types/database.types";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { ReadingListItem } from "../../types/database.types";
-import { ExtendedReadingListItem } from "../reading-list/ReadingListStoryItem";
 
 export type ListDetailActionType = "remove" | "reorder" | null;
 

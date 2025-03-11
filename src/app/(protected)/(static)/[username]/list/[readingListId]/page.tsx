@@ -1,11 +1,11 @@
-import ReadingListDetailContainer from "../../../../../../components/containers/ReadingListDetailContainer";
-import { ListDetailActionType } from "../../../../../../components/context/ReadingListDetailContext";
-import { ExtendedReadingListItem } from "../../../../../../components/reading-list/ReadingListStoryItem";
-import { fetchListItemsByListIdOnServer } from "../../../../../../lib/component-fetches/reading-list-item/fetchReadingListItemsServer";
-import { fetchReadingListDetailByIdOnServer } from "../../../../../../lib/component-fetches/reading-list/fetchReadingListsServer";
-import { fetchActiveUserIdOnServer } from "../../../../../../lib/component-fetches/service-user/fetchUserServer";
-import { extractUsernameFromUrl } from "../../../../../../lib/components/subsection-tab/extractUsername";
-import { ReadingListDetail } from "../../../../../../types/database.types";
+import ReadingListDetailContainer from "@/components/containers/ReadingListDetailContainer";
+import { ListDetailActionType } from "@/components/context/ReadingListDetailContext";
+import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
+import { fetchListItemsByListIdOnServer } from "@/lib/component-fetches/reading-list-item/fetchReadingListItemsServer";
+import { fetchReadingListDetailByIdOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
+import { fetchActiveUserIdOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
+import { ReadingListDetail } from "@/types/database.types";
 
 type PageParams = {
   username: string;
