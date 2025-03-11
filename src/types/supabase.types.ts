@@ -1320,6 +1320,13 @@ export type Database = {
           has_followed: boolean
         }[]
       }
+      reorder_reading_list_items: {
+        Args: {
+          p_reading_list_id: string
+          p_ordered_ids: string[]
+        }
+        Returns: undefined
+      }
       update_story_topics: {
         Args: {
           p_story_id: string

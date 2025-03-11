@@ -57,7 +57,7 @@ const InnerReadingListDetailContainer = ({
       listDetailQueryKey={listDetailQueryKey}
       listItemsQueryKey={listItemsQueryKey}
     >
-      <div>
+      <div className="h-full ">
         <ReadingListDetailSubheader
           readingList={readingList}
           activeUserId={activeUserId}

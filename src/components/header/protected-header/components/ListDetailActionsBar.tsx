@@ -21,7 +21,8 @@ const ReadingListDetailActionsBar = ({
   readingList: detailedReadingList,
   collapsible = true,
 }: ReadingListDetailActionsBarProps) => {
-  const { listDetailQueryKey, listItemsQueryKey } = useReadingListDetail();
+  const { listDetailQueryKey, listItemsQueryKey, setPageActionType } =
+    useReadingListDetail();
   const queryClient = useQueryClient();
 
   const { mutate: updateVisibilityMutation, isPending: isUpdating } =
@@ -180,6 +181,7 @@ const ReadingListDetailActionsBar = ({
             visibility={visibility}
             isUpdating={isUpdating}
             updateVisibilityMutation={updateVisibilityMutation}
+            setPageActionType={setPageActionType}
           >
             <Button
               variant="ghost"

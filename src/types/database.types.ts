@@ -6,6 +6,8 @@ export type ReadingList = Database["public"]["Tables"]["reading_lists"]["Row"];
 export type Topic = Database["public"]["Tables"]["topics"]["Row"];
 export type ReadingListVisibility =
   Database["public"]["Enums"]["reading_list_visibility"];
+export type ReadingListItem =
+  Database["public"]["Tables"]["reading_list_items"]["Row"];
 
 export type UserWFollowStatus = ServiceUser & { has_followed: boolean };
 export type ReadingListDetail =

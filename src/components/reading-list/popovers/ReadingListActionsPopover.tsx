@@ -17,7 +17,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { ReadingList, ReadingListVisibility } from "@/types/database.types";
+import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
+import { ListDetailActionType } from "../../context/ReadingListDetailContext";
 
 type ReadingListActionsPopoverProps = {
   children: ReactNode;
@@ -29,6 +31,7 @@ type ReadingListActionsPopoverProps = {
   visibility: ReadingListVisibility;
   isUpdating: boolean;
   updateVisibilityMutation: (visibility: "public" | "private") => void;
+  setPageActionType?: (actionType: ListDetailActionType) => void;
 };
 
 const ReadingListActionsPopover = ({
@@ -41,8 +44,31 @@ const ReadingListActionsPopover = ({
   visibility,
   isUpdating,
   updateVisibilityMutation,
+  setPageActionType,
 }: ReadingListActionsPopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
+  const handleReorderItems = () => {
+    if (setPageActionType) {
+      setPageActionType("reorder");
+    } else {
+      router.push(
+        `/%40${readingList.owner_username}/list/${readingList.id}?actionType=reorder`
+      );
+    }
+  };
+
+  const handleRemoveItems = () => {
+    if (setPageActionType) {
+      setPageActionType("remove");
+    } else {
+      router.push(
+        `/%40${readingList.owner_username}/list/${readingList.id}?actionType=remove`
+      );
+    }
+  };
+
   const isPublic = visibility === "public";
 
   return (
@@ -81,13 +107,16 @@ const ReadingListActionsPopover = ({
               >
                 <PopoverButton>Edit list info</PopoverButton>
               </ReadingListCreationDialog>
-              <PopoverButton
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-              >
-                Remove items
-              </PopoverButton>
+              {readingList.stories_count && readingList.stories_count > 0 && (
+                <PopoverButton
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleRemoveItems();
+                  }}
+                >
+                  Remove items
+                </PopoverButton>
+              )}
               {isPublic && (
                 <ReadingListToPrivateAlertDialog
                   isUpdating={isUpdating}
@@ -109,7 +138,16 @@ const ReadingListActionsPopover = ({
                   Make list public
                 </PopoverButton>
               )}
-              <PopoverButton>Reorder items</PopoverButton>
+              {readingList.stories_count && readingList.stories_count > 0 && (
+                <PopoverButton
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleReorderItems();
+                  }}
+                >
+                  Reorder items
+                </PopoverButton>
+              )}
 
               {!isDefault && (
                 <ReadingListDeletionAlertDialog

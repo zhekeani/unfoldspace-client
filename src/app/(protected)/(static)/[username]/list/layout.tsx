@@ -55,7 +55,7 @@ const ReadingListDetailLayout = async ({
 
   return (
     <div className="w-full flex-1 max-w-[1336px] mx-auto flex flex-row justify-evenly items-start ">
-      <div className="left-content w-full ">
+      <div className="left-content w-full h-full relative">
         <Suspense fallback={<UserPageSpinner />}>{children}</Suspense>
       </div>
 
