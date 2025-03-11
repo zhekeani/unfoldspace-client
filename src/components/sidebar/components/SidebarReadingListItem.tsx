@@ -23,7 +23,7 @@ const CoverImageItem = ({ coverImageUrl, index }: CoverImageItemProps) => {
         />
       )}
       {index !== 2 && (
-        <div className="absolute h-full w-[2px] right-0 bg-white outline-none border-none" />
+        <div className="absolute h-full w-[2px] top-0 right-0 bg-white outline-none border-none" />
       )}
     </div>
   );

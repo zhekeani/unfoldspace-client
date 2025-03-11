@@ -8,6 +8,7 @@ import { ReadingListDetail } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, BookmarkPlus, Ellipsis } from "lucide-react";
 import { toast } from "sonner";
+import { updateReadingListClap } from "../../../../actions/reading-list/updateReadingListClap";
 import ItemDetailActionButton from "./DetailActionsButtons";
 
 type ReadingListDetailActionsBarProps = {
@@ -85,6 +86,48 @@ const ReadingListDetailActionsBar = ({
     },
   });
 
+  const { mutate: updateClapMutation, isPending: isClapping } = useMutation({
+    mutationFn: (actionType: "remove" | "add") =>
+      updateReadingListClap(readingList.id, actionType),
+
+    onMutate: (actionType: "remove" | "add") => {
+      queryClient.setQueryData(
+        listDetailQueryKey,
+        (oldData?: { readingList: ReadingListDetail }) => {
+          if (!oldData || !oldData.readingList) return oldData;
+
+          const tempList = oldData.readingList;
+
+          return {
+            readingList: {
+              ...oldData.readingList,
+              has_clapped: actionType === "add",
+              claps_count:
+                actionType === "add"
+                  ? tempList.claps_count + 1
+                  : tempList.claps_count - 1,
+            },
+          };
+        }
+      );
+    },
+
+    onSuccess: (res, actionType) => {
+      if (!res.success) {
+        console.error(res.error);
+        toast.error(res.error);
+      } else {
+        toast.success(
+          `Successfully ${actionType === "add" ? "added" : "removed"} reading list clap`
+        );
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: listDetailQueryKey });
+    },
+  });
+
   const {
     has_clapped,
     has_responded,
@@ -115,9 +158,9 @@ const ReadingListDetailActionsBar = ({
           )}
         >
           <ItemDetailActionButton.Clap
-            onClap={() => {}}
+            onClap={() => updateClapMutation(has_clapped ? "remove" : "add")}
             hasClapped={has_clapped}
-            isClapping={false}
+            isClapping={isClapping}
             clapCount={claps_count}
           />
           <ItemDetailActionButton.Respond
