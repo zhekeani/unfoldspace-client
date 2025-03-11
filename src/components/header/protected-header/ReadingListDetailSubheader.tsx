@@ -1,22 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
-import { Dot } from "lucide-react";
+import { Dot, Key } from "lucide-react";
 import { fetchReadingListDetailByIdOnClient } from "../../../lib/component-fetches/reading-list/fetchReadingListsClient";
 import convertIsoDate from "../../../lib/story/convertIsoDate";
 import { ReadingListDetail } from "../../../types/database.types";
+import { useReadingListDetail } from "../../context/ReadingListDetailContext";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import ReadingListDetailActionsBar from "./components/ReadingListDetailActionsBar";
 
 type ReadingListDetailSubheaderProps = {
   activeUserId: string;
   readingList: ReadingListDetail;
-  listDetailQueryKey: string[];
 };
 
 const ReadingListDetailSubheader = ({
   activeUserId,
   readingList: initialReadingList,
-  listDetailQueryKey,
 }: ReadingListDetailSubheaderProps) => {
+  const { listDetailQueryKey } = useReadingListDetail();
+
   const { data: listDetailData, error: listDetailError } = useQuery({
     queryKey: listDetailQueryKey,
     queryFn: () => fetchReadingListDetailByIdOnClient(initialReadingList.id),
@@ -48,13 +49,18 @@ const ReadingListDetailSubheader = ({
           </Avatar>
           <div className="h-full flex flex-col justify-between">
             <h4>{readingList.owner_username}</h4>
-            <p className="flex items-center text-gray-500 text-sm">
-              {convertIsoDate(readingList.created_at)}
-              <span>
-                <Dot size={16} strokeWidth={2} />
-              </span>{" "}
-              {readingList.stories_count} stories
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="flex items-center text-gray-500 text-sm">
+                {convertIsoDate(readingList.created_at)}
+                <span>
+                  <Dot size={16} strokeWidth={2} />
+                </span>{" "}
+                {readingList.stories_count} stories
+              </p>
+              {readingList.visibility === "private" && (
+                <Key strokeWidth={2} className="stroke-sub-text w-4 h-4" />
+              )}
+            </div>
           </div>
         </header>
       </div>
@@ -71,7 +77,6 @@ const ReadingListDetailSubheader = ({
         </div>
 
         <ReadingListDetailActionsBar
-          listDetailQueryKey={listDetailQueryKey}
           activeUserId={activeUserId}
           readingList={readingList}
           collapsible={true}

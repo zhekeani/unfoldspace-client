@@ -2,6 +2,7 @@
 import { Database } from "@/types/supabase.types";
 import StoryItem from "../story/StoryItem";
 import ReadingListStoryNote from "./components/ReadingListStoryNote";
+import { useReadingListDetail } from "../context/ReadingListDetailContext";
 
 export type ExtendedReadingListItem =
   Database["public"]["Functions"]["get_reading_list_items_by_list_id"]["Returns"][number];
@@ -10,17 +11,14 @@ type ReadingListStoryItemProps = {
   listItem: ExtendedReadingListItem;
   isOwned: boolean;
   activeUserId: string;
-  listItemsQueryKey: string[];
-  listDetailQueryKey: string[];
 };
 
 const ReadingListStoryItem = ({
   isOwned,
   listItem,
   activeUserId,
-  listItemsQueryKey,
-  listDetailQueryKey,
 }: ReadingListStoryItemProps) => {
+  const { listDetailQueryKey, listItemsQueryKey } = useReadingListDetail();
   const listItemQueryKey = ["reading_list_item", listItem.id];
 
   const {

@@ -13,7 +13,6 @@ type ClapActionButtonProps = {
   isClapping: boolean;
   hasClapped: boolean;
   clapCount: number;
-  isPrivate: boolean;
 };
 
 function formatNumber(num: number): string {
@@ -28,21 +27,20 @@ const ClapActionButton = ({
   isClapping,
   hasClapped,
   clapCount,
-  isPrivate,
 }: ClapActionButtonProps) => {
   return (
     <div className="flex">
       <Button
         onClick={onClap}
-        disabled={isClapping || isPrivate}
+        disabled={isClapping}
         variant="ghost"
         size="icon"
-        className={cn("rounded-full", isPrivate && "cursor-not-allowed")}
+        className={cn("rounded-full group transition-colors")}
       >
         <Heart
-          strokeWidth={1}
+          strokeWidth={1.5}
           className={cn(
-            " stroke-sub-text !w-5 !h-5",
+            " stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
             hasClapped && "fill-sub-text"
           )}
         />
@@ -62,27 +60,24 @@ type RespondActionButtonProps = {
   onRespond: () => void;
   hasResponded: boolean;
   responseCount: number;
-  isPrivate: boolean;
 };
 const RespondActionButton = ({
   onRespond,
   hasResponded,
   responseCount,
-  isPrivate,
 }: RespondActionButtonProps) => {
   return (
     <div className="flex">
       <Button
-        disabled={isPrivate}
         onClick={onRespond}
         variant="ghost"
         size="icon"
-        className={cn("rounded-full", isPrivate && "cursor-not-allowed")}
+        className={cn("rounded-full group transition-colors")}
       >
         <MessageCircle
           strokeWidth={hasResponded ? 0 : 1}
           className={cn(
-            " stroke-sub-text !w-5 !h-5",
+            " stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
             hasResponded && "fill-sub-text"
           )}
         />
@@ -119,12 +114,15 @@ const BookmarkActionButton = ({
     >
       {isBookmarked && (
         <Bookmark
-          strokeWidth={1}
+          strokeWidth={1.5}
           className=" stroke-sub-text fill-sub-text !w-5 !h-5"
         />
       )}
       {!isBookmarked && (
-        <BookmarkPlus strokeWidth={1} className=" stroke-sub-text !w-5 !h-5" />
+        <BookmarkPlus
+          strokeWidth={1.5}
+          className=" stroke-sub-text !w-5 !h-5"
+        />
       )}
     </Button>
   );
@@ -143,12 +141,15 @@ const ShareActionButton = ({
       onClick={onShare}
       variant="ghost"
       className={cn(
-        "flex gap-3 items-center  rounded-xl border-[1px]  text-sub-text",
+        "flex gap-3 items-center  rounded-xl border-[1px] group  text-sub-text",
         !collapsible && "border-none p-3",
         collapsible && "tablet:border-none tablet:p-3"
       )}
     >
-      <Share strokeWidth={1} className=" stroke-sub-text !w-5 !h-5 " />
+      <Share
+        strokeWidth={1.5}
+        className=" stroke-sub-text group-hover:text-main-text !w-5 !h-5 "
+      />
       <p
         className={cn(
           " font-normal",

@@ -4,6 +4,7 @@ import GeneralPagination from "../pagination/GeneralPagination";
 import ReadingListStoryItem, {
   ExtendedReadingListItem,
 } from "../reading-list/ReadingListStoryItem";
+import { useReadingListDetail } from "../context/ReadingListDetailContext";
 
 type ContainerProps = {
   listItems: ExtendedReadingListItem[];
@@ -14,7 +15,6 @@ type ContainerProps = {
   page: number;
   hasNextPage: boolean;
   listItemsCount: number;
-  listDetailQueryKey: string[];
 };
 
 const ReadingListDetailItemsContainer = ({
@@ -26,9 +26,8 @@ const ReadingListDetailItemsContainer = ({
   listId,
   limit,
   page,
-  listDetailQueryKey,
 }: ContainerProps) => {
-  const listItemsQueryKey = ["reading_list_items", listId];
+  const { listItemsQueryKey } = useReadingListDetail();
 
   const { data: listItemsData, error: itemListsError } = useQuery({
     queryKey: listItemsQueryKey,
@@ -62,11 +61,9 @@ const ReadingListDetailItemsContainer = ({
           listItems.map((listItem) => (
             <ReadingListStoryItem
               key={listItem.id}
-              listDetailQueryKey={listDetailQueryKey}
               listItem={listItem}
               isOwned={isOwned}
               activeUserId={activeUserId}
-              listItemsQueryKey={listItemsQueryKey}
             />
           ))
         )}

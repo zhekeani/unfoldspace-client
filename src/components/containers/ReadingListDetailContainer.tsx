@@ -1,8 +1,13 @@
 "use client";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { ReadingListDetail } from "../../types/database.types";
+import {
+  ListDetailActionType,
+  ReadingListDetailProvider,
+} from "../context/ReadingListDetailContext";
 import ReadingListDetailSubheader from "../header/protected-header/ReadingListDetailSubheader";
 import { ExtendedReadingListItem } from "../reading-list/ReadingListStoryItem";
 import ReadingListDetailItemsContainer from "./ReadingListDetailItemsContainer";
@@ -16,6 +21,7 @@ type ReadingListDetailContainerProps = {
   limit: number;
   currentPage: number;
   username: string;
+  pageActionType: ListDetailActionType;
 };
 
 const InnerReadingListDetailContainer = ({
@@ -26,28 +32,48 @@ const InnerReadingListDetailContainer = ({
   listItemsCount,
   limit,
   currentPage,
+  pageActionType,
 }: ReadingListDetailContainerProps) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  useEffect(() => {
+    const actionType = searchParams.get("actionType");
+
+    if (actionType) {
+      const newParams = new URLSearchParams(searchParams.toString());
+      newParams.delete("actionType");
+
+      router.replace(`?${newParams.toString()}`, { scroll: false });
+    }
+  }, [searchParams, router]);
+
+  const listItemsQueryKey = ["reading_list_items", readingList.id];
   const listDetailQueryKey = ["reading_list_detail", readingList.id];
 
   return (
-    <div>
-      <ReadingListDetailSubheader
-        listDetailQueryKey={listDetailQueryKey}
-        readingList={readingList}
-        activeUserId={activeUserId}
-      />
-      <ReadingListDetailItemsContainer
-        listDetailQueryKey={listDetailQueryKey}
-        activeUserId={activeUserId}
-        listId={readingList.id}
-        listItems={listItems}
-        limit={limit}
-        page={currentPage}
-        listItemsCount={listItemsCount}
-        hasNextPage={hasNextPage}
-        isOwned={activeUserId === readingList.user_id}
-      />
-    </div>
+    <ReadingListDetailProvider
+      initialPageActionType={pageActionType}
+      listDetailQueryKey={listDetailQueryKey}
+      listItemsQueryKey={listItemsQueryKey}
+    >
+      <div>
+        <ReadingListDetailSubheader
+          readingList={readingList}
+          activeUserId={activeUserId}
+        />
+        <ReadingListDetailItemsContainer
+          activeUserId={activeUserId}
+          isOwned={activeUserId === readingList.user_id}
+          listId={readingList.id}
+          listItems={listItems}
+          listItemsCount={listItemsCount}
+          limit={limit}
+          page={currentPage}
+          hasNextPage={hasNextPage}
+        />
+      </div>
+    </ReadingListDetailProvider>
   );
 };
 

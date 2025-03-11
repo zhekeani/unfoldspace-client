@@ -1,4 +1,5 @@
 import ReadingListDetailContainer from "../../../../../../components/containers/ReadingListDetailContainer";
+import { ListDetailActionType } from "../../../../../../components/context/ReadingListDetailContext";
 import { ExtendedReadingListItem } from "../../../../../../components/reading-list/ReadingListStoryItem";
 import { fetchListItemsByListIdOnServer } from "../../../../../../lib/component-fetches/reading-list-item/fetchReadingListItemsServer";
 import { fetchReadingListDetailByIdOnServer } from "../../../../../../lib/component-fetches/reading-list/fetchReadingListsServer";
@@ -13,7 +14,7 @@ type PageParams = {
 
 type SearchParams = {
   page?: string;
-  actionType?: "remove" | "reorder";
+  actionType?: ListDetailActionType;
 };
 
 const fetchPageInitialData = async (
@@ -52,7 +53,7 @@ const ReadingListDetailPage = async ({
 }) => {
   const { readingListId, username: encodedUsername } = await params;
 
-  const { page = "1" } = await searchParams;
+  const { page = "1", actionType } = await searchParams;
   const currentPage = Math.max(parseInt(page, 10) || 1, 1);
   const username = extractUsernameFromUrl(encodedUsername)!;
 
@@ -68,6 +69,7 @@ const ReadingListDetailPage = async ({
           username={username}
           limit={limit}
           currentPage={currentPage}
+          pageActionType={actionType || null}
           {...data}
         />
       </div>
