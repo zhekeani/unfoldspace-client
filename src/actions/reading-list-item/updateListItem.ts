@@ -48,3 +48,48 @@ export async function updateListItemsOrder(
     };
   }
 }
+
+export async function updateListItemNote(
+  listItemId: string,
+  note: string | null
+): Promise<ActionResponse<{ listItemId: string }>> {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
+  try {
+    const supabase = await getSupabaseCookiesUtilClient();
+    if (!supabase) {
+      return {
+        success: false,
+        error: "Server error: Database client unavailable.",
+      };
+    }
+
+    const { data, error } = await supabase
+      .from("reading_list_items")
+      .update({ note })
+      .eq("id", listItemId)
+      .select("id")
+      .single();
+    if (error || !data || !data.id) {
+      console.error(error);
+      return {
+        success: false,
+        error: "Failed to update list item note.",
+      };
+    }
+
+    return {
+      success: true,
+      data: {
+        listItemId: data.id,
+      },
+    };
+  } catch (error) {
+    console.error("Error in updateListItems:", error);
+
+    return {
+      success: false,
+      error: "Unexpected server error. Please try again later.",
+    };
+  }
+}

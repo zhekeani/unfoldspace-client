@@ -1,7 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
 import StoryItem from "@/components/story/StoryItem";
+import { fetchListItemByIdOnClient } from "@/lib/component-fetches/reading-list-item/fetchReadingListItemsClient";
 import { Database } from "@/types/supabase.types";
+import { useQuery } from "@tanstack/react-query";
 import ReadingListStoryNote from "./components/ReadingListStoryNote";
 
 export type ExtendedReadingListItem =
@@ -15,17 +16,36 @@ type ReadingListStoryItemProps = {
 
 const ReadingListStoryItem = ({
   isOwned,
-  listItem,
+  listItem: initialListItem,
   activeUserId,
 }: ReadingListStoryItemProps) => {
   const { listDetailQueryKey, listItemsQueryKey } = useReadingListDetail();
-  const listItemQueryKey = ["reading_list_item", listItem.id];
+  const listItemQueryKey = ["reading_list_item", initialListItem.id];
+
+  const { data: listItemData, error: listItemError } = useQuery({
+    queryKey: listItemQueryKey,
+    queryFn: () => fetchListItemByIdOnClient(initialListItem.id),
+    initialData: { listItem: initialListItem },
+    staleTime: 5 * 60 * 1000,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  if (listItemError || !listItemData || !listItemData.listItem) {
+    console.error(listItemError);
+    return null;
+  }
+
+  const { listItem } = listItemData;
 
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     id,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     item_order,
-    note,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     created_at,
+    note,
     story_id,
     story_created_at,
     story_updated_at,
@@ -37,8 +57,9 @@ const ReadingListStoryItem = ({
       <div className="mx-6">
         <ReadingListStoryNote
           isOwned={isOwned}
-          storyId={listItem.story_id}
           note={note || ""}
+          listItemId={listItem.id}
+          listItemQueryKey={listItemQueryKey}
         />
       </div>
       <StoryItem
