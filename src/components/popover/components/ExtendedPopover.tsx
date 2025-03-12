@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes, HTMLAttributes, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 
 type PopoverGroupProps = HTMLAttributes<HTMLDivElement> & {
@@ -25,7 +25,7 @@ export const PopoverDivider = () => {
   return <div className="w-full h-[1px] bg-complement-light-gray" />;
 };
 
-type PopoverButtonProps = HTMLAttributes<HTMLButtonElement> & {
+type PopoverButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "default" | "danger" | "success";
   children: ReactNode;
 };

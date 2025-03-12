@@ -18,6 +18,7 @@ import { ReactNode, useState } from "react";
 import EditorSelectImagePopover from "./components/EditorSelectImagePopover";
 import EditorUpdateTitlePopover from "./components/EditorUpdateTitlePopover";
 import EditorUpdateTopicsPopover from "./components/EditorUpdateTopicsPopover";
+import { useStoryEditor } from "../../context/StoryEditorContext";
 
 type ActionType = "image" | "title" | "topic" | null;
 
@@ -28,6 +29,7 @@ type EditorActionsPopoverProps = {
 const EditorActionsPopover = ({ children }: EditorActionsPopoverProps) => {
   const [actionType, setActionType] = useState<ActionType>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { storyId } = useStoryEditor();
 
   const isNoAction = !actionType;
   const isImageAction = actionType === "image";
@@ -59,13 +61,22 @@ const EditorActionsPopover = ({ children }: EditorActionsPopoverProps) => {
         {isNoAction && (
           <div className="flex flex-col items-start">
             <PopoverGroup>
-              <PopoverButton onClick={() => setActionType("image")}>
+              <PopoverButton
+                disabled={!storyId}
+                onClick={() => setActionType("image")}
+              >
                 Change featured image
               </PopoverButton>
-              <PopoverButton onClick={() => setActionType("title")}>
+              <PopoverButton
+                disabled={!storyId}
+                onClick={() => setActionType("title")}
+              >
                 Change display tile/subtitle
               </PopoverButton>
-              <PopoverButton onClick={() => setActionType("topic")}>
+              <PopoverButton
+                disabled={!storyId}
+                onClick={() => setActionType("topic")}
+              >
                 Change topics
               </PopoverButton>
             </PopoverGroup>
