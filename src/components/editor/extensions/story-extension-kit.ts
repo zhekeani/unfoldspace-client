@@ -1,0 +1,102 @@
+"use client";
+
+import {
+  Blockquote,
+  CharacterCount,
+  CodeBlock,
+  Color,
+  Column,
+  Columns,
+  Document,
+  Focus,
+  FontFamily,
+  FontSize,
+  Heading,
+  Highlight,
+  HorizontalRule,
+  Image,
+  ImageBlock,
+  ImageUpload,
+  LargeBlockquote,
+  Link,
+  Placeholder,
+  Selection,
+  StarterKit,
+  Subscript,
+  Superscript,
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
+  TaskItem,
+  TaskList,
+  TextAlign,
+  TextStyle,
+  TrailingNode,
+  Typography,
+  Underline,
+} from ".";
+
+export const ExtensionKit = () => [
+  LargeBlockquote,
+  Blockquote,
+  Document,
+  Columns,
+  TaskList,
+  TaskItem.configure({
+    nested: true,
+  }),
+  Column,
+  Selection,
+  Heading.configure({
+    levels: [3, 4, 5],
+  }),
+  HorizontalRule,
+  StarterKit.configure({
+    document: false,
+    dropcursor: false,
+    heading: false,
+    horizontalRule: false,
+    blockquote: false,
+    history: false,
+    codeBlock: false,
+  }),
+
+  CodeBlock,
+  TextStyle,
+  FontSize,
+  FontFamily,
+  Color,
+  TrailingNode,
+  Link.configure({
+    openOnClick: false,
+  }),
+  Highlight.configure({ multicolor: true }),
+  Underline,
+  CharacterCount.configure({ limit: 50000 }),
+  Image,
+  ImageBlock,
+  ImageUpload,
+  TextAlign.extend({
+    addKeyboardShortcuts() {
+      return {};
+    },
+  }).configure({
+    types: ["heading", "paragraph"],
+  }),
+  Subscript,
+  Superscript,
+  Table,
+  TableCell,
+  TableHeader,
+  TableRow,
+  Typography,
+  Placeholder.configure({
+    includeChildren: true,
+    showOnlyCurrent: false,
+    placeholder: () => "",
+  }),
+  Focus,
+];
+
+export default ExtensionKit;

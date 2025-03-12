@@ -15,7 +15,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ReactNode } from "react";
+import Link from "next/link";
+import { ReactNode, useState } from "react";
 
 type StoryActionsPopoverProps = {
   storyId: string;
@@ -33,9 +34,12 @@ const StoryActionsPopover = ({
   isOwned,
   deleteMutation,
   isDeleting,
+  storyId,
 }: StoryActionsPopoverProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Popover>
+    <Popover onOpenChange={setIsOpen} open={isOpen}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -50,7 +54,14 @@ const StoryActionsPopover = ({
         {isOwned && (
           <div className="flex flex-col items-start">
             <PopoverGroup>
-              <PopoverButton>Edit story</PopoverButton>
+              <PopoverButton
+                asChild
+                onClick={() => {
+                  setIsOpen(false);
+                }}
+              >
+                <Link href={`/editor?storyId=${storyId}`}>Edit story</Link>
+              </PopoverButton>
             </PopoverGroup>
             <PopoverDivider />
             <PopoverGroup>

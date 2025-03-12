@@ -6,7 +6,7 @@ export const generateUserSubsectionTabs = (
   return [
     {
       label: "Home",
-      path: `/%40${username}/home`,
+      path: `/%40${username}/homes`,
     },
     {
       label: "Lists",

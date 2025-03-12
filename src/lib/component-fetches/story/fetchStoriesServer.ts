@@ -310,7 +310,7 @@ export const fetchStoryByIdOnServer = async (
       .from("stories")
       .select("*")
       .eq("id", storyId)
-      .single();
+      .maybeSingle();
     if (storyError || !story) {
       console.error(storyError);
       throw new Error("Failed to fetch story.");

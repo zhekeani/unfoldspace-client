@@ -34,10 +34,12 @@ export const PopoverButton = ({
   children,
   variant = "default",
   className,
+  asChild = false,
   ...props
-}: PopoverButtonProps) => {
+}: PopoverButtonProps & { asChild?: boolean }) => {
   return (
     <Button
+      asChild={asChild}
       variant={"ghost"}
       className={cn(
         "font-normal hover:text-main-text transition-colors",
