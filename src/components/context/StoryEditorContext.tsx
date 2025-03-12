@@ -14,7 +14,7 @@ type StoryEditorContextType = {
   setIsEditable: (isEditable: boolean) => void;
 
   coverImage: string | null;
-  setCoverImage: (image: string) => void;
+  setCoverImage: (image: string | null) => void;
 
   storyQueryKey: string[];
   topics: Topic[];
@@ -26,6 +26,7 @@ const StoryEditorContext = createContext<StoryEditorContextType | undefined>(
 
 type StoryEditorProviderProps = {
   initialStoryId: string | null;
+  initialCoverImage: string | null;
   activeUserId: string;
   children: ReactNode;
   topics: Topic[];
@@ -33,6 +34,7 @@ type StoryEditorProviderProps = {
 
 export const StoryEditorProvider = ({
   initialStoryId,
+  initialCoverImage,
   activeUserId,
   children,
   topics,
@@ -40,7 +42,9 @@ export const StoryEditorProvider = ({
   const [isEditable, setIsEditable] = useState(true);
   const [storyId, setStoryId] = useState(initialStoryId);
   const [savedStatus, setSavedStatus] = useState<EditorSaveStatus>("unsaved");
-  const [coverImage, setCoverImage] = useState<string | null>(null);
+  const [coverImage, setCoverImage] = useState<string | null>(
+    initialCoverImage
+  );
 
   const storyQueryKey = ["story", activeUserId];
 

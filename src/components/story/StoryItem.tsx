@@ -18,7 +18,6 @@ import {
   Heart,
   MessageCircle,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -305,13 +304,20 @@ const StoryItem = ({
           href={`/%40${story.author_username}/${story.id}`}
           className="hidden tablet:block"
         >
-          <Image
-            src={story.cover_image!}
-            alt={story.title}
-            width={160}
-            height={107}
-            className="ml-14"
-          />
+          {story.cover_image && (
+            <img
+              src={story.cover_image}
+              alt={story.title}
+              width={160}
+              height={107}
+              className="ml-14"
+            />
+          )}
+          {!story.cover_image && (
+            <div className="ml-14 w-[160px] h-[107px] flex items-center justify-center border-[1px]">
+              <p className="font-gt-super">UnfoldSpace</p>
+            </div>
+          )}
         </Link>
       </div>
       <div className="w-full mt-5" />

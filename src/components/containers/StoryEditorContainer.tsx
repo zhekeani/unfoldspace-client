@@ -59,6 +59,9 @@ const StoryEditorContainer = (props: StoryEditorContainer) => {
         topics={props.topics}
         activeUserId={props.activeUser.id}
         initialStoryId={props.pageData ? props.pageData.storyId : null}
+        initialCoverImage={
+          props.pageData ? props.pageData.story.cover_image : null
+        }
       >
         <InnerStoryEditorContainer {...props} />
       </StoryEditorProvider>

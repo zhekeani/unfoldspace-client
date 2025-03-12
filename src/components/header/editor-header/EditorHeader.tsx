@@ -6,6 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Bell, Ellipsis } from "lucide-react";
 import Link from "next/link";
 import StoryPublicationDialog from "../../story/dialogs/StoryPublicationDialog";
+import EditorActionsPopover from "../../story/popovers/EditorActionsPopover";
 
 type EditorHeaderProps = {
   activeUser: ServiceUser;
@@ -56,10 +57,11 @@ const EditorHeader = ({ activeUser }: EditorHeaderProps) => {
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
         /> */}
-
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Ellipsis className="text-sub-text !w-5 !h-5" />
-          </Button>
+          <EditorActionsPopover>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <Ellipsis className="text-sub-text !w-5 !h-5" />
+            </Button>
+          </EditorActionsPopover>
 
           <Button size="icon" variant="ghost">
             <Bell strokeWidth={1.5} className="text-sub-text !w-5 !h-5" />

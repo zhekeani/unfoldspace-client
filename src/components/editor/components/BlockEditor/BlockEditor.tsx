@@ -34,6 +34,9 @@ const BlockEditor = ({ initialContent }: BlockEditorProps) => {
       if (!coverImage && images.length > 0) {
         setCoverImage(images[0]);
       }
+      if (coverImage && images.length === 0) {
+        setCoverImage(null);
+      }
     },
   });
 
