@@ -66,11 +66,11 @@ export async function addStoryDraft(
     const isUpdate = !isNewStory;
     let query;
 
-    console.log("This is the service user id:", serviceUserId);
-    console.log("This is the story id:", storyId);
-    console.log("This is the title:", derivedTitle);
-    console.log("This is the word count:", wordsCount);
-    console.log("This is the json content:", JSON.parse(stringContent));
+    // console.log("This is the service user id:", serviceUserId);
+    // console.log("This is the story id:", storyId);
+    // console.log("This is the title:", derivedTitle);
+    // console.log("This is the word count:", wordsCount);
+    // console.log("This is the json content:", JSON.parse(stringContent));
 
     if (isUpdate) {
       query = supabase

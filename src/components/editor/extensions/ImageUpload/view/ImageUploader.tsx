@@ -22,7 +22,7 @@ export const ImageUploader = ({
 
   const onFileChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      console.log(e.target.files);
+      // console.log(e.target.files);
       if (!e.target.files) {
         return null;
       }
@@ -49,7 +49,6 @@ export const ImageUploader = ({
     <div
       className={wrapperClass}
       onDrop={(e: DragEvent<HTMLDivElement>) => {
-        console.log(e);
         onDrop(e);
       }}
       onDragOver={onDragEnter}
