@@ -1,0 +1,122 @@
+/* Ensure proper margins for consistency */
+
+.response-editor .ProseMirror {
+  @apply font-sohne text-article-text;
+
+  p {
+    @apply leading-relaxed my-3 first:mt-0 last:mb-0 font-normal text-[14px] 
+      tracking-[-0.003em];
+  }
+
+  & > p {
+    @apply my-6 first:mt-0 last:mb-0 font-normal text-[14px] 
+      tracking-[-0.003em];
+  }
+}
+
+.story-editor .ProseMirror {
+  @apply font-article text-article-text;
+
+  blockquote {
+    @apply border-l-4 border-[#242424] my-6 px-4 text-[#242424] italic;
+  }
+
+  blockquote[data-size="large"] {
+    @apply border-l-0  pl-12 pr-8 text-[#242424] italic !text-5xl leading-relaxed;
+  }
+
+  blockquote[data-size="large"] p {
+    @apply text-2xl font-sans text-big-quote-text;
+  }
+
+  p {
+    @apply leading-relaxed my-2 first:mt-0 last:mb-0 font-normal text-[20px] 
+      tracking-[-0.003em];
+  }
+
+  & > p {
+    @apply mb-3 mt-3 first:mt-0 last:mb-0 font-normal text-[20px] 
+      tracking-[-0.003em];
+  }
+
+  hr {
+    @apply border-0 border-t border-[#666] my-8;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-sohne font-medium text-3xl  leading-[1.15] tracking-[-0.015em];
+  }
+
+  h4 {
+    @apply font-sohne font-medium text-2xl  leading-[1.22] tracking-[-0.012em];
+  }
+
+  h5,
+  h6 {
+    @apply font-sohne font-medium text-xl;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-sohne font-medium first:mt-0 last:mb-0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply mt-8;
+  }
+
+  h4,
+  h5,
+  h6 {
+    @apply mt-6;
+  }
+
+  a.link {
+    @apply text-blue-500 font-extrabold dark:text-blue-400;
+  }
+
+  mark {
+    @apply bg-red-500 rounded-sm decoration-clone text-inherit py-1 px-0 dark:bg-red-400;
+  }
+
+  & img {
+    @apply h-auto w-full max-w-full;
+  }
+
+  [data-type="horizontalRule"] {
+    @apply my-16 relative flex items-center justify-center;
+
+    /* Hide the default hr */
+    hr {
+      @apply border-0 p-0 m-0 h-0 w-0;
+      display: block;
+      visibility: hidden;
+    }
+
+    &::before {
+      content: "•  •  •"; /* Three centered dots */
+      font-size: 1rem; /* Adjust size */
+      color: #666; /* Dot color */
+      letter-spacing: 0.5rem; /* Control spacing */
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &.ProseMirror-selectednode {
+      @apply bg-black/5 dark:bg-white/10;
+    }
+
+    &:hover:not(&.ProseMirror-selectednode) {
+      @apply bg-black/5 dark:bg-white/10;
+    }
+  }
+}

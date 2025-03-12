@@ -10,6 +10,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, BookmarkPlus, Ellipsis } from "lucide-react";
 import { toast } from "sonner";
 import ItemDetailActionButton from "./DetailActionsButtons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../../../ui/tooltip";
 
 type ReadingListDetailActionsBarProps = {
   activeUserId: string;
@@ -170,39 +176,42 @@ const ReadingListDetailActionsBar = ({
           />
         </div>
         <div className="flex gap-1">
-          {!isOwned && readingList.is_saved && (
-            <Button
-              disabled={isSavingList}
-              role="button"
-              variant="ghost"
-              className="rounded-full group"
-              size="icon"
-              onClick={() =>
-                saveMutation({ listId: readingList.id, actionType: "unsave" })
-              }
-            >
-              <Bookmark
-                strokeWidth={1.5}
-                className="!w-5 !h-5 stroke-sub-text fill-sub-text group-hover:fill-text-main-text group-hover:stroke-main-text transition-colors"
-              />
-            </Button>
-          )}
-          {!isOwned && !readingList.is_saved && (
-            <Button
-              disabled={isSavingList}
-              role="button"
-              variant="ghost"
-              className="rounded-full group"
-              size="icon"
-              onClick={() =>
-                saveMutation({ listId: readingList.id, actionType: "save" })
-              }
-            >
-              <BookmarkPlus
-                strokeWidth={1.5}
-                className="!w-5 !h-5 stroke-sub-text group-hover:stroke-main-text transition-colors"
-              />
-            </Button>
+          {!isOwned && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    disabled={isSavingList}
+                    role="button"
+                    variant="ghost"
+                    className="rounded-full group"
+                    size="icon"
+                    onClick={() =>
+                      saveMutation({
+                        listId: readingList.id,
+                        actionType: readingList.is_saved ? "unsave" : "save",
+                      })
+                    }
+                  >
+                    {readingList.is_saved && (
+                      <Bookmark
+                        strokeWidth={1.5}
+                        className="!w-5 !h-5 stroke-sub-text fill-sub-text group-hover:fill-text-main-text group-hover:stroke-main-text transition-colors"
+                      />
+                    )}
+                    {!readingList.is_saved && (
+                      <BookmarkPlus
+                        strokeWidth={1.5}
+                        className="!w-5 !h-5 stroke-sub-text group-hover:stroke-main-text transition-colors"
+                      />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Save</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
 
           <ItemDetailActionButton.Share

@@ -12,3 +12,5 @@ export type ReadingListItem =
 export type UserWFollowStatus = ServiceUser & { has_followed: boolean };
 export type ReadingListDetail =
   Database["public"]["Functions"]["get_reading_list_detail"]["Returns"][number];
+export type StoryDetail =
+  Database["public"]["Functions"]["get_story_detail"]["Returns"][number];

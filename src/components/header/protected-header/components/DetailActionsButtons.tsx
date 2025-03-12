@@ -75,7 +75,7 @@ const RespondActionButton = ({
         className={cn("rounded-full group transition-colors")}
       >
         <MessageCircle
-          strokeWidth={hasResponded ? 0 : 1}
+          strokeWidth={1.5}
           className={cn(
             " stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
             hasResponded && "fill-sub-text"

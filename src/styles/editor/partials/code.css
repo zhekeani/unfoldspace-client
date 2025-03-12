@@ -1,0 +1,111 @@
+.story-editor .ProseMirror {
+  code {
+    @apply caret-white text-white bg-neutral-900 rounded-sm shadow-lg font-mono px-2 py-1;
+  }
+
+  pre {
+    @apply caret-white bg-neutral-700 text-white rounded my-12 p-4 border border-black dark:bg-neutral-900 dark:border-neutral-800 overflow-x-auto;
+
+    *::selection {
+      @apply bg-white/20;
+    }
+
+    code {
+      @apply bg-inherit text-inherit p-0 shadow-none font-mono;
+    }
+
+    .hljs-comment,
+    .hljs-quote {
+      @apply text-neutral-400;
+    }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      @apply text-red-300;
+    }
+
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      @apply text-orange-300;
+    }
+
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      @apply text-lime-300;
+    }
+
+    .hljs-title,
+    .hljs-section {
+      @apply text-yellow-300;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag {
+      @apply text-teal-300;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    .hljs-strong {
+      font-weight: 700;
+    }
+  }
+
+  /* Apply inline code styles */
+  code {
+    @apply bg-neutral-900 text-white rounded-sm font-mono px-2 py-1;
+  }
+
+  code::selection {
+    @apply bg-white/30;
+  }
+}
+
+/* Ensure block-level pre styles */
+.ProseMirror pre {
+  background-color: #161b22 !important; /* Dark GitHub-like background */
+  color: #ddd;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-family: "JetBrainsMono", monospace;
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+/* Ensure inline code consistency */
+.ProseMirror pre code {
+  background: none;
+  color: inherit;
+  font-size: 0.9rem;
+  padding: 0;
+}
+
+/* Inline code */
+.ProseMirror code {
+  background-color: #282c34;
+  color: #fff;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3rem;
+  font-family: "JetBrainsMono", monospace;
+}
+
+/* Selection styles */
+.ProseMirror code::selection {
+  background-color: rgba(255, 255, 255, 0.3);
+}

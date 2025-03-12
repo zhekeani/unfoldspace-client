@@ -1115,7 +1115,6 @@ export type Database = {
       get_story_detail: {
         Args: {
           story_id_param: string
-          active_user: string
         }
         Returns: {
           id: string
@@ -1166,6 +1165,19 @@ export type Database = {
           total_replies: number
           edited_at: string
           has_clapped: boolean
+        }[]
+      }
+      get_topics_by_story: {
+        Args: {
+          p_story_id: string
+        }
+        Returns: {
+          id: string
+          name: string
+          description: string
+          parent_id: string
+          total_stories: number
+          depth_level: number
         }[]
       }
       get_topics_hierarchy: {
