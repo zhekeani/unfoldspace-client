@@ -1,12 +1,12 @@
 import { useStoryEditor } from "@/components/context/StoryEditorContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import StoryPublicationDialog from "@/components/story/dialogs/StoryPublicationDialog";
+import EditorActionsPopover from "@/components/story/popovers/EditorActionsPopover";
 import { Button } from "@/components/ui/button";
 import { ServiceUser, Story } from "@/types/database.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { Bell, Ellipsis } from "lucide-react";
 import Link from "next/link";
-import StoryPublicationDialog from "../../story/dialogs/StoryPublicationDialog";
-import EditorActionsPopover from "../../story/popovers/EditorActionsPopover";
+import HeaderUserDropdown from "../protected-header/components/UserDropdown";
 
 type EditorHeaderProps = {
   activeUser: ServiceUser;
@@ -45,18 +45,12 @@ const EditorHeader = ({ activeUser }: EditorHeaderProps) => {
             <Button
               disabled={!story}
               type="button"
-              className="text-sm h-fit !px-3 py-1 rounded-full bg-main-green font-light"
+              className="h-fit !px-3 py-[6px] rounded-full bg-main-green"
             >
-              <span className="text-xs-sm">Publish</span>
+              <span className="text-xs font-light">Publish</span>
             </Button>
           </StoryPublicationDialog>
-          {/* <PublishStoryDialog
-          setDialogOpen={setIsPublishDialogOpen}
-          isDialogOpen={isPublishDialogOpen}
-          storyId={storyId}
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
-        /> */}
+
           <EditorActionsPopover>
             <Button variant="ghost" size="icon" className="rounded-full">
               <Ellipsis className="text-sub-text !w-5 !h-5" />
@@ -66,17 +60,7 @@ const EditorHeader = ({ activeUser }: EditorHeaderProps) => {
           <Button size="icon" variant="ghost">
             <Bell strokeWidth={1.5} className="text-sub-text !w-5 !h-5" />
           </Button>
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              className="w-full h-full object-cover"
-              src={activeUser?.profile_picture || ""}
-            />
-            <AvatarFallback>
-              {activeUser?.username.slice(0, 2).toUpperCase() || "ZZ"}
-            </AvatarFallback>
-          </Avatar>
-
-          <Button variant="ghost" className=" h-8 w-8"></Button>
+          <HeaderUserDropdown serviceUser={activeUser} />
         </div>
       </nav>
     </header>

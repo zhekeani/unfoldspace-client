@@ -56,17 +56,17 @@ const TopicMultiSelect = ({
       onKeyDown={handleKeyDown}
       className="overflow-visible bg-transparent"
     >
-      <div className="group rounded-md border border-input px-3 py-3 text-sm focus-within:ring-gray-400 focus-within:ring-2 focus-within:ring-offset-2">
+      <div className="group rounded-sm border border-input px-1 py-1 text-sm focus-within:ring-gray-400 focus-within:ring-2 focus-within:ring-offset-2">
         <div className="flex flex-wrap gap-1 gap-y-2">
           {selected.map((topic) => (
             <Badge
-              className="flex gap-2 py-[6px]"
+              className="flex gap-2 py-[6px] rounded-none"
               key={topic.id}
               variant="secondary"
             >
               <p className="font-normal text-xs-sm">{topic.name}</p>
               <button
-                className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                className="ml-1 cursor-pointer rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                 onMouseDown={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -93,7 +93,7 @@ const TopicMultiSelect = ({
       <div className="relative mt-2">
         <CommandList>
           {isTopicListOpen && selectables.length > 0 ? (
-            <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+            <div className="absolute top-0 z-10 w-full rounded-sm border bg-popover text-popover-foreground shadow-md outline-none animate-in">
               <CommandGroup className="h-full max-h-40 overflow-y-scroll">
                 {selectables.map((topic) => (
                   <CommandItem
@@ -106,7 +106,7 @@ const TopicMultiSelect = ({
                       setInputValue("");
                       onChange([...value, topic.id]);
                     }}
-                    className="cursor-pointer"
+                    className="cursor-pointer text-xs-sm"
                   >
                     {topic.name}
                   </CommandItem>

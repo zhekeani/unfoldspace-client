@@ -22,7 +22,7 @@ const EditorSelectImagePopover = ({
     : [];
 
   return (
-    <div className="p-[14px] w-[400px]">
+    <div className="p-[15px] w-[400px]">
       <div>
         <div>
           <div className="mt-[15px] text-sm text-sub-text">
@@ -60,9 +60,10 @@ const EditorSelectImagePopover = ({
         <div className="border-t-[1px] border-t-gray-100">
           <div className="mt-[20px] ">
             <Button
-              className="rounded-full font-light"
+              className="rounded-full font-light text-sub-text"
               onClick={resetAction}
               variant={"outline"}
+              type="button"
             >
               Done
             </Button>

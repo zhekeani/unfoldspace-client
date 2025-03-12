@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/tooltip";
 import { ReactNode, useState } from "react";
 import EditorSelectImagePopover from "./components/EditorSelectImagePopover";
+import EditorUpdateTitlePopover from "./components/EditorUpdateTitlePopover";
+import EditorUpdateTopicsPopover from "./components/EditorUpdateTopicsPopover";
 
 type ActionType = "image" | "title" | "topic" | null;
 
@@ -32,8 +34,17 @@ const EditorActionsPopover = ({ children }: EditorActionsPopoverProps) => {
   const isTitleAction = actionType === "title";
   const isTopicAction = actionType === "topic";
 
+  const toggleIsOpen = () => {
+    setIsOpen((prev) => {
+      if (!prev) {
+        setActionType(null);
+      }
+      return !prev;
+    });
+  };
+
   return (
-    <Popover onOpenChange={setIsOpen} open={isOpen}>
+    <Popover onOpenChange={toggleIsOpen} open={isOpen}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -51,8 +62,12 @@ const EditorActionsPopover = ({ children }: EditorActionsPopoverProps) => {
               <PopoverButton onClick={() => setActionType("image")}>
                 Change featured image
               </PopoverButton>
-              <PopoverButton>Change display tile/subtitle</PopoverButton>
-              <PopoverButton>Change topics</PopoverButton>
+              <PopoverButton onClick={() => setActionType("title")}>
+                Change display tile/subtitle
+              </PopoverButton>
+              <PopoverButton onClick={() => setActionType("topic")}>
+                Change topics
+              </PopoverButton>
             </PopoverGroup>
             <PopoverDivider />
             <PopoverGroup>
@@ -62,6 +77,12 @@ const EditorActionsPopover = ({ children }: EditorActionsPopoverProps) => {
         )}
         {isImageAction && (
           <EditorSelectImagePopover resetAction={() => setActionType(null)} />
+        )}
+        {isTitleAction && (
+          <EditorUpdateTitlePopover resetAction={() => setActionType(null)} />
+        )}
+        {isTopicAction && (
+          <EditorUpdateTopicsPopover resetAction={() => setActionType(null)} />
         )}
       </PopoverContent>
     </Popover>
