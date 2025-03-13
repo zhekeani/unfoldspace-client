@@ -1,6 +1,6 @@
 import { UserPopoverServiceUser } from "@/components/popover/UserPopover";
 import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
-import { UserWFollowStatus } from "@/types/database.types";
+import { ServiceUser, UserWFollowStatus } from "@/types/database.types";
 
 export const fetchUserPreviewByIdOnClient = async (
   userId: string
@@ -79,3 +79,27 @@ export const fetchUserByUsernameOnClient = async (
     return null;
   }
 };
+
+export async function fetchActiveUserOnClient(): Promise<{
+  serviceUser: ServiceUser;
+} | null> {
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) throw new Error("Database client unavailable.");
+
+    const { data, error } = await supabase.rpc("get_active_service_user");
+    if (error || !data) {
+      console.error(error);
+      throw new Error("Failed to fetch active user data.");
+    }
+
+    return {
+      serviceUser: data[0],
+    };
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
