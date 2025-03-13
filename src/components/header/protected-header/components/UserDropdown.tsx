@@ -1,5 +1,6 @@
 "use client";
 
+import useUserStateChange from "@/components/header/hooks/useUserStateChange";
 import {
   PopoverButton,
   PopoverDivider,
@@ -26,6 +27,7 @@ type HeaderUserDropdownProps = {
 
 const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  useUserStateChange();
 
   const pathname = usePathname();
 
