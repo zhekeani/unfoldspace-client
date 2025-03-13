@@ -46,7 +46,9 @@ const BlockEditor = ({ initialContent }: BlockEditorProps) => {
     editable: isEditable,
     onTransaction({ editor: currentEditor }) {
       const newContent = currentEditor.getJSON();
-      checkUnsave(newContent);
+      if (currentEditor.isFocused) {
+        checkUnsave(newContent);
+      }
 
       onContentChange(newContent);
       const images = extractImageUrlsFromJSONContent(newContent);
