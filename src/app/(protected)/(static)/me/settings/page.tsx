@@ -1,9 +1,12 @@
 import SettingAccountContainer from "@/components/containers/SettingAccountContainer";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { redirect } from "next/navigation";
 
 const SettingAccountPage = async () => {
   const userRes = await fetchActiveUserOnServer();
-  if (!userRes) return null;
+  if (!userRes) {
+    redirect("/");
+  }
 
   const { serviceUser } = userRes;
 

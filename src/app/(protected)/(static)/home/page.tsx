@@ -5,6 +5,7 @@ import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fe
 import { fetchStoriesByTopicOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { fetchHomeTopicsOnServer } from "@/lib/component-fetches/topic/fetchTopicsServer";
 import { Topic } from "@/types/database.types";
+import { redirect } from "next/navigation";
 
 type SearchParams = {
   tag?: string;
@@ -50,7 +51,7 @@ const HomePage = async ({
   const initialData = await fetchHomePageInitialData(tag, limit, currentPage);
 
   if (!initialData) {
-    return null;
+    redirect("/");
   }
 
   return (

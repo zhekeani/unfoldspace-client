@@ -9,6 +9,7 @@ import {
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
 import { cn } from "@/lib/utils";
 import { UserWFollowStatus } from "@/types/database.types";
+import { redirect } from "next/navigation";
 import { ReactNode, Suspense } from "react";
 
 type PageParams = {
@@ -48,7 +49,7 @@ const ReadingListDetailLayout = async ({
 
   const userData = await fetchUserData(username);
   if (!userData) {
-    return null;
+    redirect("/");
   }
 
   const { targetUser, activeUserId } = userData;

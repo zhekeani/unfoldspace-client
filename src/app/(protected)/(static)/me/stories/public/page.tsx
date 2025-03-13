@@ -2,6 +2,7 @@ import MePublishedStoriesContainer from "@/components/containers/MePublishedStor
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchUserStoriesByIdOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { Story } from "@/types/database.types";
+import { redirect } from "next/navigation";
 
 type SearchParams = {
   page?: string;
@@ -47,7 +48,9 @@ const MePublishedPage = async ({
 
   const data = await fetchPageInitialData(limit, currentPage);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">

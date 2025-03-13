@@ -2,6 +2,7 @@ import MeReadingListsContainer from "@/components/containers/MeReadingListsConta
 import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import { fetchUserDetailedReadingListsByIdOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { redirect } from "next/navigation";
 
 type SearchParams = {
   page?: string;
@@ -47,7 +48,9 @@ const MeListsPage = async ({
 
   const data = await fetchPageInitialData(limit, currentPage);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return (
     <MeReadingListsContainer

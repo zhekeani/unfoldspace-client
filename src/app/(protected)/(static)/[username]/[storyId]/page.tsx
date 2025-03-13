@@ -14,6 +14,7 @@ import {
   Topic,
   UserWFollowStatus,
 } from "@/types/database.types";
+import { redirect } from "next/navigation";
 
 type PageParams = {
   username: string;
@@ -55,7 +56,9 @@ const StoryDetailPage = async ({ params }: { params: Promise<PageParams> }) => {
 
   const data = await fetchPageInitialData(storyId, username);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return <StoryDetailContainer {...data} />;
 };

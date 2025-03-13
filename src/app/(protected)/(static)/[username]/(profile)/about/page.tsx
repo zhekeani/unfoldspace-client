@@ -5,6 +5,7 @@ import {
 } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
 import { UserWFollowStatus } from "@/types/database.types";
+import { redirect } from "next/navigation";
 
 type PageParams = {
   username: string;
@@ -34,7 +35,9 @@ const UserAboutPage = async ({ params }: { params: Promise<PageParams> }) => {
   const username = extractUsernameFromUrl(encodedUsername)!;
 
   const data = await fetchPageInitialData(username);
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   const { targetUser: user, activeUserId } = data;
 

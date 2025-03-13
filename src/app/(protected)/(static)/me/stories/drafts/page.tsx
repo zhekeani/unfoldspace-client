@@ -2,6 +2,7 @@ import MeDraftsContainer from "@/components/containers/MeDraftsContainer";
 import { StoryDraft } from "@/components/story/StoryDraftItem";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchActiveUserDraftsOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
+import { redirect } from "next/navigation";
 
 type SearchParams = {
   page?: string;
@@ -47,7 +48,9 @@ const MeStoriesDraftsPage = async ({
 
   const data = await fetchPageInitialData(limit, currentPage);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-2 flex flex-col">

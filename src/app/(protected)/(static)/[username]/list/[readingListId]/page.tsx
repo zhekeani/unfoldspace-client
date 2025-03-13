@@ -6,6 +6,7 @@ import { fetchReadingListDetailByIdOnServer } from "@/lib/component-fetches/read
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
 import { ReadingListDetail, ServiceUser } from "@/types/database.types";
+import { redirect } from "next/navigation";
 
 type PageParams = {
   username: string;
@@ -60,7 +61,9 @@ const ReadingListDetailPage = async ({
   const limit = 8;
   const data = await fetchPageInitialData(readingListId, limit, currentPage);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">

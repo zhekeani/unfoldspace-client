@@ -10,11 +10,34 @@ export async function middleware(request: NextRequest) {
 
   const { supabase, response } = client;
   const { data } = await supabase.auth.getUser();
-
   const user = data?.user;
   const requestedPath = request.nextUrl.pathname;
 
-  if (!user && requestedPath.startsWith("/home")) {
+  // Protect actual routes under (protected) and editor
+  const protectedRoutes = [
+    "/home",
+    "/me",
+    "/explore-topics",
+    "/settings",
+    "/stories",
+    "/lists",
+    "/reading-history",
+    "/saved",
+    "/notifications",
+    "/publishing",
+    "/security",
+    "/drafts",
+    "/public",
+    "/responses",
+    "/editor",
+  ];
+
+  // Check if the route is protected
+  const isProtectedRoute =
+    protectedRoutes.some((route) => requestedPath.startsWith(route)) ||
+    requestedPath.startsWith("/home/%40"); // Protect dynamic username routes
+
+  if (!user && isProtectedRoute) {
     return NextResponse.redirect(new URL("/", request.url));
   } else if (user && requestedPath === "/") {
     return NextResponse.redirect(new URL("/home", request.url));

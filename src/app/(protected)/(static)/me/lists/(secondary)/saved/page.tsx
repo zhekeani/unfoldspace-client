@@ -1,7 +1,8 @@
-import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import MeSavedReadingListsContainer from "@/components/containers/MeSavedReadingListsContainer";
+import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import { fetchActiveUserSavedReadingListsOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { redirect } from "next/navigation";
 
 type SearchParams = {
   page?: string;
@@ -47,7 +48,9 @@ const MeListsSavedPage = async ({
 
   const data = await fetchPageInitialData(limit, currentPage);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">

@@ -3,6 +3,7 @@ import { StoryItemStory } from "@/components/story/StoryItem";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { fetchUserStoriesWInteractionsOnServer } from "@/lib/component-fetches/story/fetchStoriesServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
+import { redirect } from "next/navigation";
 
 type PageParams = {
   username: string;
@@ -55,7 +56,7 @@ const UserHomePage = async ({
   const data = await fetchPageInitialData(username, limit, currentPage);
 
   if (!data) {
-    return null;
+    redirect("/");
   }
 
   return (

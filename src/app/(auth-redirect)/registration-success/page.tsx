@@ -14,7 +14,7 @@ const RegistrationSuccessPage = async ({
 
   return (
     <div className="text-center">
-      <h2 className="text-2xl font-serif">Check you inbox</h2>
+      <h2 className="text-2xl font-serif">Check your inbox</h2>
       <div className="mt-[30px]">
         <h4>Click the link we sent to {email} to activate your account.</h4>
       </div>

@@ -1,11 +1,12 @@
-import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import UserReadingListsContainer from "@/components/containers/UserReadingListsContainer";
+import { ExtendedReadingList } from "@/components/reading-list/ReadingListItem";
 import { fetchUserDetailedReadingListsByIdOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
 import {
   fetchActiveUserIdOnServer,
   fetchUserIdByUsernameOnServer,
 } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
+import { redirect } from "next/navigation";
 
 type SearchParams = {
   page?: string;
@@ -64,7 +65,9 @@ const UserListsPage = async ({
   const limit = 8;
   const data = await fetchPageInitialData(username, limit, currentPage);
 
-  if (!data) return null;
+  if (!data) {
+    redirect("/");
+  }
 
   return (
     <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
