@@ -10,9 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-const capitalizeFirstLetter = (str: string) =>
-  str.charAt(0).toUpperCase() + str.slice(1);
+import { sanitizeTopic } from "@/lib/story/sanitizeTopic";
 
 const formSchema = z.object({
   query: z.string(),
@@ -32,7 +30,7 @@ const TopicSearch = () => {
   const { control, handleSubmit } = form;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    router.push(`/home?tag=${capitalizeFirstLetter(values.query)}`);
+    router.push(`/home?tag=${sanitizeTopic(values.query)}`);
   };
 
   return (

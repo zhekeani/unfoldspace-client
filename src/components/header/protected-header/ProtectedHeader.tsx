@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { Bell, Search } from "lucide-react";
 import Link from "next/link";
+import HeaderTopicSearch from "./components/HeaderTopicSearch";
 import HeaderNewStoryBtn from "./components/NewStoryBtn";
 import HeaderUserDropdown from "./components/UserDropdown";
 
@@ -24,7 +24,8 @@ const ProtectedHeader = async () => {
           >
             UnfoldSpace
           </Link>
-          <div className="ml-4 hidden mobile:flex rounded-full bg-gray-100 px-2 items-center">
+          <HeaderTopicSearch />
+          {/* <div className="ml-4 hidden mobile:flex rounded-full bg-gray-100 px-2 items-center">
             <Button variant="ghost" size="icon" className="rounded-full">
               <Search className="text-sub-text" strokeWidth={1.5} />
             </Button>
@@ -34,7 +35,7 @@ const ProtectedHeader = async () => {
               placeholder="Search"
               className="rounded-full shadow-none border-none  focus-visible:ring-0 font-light"
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="flex h-full items-center gap-3">
