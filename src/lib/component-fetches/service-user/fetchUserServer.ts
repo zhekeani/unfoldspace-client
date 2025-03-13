@@ -5,7 +5,7 @@ export async function fetchActiveUserOnServer(): Promise<{
   serviceUser: ServiceUser;
 } | null> {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const supabase = await getSupabaseCookiesUtilClient();
     if (!supabase) throw new Error("Database client unavailable.");

@@ -89,7 +89,7 @@ export const fetchStoriesByTopicOnClient = async (
 export const fetchStoryWInteractionsByIdOnClient = async (
   storyId: string
 ): Promise<StoryItemStory | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) throw new Error("Database client unavailable.");

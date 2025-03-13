@@ -5,7 +5,7 @@ import { ServiceUser, UserWFollowStatus } from "@/types/database.types";
 export const fetchUserPreviewByIdOnClient = async (
   userId: string
 ): Promise<{ user: UserPopoverServiceUser } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
     const supabase = getSupabaseBrowserClient();
@@ -84,7 +84,7 @@ export async function fetchActiveUserOnClient(): Promise<{
   serviceUser: ServiceUser;
 } | null> {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // await new Promise((resolve) => setTimeout(resolve, 3000));
 
     const supabase = getSupabaseBrowserClient();
     if (!supabase) throw new Error("Database client unavailable.");

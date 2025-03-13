@@ -21,7 +21,7 @@ type PageParams = {
 const fetchUserData = async (
   username: string
 ): Promise<{ targetUser: UserWFollowStatus; activeUserId: string } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const userId = await fetchUserIdByUsernameOnServer(username);
   if (!userId) return null;

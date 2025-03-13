@@ -14,7 +14,7 @@ type UserSidebarProps = {
 };
 
 const fetchSidebarData = async (userId: string) => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const [readingLists] = await Promise.all([fetchUserReadingListsById(userId)]);
 

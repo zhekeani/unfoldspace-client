@@ -8,7 +8,7 @@ export async function updateListItemsOrder(
   listId: string,
   reorderedItems: Pick<ReadingListItem, "id" | "item_order">[]
 ): Promise<ActionResponse<{ listId: string }>> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
     const supabase = await getSupabaseCookiesUtilClient();
@@ -53,7 +53,7 @@ export async function updateListItemNote(
   listItemId: string,
   note: string | null
 ): Promise<ActionResponse<{ listItemId: string }>> {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
     const supabase = await getSupabaseCookiesUtilClient();

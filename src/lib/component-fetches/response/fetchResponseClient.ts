@@ -12,7 +12,7 @@ export const fetchStoryResponses = async (
   responses: ExtendedStoryResponse[];
   nextCursor: string | null;
 }> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) throw new Error("Database client unavailable.");
@@ -46,7 +46,7 @@ export const fetchListResponses = async (
   limit: number,
   pageParam?: null | string
 ) => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
   try {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) throw new Error("Database client unavailable.");

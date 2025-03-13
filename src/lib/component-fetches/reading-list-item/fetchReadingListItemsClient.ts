@@ -10,7 +10,7 @@ export const fetchListItemsByListIdOnClient = async (
   hasNextPage: boolean;
   listItemsCount: number;
 } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
     const supabase = getSupabaseBrowserClient();

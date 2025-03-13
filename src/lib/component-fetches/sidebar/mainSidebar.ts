@@ -7,7 +7,7 @@ export const fetchMainSidebarData = async (): Promise<{
   lastSavedStories: Story[];
   activeUserId: string;
 } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
 
   try {
     const supabase = await getSupabaseCookiesUtilClient();

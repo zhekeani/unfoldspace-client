@@ -128,7 +128,7 @@ export const fetchActiveUserSavedReadingListsOnClient = async (
 export const fetchActiveUserReadingListsByStoryId = async (
   storyId: string
 ): Promise<{ readingLists: StoryBookmarkReadingList[] } | null> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   try {
     const supabase = getSupabaseBrowserClient();
