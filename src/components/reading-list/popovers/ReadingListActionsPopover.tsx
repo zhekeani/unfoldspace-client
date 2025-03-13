@@ -69,6 +69,20 @@ const ReadingListActionsPopover = ({
     }
   };
 
+  const handleCopyLink = async () => {
+    try {
+      const url = new URL(
+        `/@${readingList.owner_username}/list/${readingList.id}`,
+        window.location.origin
+      );
+
+      await navigator.clipboard.writeText(url.toString());
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Failed to copy link:", error);
+    }
+  };
+
   const isPublic = visibility === "public";
 
   return (
@@ -87,13 +101,7 @@ const ReadingListActionsPopover = ({
         {isOwned && (
           <div className="flex flex-col items-start">
             <PopoverGroup>
-              <PopoverButton
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-              >
-                Copy link
-              </PopoverButton>
+              <PopoverButton onClick={handleCopyLink}>Copy link</PopoverButton>
               <ReadingListCreationDialog
                 actionType="update"
                 readingListId={readingList.id}

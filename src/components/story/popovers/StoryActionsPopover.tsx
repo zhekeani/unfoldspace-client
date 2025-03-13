@@ -35,8 +35,23 @@ const StoryActionsPopover = ({
   deleteMutation,
   isDeleting,
   storyId,
+  storyUserUsername,
 }: StoryActionsPopoverProps) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleCopyLink = async () => {
+    try {
+      const url = new URL(
+        `/@${storyUserUsername}/list/${storyId}`,
+        window.location.origin
+      );
+
+      await navigator.clipboard.writeText(url.toString());
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Failed to copy link:", error);
+    }
+  };
 
   return (
     <Popover onOpenChange={setIsOpen} open={isOpen}>
@@ -84,7 +99,7 @@ const StoryActionsPopover = ({
         {!isOwned && (
           <div>
             <PopoverGroup>
-              <PopoverButton>Copy link</PopoverButton>
+              <PopoverButton onClick={handleCopyLink}>Copy link</PopoverButton>
             </PopoverGroup>
           </div>
         )}
