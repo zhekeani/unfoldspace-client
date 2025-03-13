@@ -4,13 +4,11 @@
   @apply font-sohne text-article-text;
 
   p {
-    @apply leading-relaxed my-3 first:mt-0 last:mb-0 font-normal text-[14px] 
-      tracking-[-0.003em];
+    @apply font-sohne leading-relaxed my-3 first:mt-0 last:mb-0 font-normal !text-sm;
   }
 
   & > p {
-    @apply my-6 first:mt-0 last:mb-0 font-normal text-[14px] 
-      tracking-[-0.003em];
+    @apply my-6 first:mt-0 last:mb-0 font-normal text-sm;
   }
 }
 

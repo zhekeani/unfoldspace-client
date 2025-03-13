@@ -1,17 +1,24 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 type StoryDetailContextType = {
   storyDetailQueryKey: string[];
   topicsQueryKey: string[];
   userQueryKey: string[];
   responsesQueryKey: string[];
+
+  isResSheetOpen: boolean;
+  setResSheetOpen: (isOpen: boolean) => void;
 };
 
 const StoryDetailContext = createContext<StoryDetailContextType | undefined>(
   undefined
 );
 
-type StoryDetailProviderProps = StoryDetailContextType & {
+type StoryDetailProviderProps = {
+  storyDetailQueryKey: string[];
+  topicsQueryKey: string[];
+  userQueryKey: string[];
+  responsesQueryKey: string[];
   children: ReactNode;
 };
 
@@ -22,6 +29,8 @@ export const StoryDetailProvider = ({
   userQueryKey,
   responsesQueryKey,
 }: StoryDetailProviderProps) => {
+  const [isResSheetOpen, setResSheetOpen] = useState(false);
+
   return (
     <StoryDetailContext.Provider
       value={{
@@ -29,6 +38,8 @@ export const StoryDetailProvider = ({
         topicsQueryKey,
         userQueryKey,
         responsesQueryKey,
+        isResSheetOpen,
+        setResSheetOpen,
       }}
     >
       {children}

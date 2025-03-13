@@ -40,8 +40,8 @@ const ClapActionButton = ({
         <Heart
           strokeWidth={1.5}
           className={cn(
-            " stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
-            hasClapped && "fill-sub-text"
+            " transition-colors stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
+            hasClapped && "fill-sub-text group-hover:fill-main-text"
           )}
         />
       </Button>
@@ -77,8 +77,8 @@ const RespondActionButton = ({
         <MessageCircle
           strokeWidth={1.5}
           className={cn(
-            " stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
-            hasResponded && "fill-sub-text"
+            " transition-colors stroke-sub-text group-hover:stroke-main-text !w-5 !h-5",
+            hasResponded && "fill-sub-text group-hover:fill-main-text"
           )}
         />
       </Button>

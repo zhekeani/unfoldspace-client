@@ -8,11 +8,13 @@ import StoryDetailSubheader from "@/components/header/protected-header/StoryDeta
 import StoryDetailActionsBar from "@/components/header/protected-header/components/StoryDetailActionsBar";
 import StoryDetailAuthorInfo from "@/components/header/protected-header/components/StoryDetailAuthorInfo";
 import { fetchUserByUsernameOnClient } from "@/lib/component-fetches/service-user/fetchUserClient";
+import { fetchStoryDetailByIdOnClient } from "@/lib/component-fetches/story/fetchStoryClient";
 import {
-  fetchStoryDetailByIdOnClient,
-  fetchTopicsByStoryOnClient,
-} from "@/lib/component-fetches/story/fetchStoryClient";
-import { StoryDetail, Topic, UserWFollowStatus } from "@/types/database.types";
+  ServiceUser,
+  StoryDetail,
+  Topic,
+  UserWFollowStatus,
+} from "@/types/database.types";
 import {
   QueryClient,
   QueryClientProvider,
@@ -20,39 +22,29 @@ import {
 } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
-
-// import "@/styles/editor/editor.index.css";
+import StoryDetailResponsesContainer from "./StoryDetailResponsesContainer";
 
 type StoryDetailContainerProps = {
-  activeUserId: string;
+  activeUser: ServiceUser;
   story: StoryDetail;
   topics: Topic[];
   user: UserWFollowStatus;
 };
 
 const InnerStoryDetailContainer = ({
-  activeUserId,
+  activeUser,
   story: initialStory,
-  topics: initialTopics,
+  topics,
   user: initialUser,
 }: StoryDetailContainerProps) => {
-  const { storyDetailQueryKey, topicsQueryKey, userQueryKey } =
-    useStoryDetail();
+  const { storyDetailQueryKey, userQueryKey } = useStoryDetail();
 
-  const [storyRes, topicsRes, userRes] = useQueries({
+  const [storyRes, userRes] = useQueries({
     queries: [
       {
         queryKey: storyDetailQueryKey,
         queryFn: () => fetchStoryDetailByIdOnClient(initialStory.id),
         initialData: initialStory,
-        staleTime: 5 * 60 * 1000,
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-      },
-      {
-        queryKey: topicsQueryKey,
-        queryFn: () => fetchTopicsByStoryOnClient(initialStory.id),
-        initialData: { topics: initialTopics },
         staleTime: 5 * 60 * 1000,
         refetchOnMount: false,
         refetchOnWindowFocus: false,
@@ -68,19 +60,11 @@ const InnerStoryDetailContainer = ({
     ],
   });
 
-  if (
-    storyRes.error ||
-    !storyRes.data ||
-    topicsRes.error ||
-    !topicsRes.data ||
-    userRes.error ||
-    !userRes.data
-  ) {
+  if (storyRes.error || !storyRes.data || userRes.error || !userRes.data) {
     return null;
   }
 
   const story = storyRes.data;
-  const { topics } = topicsRes.data;
   const { data: user } = userRes;
 
   return (
@@ -88,9 +72,9 @@ const InnerStoryDetailContainer = ({
       <StoryDetailSubheader
         story={story}
         user={user}
-        isOwned={story.user_id === activeUserId}
+        isOwned={story.user_id === activeUser.id}
       />
-      <StoryDetailActionsBar activeUserId={activeUserId} story={story} />
+      <StoryDetailActionsBar activeUserId={activeUser.id} story={story} />
       <div
         className="ProseMirror"
         dangerouslySetInnerHTML={{ __html: story.html_content }}
@@ -110,13 +94,17 @@ const InnerStoryDetailContainer = ({
         ))}
       </div>
       <StoryDetailActionsBar
-        activeUserId={activeUserId}
+        activeUserId={activeUser.id}
         story={story}
         collapsible={false}
       />
       <StoryDetailAuthorInfo
-        isOwned={activeUserId === story.user_id}
+        isOwned={activeUser.id === story.user_id}
         user={user}
+      />
+      <StoryDetailResponsesContainer
+        storyId={story.id}
+        activeUser={activeUser}
       />
     </div>
   );

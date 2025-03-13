@@ -1,6 +1,6 @@
 import StoryDetailContainer from "@/components/containers/StoryDetailContainer";
 import {
-  fetchActiveUserIdOnServer,
+  fetchActiveUserOnServer,
   fetchUserByUsernameOnServer,
 } from "@/lib/component-fetches/service-user/fetchUserServer";
 import {
@@ -8,7 +8,12 @@ import {
   fetchTopicsByStoryOnServer,
 } from "@/lib/component-fetches/story/fetchStoryServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
-import { StoryDetail, Topic, UserWFollowStatus } from "@/types/database.types";
+import {
+  ServiceUser,
+  StoryDetail,
+  Topic,
+  UserWFollowStatus,
+} from "@/types/database.types";
 
 type PageParams = {
   username: string;
@@ -22,14 +27,14 @@ const fetchPageInitialData = async (
   story: StoryDetail;
   topics: Topic[];
   user: UserWFollowStatus;
-  activeUserId: string;
+  activeUser: ServiceUser;
 } | null> => {
   const [storyDetailRes, topicsRes, userRes, activeUserRes] = await Promise.all(
     [
       fetchStoryDetailByIdOnServer(storyId),
       fetchTopicsByStoryOnServer(storyId),
       fetchUserByUsernameOnServer(username),
-      fetchActiveUserIdOnServer(),
+      fetchActiveUserOnServer(),
     ]
   );
   if (!storyDetailRes || !topicsRes || !userRes || !activeUserRes) {
@@ -40,7 +45,7 @@ const fetchPageInitialData = async (
     story: storyDetailRes,
     topics: topicsRes.topics,
     user: userRes,
-    activeUserId: activeUserRes,
+    activeUser: activeUserRes.serviceUser,
   };
 };
 

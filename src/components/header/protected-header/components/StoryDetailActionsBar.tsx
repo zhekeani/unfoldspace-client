@@ -24,7 +24,7 @@ const StoryDetailActionsBar = ({
   activeUserId,
 }: StoryDetailActionsBarProps) => {
   const router = useRouter();
-  const { storyDetailQueryKey } = useStoryDetail();
+  const { storyDetailQueryKey, setResSheetOpen } = useStoryDetail();
   const queryClient = useQueryClient();
 
   const { mutate: updateClapMutation, isPending: isClapping } = useMutation({
@@ -110,7 +110,7 @@ const StoryDetailActionsBar = ({
             clapCount={claps_count}
           />
           <ItemDetailActionButton.Respond
-            onRespond={() => {}}
+            onRespond={() => setResSheetOpen(true)}
             hasResponded={has_responded}
             responseCount={responses_count}
           />

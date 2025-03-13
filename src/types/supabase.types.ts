@@ -226,10 +226,14 @@ export type Database = {
           author_profile_picture: string | null
           author_username: string | null
           claps_count: number
-          content: string
           created_at: string
+          edited_at: string | null
+          html_content: string
           id: string
+          json_content: Json
+          parent_id: string | null
           reading_list_id: string
+          total_replies: number | null
           updated_at: string
           user_id: string
         }
@@ -238,10 +242,14 @@ export type Database = {
           author_profile_picture?: string | null
           author_username?: string | null
           claps_count?: number
-          content: string
           created_at?: string
+          edited_at?: string | null
+          html_content: string
           id?: string
+          json_content: Json
+          parent_id?: string | null
           reading_list_id: string
+          total_replies?: number | null
           updated_at?: string
           user_id: string
         }
@@ -250,14 +258,25 @@ export type Database = {
           author_profile_picture?: string | null
           author_username?: string | null
           claps_count?: number
-          content?: string
           created_at?: string
+          edited_at?: string | null
+          html_content?: string
           id?: string
+          json_content?: Json
+          parent_id?: string | null
           reading_list_id?: string
+          total_replies?: number | null
           updated_at?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "reading_list_responses_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "reading_list_responses"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "reading_list_responses_reading_list_id_fkey"
             columns: ["reading_list_id"]
@@ -968,10 +987,81 @@ export type Database = {
           is_saved: boolean
         }[]
       }
+      get_reading_list_response_by_id: {
+        Args: {
+          response_id_param: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          user_id: string
+          reading_list_id: string
+          parent_id: string
+          author_name: string
+          author_username: string
+          author_profile_picture: string
+          html_content: string
+          json_content: Json
+          claps_count: number
+          total_replies: number
+          edited_at: string
+          has_clapped: boolean
+        }[]
+      }
+      get_reading_list_response_replies: {
+        Args: {
+          parent_id_param: string
+          limit_param?: number
+          offset_param?: number
+          cursor?: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          user_id: string
+          reading_list_id: string
+          parent_id: string
+          author_name: string
+          author_username: string
+          author_profile_picture: string
+          html_content: string
+          json_content: Json
+          claps_count: number
+          total_replies: number
+          edited_at: string
+          has_clapped: boolean
+        }[]
+      }
+      get_reading_list_responses: {
+        Args: {
+          reading_list_id_param: string
+          limit_param?: number
+          offset_param?: number
+          cursor?: string
+        }
+        Returns: {
+          id: string
+          created_at: string
+          updated_at: string
+          user_id: string
+          reading_list_id: string
+          parent_id: string
+          author_name: string
+          author_username: string
+          author_profile_picture: string
+          html_content: string
+          json_content: Json
+          claps_count: number
+          total_replies: number
+          edited_at: string
+          has_clapped: boolean
+        }[]
+      }
       get_response_by_id: {
         Args: {
           response_id_param: string
-          active_user: string
         }
         Returns: {
           id: string
@@ -994,7 +1084,6 @@ export type Database = {
       get_response_replies: {
         Args: {
           parent_id_param: string
-          active_user: string
           limit_param?: number
           offset_param?: number
           cursor?: string
@@ -1144,7 +1233,6 @@ export type Database = {
       get_story_responses: {
         Args: {
           story_id_param: string
-          active_user: string
           limit_param?: number
           offset_param?: number
           cursor?: string
