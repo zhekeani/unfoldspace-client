@@ -77,6 +77,11 @@ const StoryDetailAuthorInfo = ({
             {user.has_followed ? "Unfollow" : "Follow"}
           </Button>
         )}
+        {isOwned && (
+          <Button className="tablet:hidden rounded-full font-normal">
+            <Link href={"/me/settings"}>Edit profile</Link>
+          </Button>
+        )}
       </div>
       <div className="tablet:flex-1 ">
         <div className="tablet:max-w-[500px]">
@@ -106,9 +111,15 @@ const StoryDetailAuthorInfo = ({
       </div>
 
       <div className="hidden tablet:block">
-        <Button className=" rounded-full font-normal">Follow</Button>
+        {!isOwned && (
+          <Button className=" rounded-full font-normal">Follow</Button>
+        )}
+        {isOwned && (
+          <Button className="rounded-full font-normal">
+            <Link href={"/me/settings"}>Edit profile</Link>
+          </Button>
+        )}
       </div>
-      <div></div>
     </div>
   );
 };

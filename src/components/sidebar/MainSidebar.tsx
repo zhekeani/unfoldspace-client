@@ -53,7 +53,10 @@ const MainSidebar = async () => {
             </Link>
           ))}
         </div>
-        <Link href={"/"} className="text-sub-text text-sm hover:underline">
+        <Link
+          href={"/explore-topics"}
+          className="text-sub-text text-sm hover:underline"
+        >
           See more topics
         </Link>
       </SideBarSubsectionWrapper>

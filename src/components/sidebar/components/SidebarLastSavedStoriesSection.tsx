@@ -47,7 +47,10 @@ const InnerSidebarLastSavedStoriesSection = ({
           />
         ))}
       </div>
-      <Link href={"/"} className="text-sub-text text-sm hover:underline">
+      <Link
+        href={"/me/lists"}
+        className="text-sub-text text-sm hover:underline"
+      >
         See all({stories.length})
       </Link>
     </SideBarSubsectionWrapper>

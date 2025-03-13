@@ -20,3 +20,5 @@ export type StoryDetail =
 
 export type ExtendedStoryResponse = StoryResponse & { has_clapped: boolean };
 export type ExtendedListResponse = ListResponse & { has_clapped: boolean };
+
+export type ExtendedTopic = Topic & { children: ExtendedTopic[] };
