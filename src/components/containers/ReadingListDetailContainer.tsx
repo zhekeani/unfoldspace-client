@@ -6,17 +6,18 @@ import {
 } from "@/components/context/ReadingListDetailContext";
 import ReadingListDetailSubheader from "@/components/header/protected-header/ReadingListDetailSubheader";
 import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
-import { ReadingListDetail } from "@/types/database.types";
+import { ReadingListDetail, ServiceUser } from "@/types/database.types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import ListDetailResponsesContainer from "./ListDetailResponsesContainer";
 import ReadingListDetailItemsContainer from "./ReadingListDetailItemsContainer";
 
 type ReadingListDetailContainerProps = {
   listItems: ExtendedReadingListItem[];
   readingList: ReadingListDetail;
   hasNextPage: boolean;
-  activeUserId: string;
+  activeUser: ServiceUser;
   listItemsCount: number;
   limit: number;
   currentPage: number;
@@ -26,7 +27,7 @@ type ReadingListDetailContainerProps = {
 
 const InnerReadingListDetailContainer = ({
   readingList,
-  activeUserId,
+  activeUser,
   listItems,
   hasNextPage,
   listItemsCount,
@@ -50,27 +51,34 @@ const InnerReadingListDetailContainer = ({
 
   const listItemsQueryKey = ["reading_list_items", readingList.id];
   const listDetailQueryKey = ["reading_list_detail", readingList.id];
+  const responsesQueryKey = ["responses", readingList.id];
 
   return (
     <ReadingListDetailProvider
       initialPageActionType={pageActionType}
       listDetailQueryKey={listDetailQueryKey}
       listItemsQueryKey={listItemsQueryKey}
+      responsesQueryKey={responsesQueryKey}
     >
       <div className="h-full ">
         <ReadingListDetailSubheader
           readingList={readingList}
-          activeUserId={activeUserId}
+          activeUserId={activeUser.id}
         />
         <ReadingListDetailItemsContainer
-          activeUserId={activeUserId}
-          isOwned={activeUserId === readingList.user_id}
+          activeUserId={activeUser.id}
+          isOwned={activeUser.id === readingList.user_id}
           listId={readingList.id}
           listItems={listItems}
           listItemsCount={listItemsCount}
           limit={limit}
           page={currentPage}
           hasNextPage={hasNextPage}
+        />
+        <ListDetailResponsesContainer
+          listId={readingList.id}
+          activeUser={activeUser}
+          ownerId={readingList.user_id}
         />
       </div>
     </ReadingListDetailProvider>

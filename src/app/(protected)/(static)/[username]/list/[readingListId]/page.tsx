@@ -3,9 +3,9 @@ import { ListDetailActionType } from "@/components/context/ReadingListDetailCont
 import { ExtendedReadingListItem } from "@/components/reading-list/ReadingListStoryItem";
 import { fetchListItemsByListIdOnServer } from "@/lib/component-fetches/reading-list-item/fetchReadingListItemsServer";
 import { fetchReadingListDetailByIdOnServer } from "@/lib/component-fetches/reading-list/fetchReadingListsServer";
-import { fetchActiveUserIdOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
+import { fetchActiveUserOnServer } from "@/lib/component-fetches/service-user/fetchUserServer";
 import { extractUsernameFromUrl } from "@/lib/components/subsection-tab/extractUsername";
-import { ReadingListDetail } from "@/types/database.types";
+import { ReadingListDetail, ServiceUser } from "@/types/database.types";
 
 type PageParams = {
   username: string;
@@ -25,20 +25,20 @@ const fetchPageInitialData = async (
   listItems: ExtendedReadingListItem[];
   readingList: ReadingListDetail;
   hasNextPage: boolean;
-  activeUserId: string;
+  activeUser: ServiceUser;
   listItemsCount: number;
 } | null> => {
-  const [activeUserId, listDetailRes, listItemsRes] = await Promise.all([
-    fetchActiveUserIdOnServer(),
+  const [activeUserRes, listDetailRes, listItemsRes] = await Promise.all([
+    fetchActiveUserOnServer(),
     fetchReadingListDetailByIdOnServer(listId),
     fetchListItemsByListIdOnServer(listId, limit, page),
   ]);
-  if (!activeUserId || !listDetailRes || !listItemsRes) {
+  if (!activeUserRes || !listDetailRes || !listItemsRes) {
     return null;
   }
 
   return {
-    activeUserId,
+    activeUser: activeUserRes.serviceUser,
     readingList: listDetailRes.readingList,
     ...listItemsRes,
   };

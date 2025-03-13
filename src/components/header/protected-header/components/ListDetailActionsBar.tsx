@@ -4,18 +4,18 @@ import { updateSavedReadingLists } from "@/actions/reading-list/updateSavedReadi
 import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
 import ReadingListActionsPopover from "@/components/reading-list/popovers/ReadingListActionsPopover";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { ReadingListDetail } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, BookmarkPlus, Ellipsis } from "lucide-react";
 import { toast } from "sonner";
 import ItemDetailActionButton from "./DetailActionsButtons";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../../../ui/tooltip";
 
 type ReadingListDetailActionsBarProps = {
   activeUserId: string;
@@ -28,8 +28,12 @@ const ReadingListDetailActionsBar = ({
   readingList: detailedReadingList,
   collapsible = true,
 }: ReadingListDetailActionsBarProps) => {
-  const { listDetailQueryKey, listItemsQueryKey, setPageActionType } =
-    useReadingListDetail();
+  const {
+    listDetailQueryKey,
+    listItemsQueryKey,
+    setPageActionType,
+    setResSheetOpen,
+  } = useReadingListDetail();
   const queryClient = useQueryClient();
 
   const { mutate: updateVisibilityMutation, isPending: isUpdating } =
@@ -170,7 +174,7 @@ const ReadingListDetailActionsBar = ({
             clapCount={claps_count}
           />
           <ItemDetailActionButton.Respond
-            onRespond={() => {}}
+            onRespond={() => setResSheetOpen(true)}
             hasResponded={has_responded}
             responseCount={responses_count}
           />

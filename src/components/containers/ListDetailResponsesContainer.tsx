@@ -1,6 +1,6 @@
-import ResponseEditorContainer from "@/components/containers/ResponseEditorContainer";
-import { useStoryDetail } from "@/components/context/StoryDetailContext";
+import { useReadingListDetail } from "@/components/context/ReadingListDetailContext";
 import { Spinner } from "@/components/loading/Spinner";
+import ResponseItem from "@/components/response/ResponseItem";
 import { Button } from "@/components/ui/button";
 import {
   RightBottomSheetContent,
@@ -9,58 +9,74 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { ExtendedStoryResponse } from "@/types/database.types";
-import { InfiniteData, useQueryClient } from "@tanstack/react-query";
+import { fetchListResponses } from "@/lib/component-fetches/response/fetchResponseClient";
+import {
+  ExtendedListResponse,
+  ReadingListDetail,
+  ServiceUser,
+} from "@/types/database.types";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
-import ResponseItem from "../ResponseItem";
+import { useEffect, useState } from "react";
+import ResponseEditorContainer from "./ResponseEditorContainer";
 
-type RepliesSheetProps = {
-  storyId: string;
+type ResponsesContainerProps = {
+  listId: string;
+  activeUser: ServiceUser;
   ownerId: string;
-  responses:
-    | InfiniteData<
-        {
-          responses: ExtendedStoryResponse[];
-          nextCursor: string | null;
-        },
-        unknown
-      >
-    | undefined;
-  replyStack: string[];
-  setReplyStack: Dispatch<SetStateAction<string[]>>;
-  fetchNextPage: () => void;
-  hasNextPage: boolean;
-  isFetchingNextPage: boolean;
-  activeUserId: string;
-  openReplyOnSheet: (responseId: string) => void;
-  isRefetching: boolean;
 };
 
-const StoryRepliesSheet = ({
-  storyId,
+const ListDetailResponsesContainer = ({
+  listId,
+  activeUser,
   ownerId,
-  responses,
-  replyStack,
-  setReplyStack,
-  activeUserId,
-  openReplyOnSheet,
-  hasNextPage,
-  fetchNextPage,
-  isFetchingNextPage,
-  isRefetching,
-}: RepliesSheetProps) => {
+}: ResponsesContainerProps) => {
+  const [replyStack, setReplyStack] = useState<string[]>([]);
+
   const queryClient = useQueryClient();
   const {
-    storyDetailQueryKey,
+    listDetailQueryKey,
+    isResSheetOpen,
+    setResSheetOpen,
     responsesQueryKey,
-    isResSheetOpen: isOpen,
-    setResSheetOpen: setIsOpen,
-  } = useStoryDetail();
+  } = useReadingListDetail();
+
+  const listData = queryClient.getQueryData<{ readingList: ReadingListDetail }>(
+    listDetailQueryKey
+  );
+
+  const {
+    data: responses,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isRefetching,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: responsesQueryKey,
+    queryFn: ({ pageParam = null }: { pageParam: string | null }) =>
+      fetchListResponses(listId, 5, pageParam),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const openReplyOnSheet = (responseId: string) => {
+    setReplyStack((prev) => [...prev, responseId]);
+    setResSheetOpen(true);
+  };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: responsesQueryKey });
+  }, [responsesQueryKey, queryClient, listId]);
+
+  if (!listData) return null;
+  if (error) return <p>Error loading responses</p>;
 
   const response =
     replyStack.length > 0
-      ? queryClient.getQueryData<ExtendedStoryResponse>([
+      ? queryClient.getQueryData<ExtendedListResponse>([
           "response",
           replyStack[replyStack.length - 1],
         ])
@@ -74,12 +90,12 @@ const StoryRepliesSheet = ({
         return prev.slice(0, -1);
       });
     } else {
-      setIsOpen(false);
+      setResSheetOpen(false);
     }
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isResSheetOpen} onOpenChange={setResSheetOpen}>
       <RightBottomSheetContent className=" overflow-y-scroll">
         <SheetHeader className="px-0">
           <div className="flex items-center gap-2">
@@ -97,29 +113,34 @@ const StoryRepliesSheet = ({
         </SheetHeader>
 
         <div>
-          {response && (
+          {isLoading && (
+            <div className="w-full my-16 flex justify-center">
+              <Spinner />
+            </div>
+          )}
+          {!isLoading && response && (
             <ResponseItem
               openReplyOnSheet={openReplyOnSheet}
               response={response}
-              activeUserId={activeUserId}
+              activeUserId={activeUser.id}
               replyOpen={true}
-              entityQueryKey={storyDetailQueryKey}
+              entityQueryKey={listDetailQueryKey}
               responsesQueryKey={responsesQueryKey}
-              responseType="story"
+              responseType="list"
               ownerId={ownerId}
             />
           )}
-          {!response && (
+          {!isLoading && !response && (
             <div>
               <div>
                 <div className="mt-6 pb-8 border-b-[1px] border-b-gray-200">
                   <ResponseEditorContainer
-                    responseType="story"
+                    responseType="list"
                     initialFocus={true}
-                    entityId={storyId}
+                    entityId={listId}
                     onSuccessCb={() => {
                       queryClient.invalidateQueries({
-                        queryKey: storyDetailQueryKey,
+                        queryKey: listDetailQueryKey,
                       });
                       queryClient.invalidateQueries({
                         queryKey: responsesQueryKey,
@@ -140,10 +161,10 @@ const StoryRepliesSheet = ({
                       openReplyOnSheet={openReplyOnSheet}
                       key={response.id}
                       response={response}
-                      activeUserId={activeUserId}
-                      entityQueryKey={storyDetailQueryKey}
+                      activeUserId={activeUser.id}
+                      entityQueryKey={listDetailQueryKey}
                       responsesQueryKey={responsesQueryKey}
-                      responseType="story"
+                      responseType="list"
                       ownerId={ownerId}
                     />
                   ))
@@ -163,7 +184,7 @@ const StoryRepliesSheet = ({
                   size={"sm"}
                   className="mb-6 mt-10 font-normal rounded-full text-main-text text-xs"
                 >
-                  Previous responses
+                  Previous
                 </Button>
               )}
             </div>
@@ -174,4 +195,4 @@ const StoryRepliesSheet = ({
   );
 };
 
-export default StoryRepliesSheet;
+export default ListDetailResponsesContainer;

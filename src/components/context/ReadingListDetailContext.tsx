@@ -20,6 +20,7 @@ type ReadingListDetailContextType = {
   setPageActionType: (action: ListDetailActionType) => void;
   listItemsQueryKey: string[];
   listDetailQueryKey: string[];
+  responsesQueryKey: string[];
 
   reorderedListItems: ReorderedItem[] | null;
   isOrderChange: boolean;
@@ -30,6 +31,9 @@ type ReadingListDetailContextType = {
   hasItemToRemove: boolean;
   setItemsToRemove: (items: ExtendedReadingListItem[]) => void;
   resetItemsToRemove: () => void;
+
+  isResSheetOpen: boolean;
+  setResSheetOpen: (isOpen: boolean) => void;
 };
 
 const ReadingListDetailContext = createContext<
@@ -41,6 +45,7 @@ type ReadingListDetailProviderProps = {
   initialPageActionType?: ListDetailActionType;
   listItemsQueryKey: string[];
   listDetailQueryKey: string[];
+  responsesQueryKey: string[];
 };
 
 export const ReadingListDetailProvider = ({
@@ -48,7 +53,9 @@ export const ReadingListDetailProvider = ({
   listDetailQueryKey,
   listItemsQueryKey,
   initialPageActionType = null,
+  responsesQueryKey,
 }: ReadingListDetailProviderProps) => {
+  const [isResSheetOpen, setResSheetOpen] = useState(false);
   const [pageActionType, setPageActionType] = useState<ListDetailActionType>(
     initialPageActionType
   );
@@ -73,6 +80,7 @@ export const ReadingListDetailProvider = ({
         pageActionType,
         listDetailQueryKey,
         listItemsQueryKey,
+        responsesQueryKey,
         setPageActionType,
 
         reorderedListItems: reorderedItems,
@@ -84,6 +92,9 @@ export const ReadingListDetailProvider = ({
         hasItemToRemove,
         setItemsToRemove: setListItemsToRemove,
         resetItemsToRemove: () => setListItemsToRemove(null),
+
+        isResSheetOpen,
+        setResSheetOpen,
       }}
     >
       {children}

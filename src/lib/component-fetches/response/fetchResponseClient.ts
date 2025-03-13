@@ -41,6 +41,40 @@ export const fetchStoryResponses = async (
   }
 };
 
+export const fetchListResponses = async (
+  listId: string,
+  limit: number,
+  pageParam?: null | string
+) => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  try {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) throw new Error("Database client unavailable.");
+
+    const { data, error } = await supabase.rpc("get_reading_list_responses", {
+      reading_list_id_param: listId,
+      limit_param: limit,
+      cursor: pageParam || undefined,
+    });
+
+    if (error || !data) {
+      console.error(error);
+      throw new Error(error.message);
+    }
+
+    return {
+      responses: data,
+      nextCursor: data.length > 0 ? data[data.length - 1].created_at : null,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      responses: [],
+      nextCursor: null,
+    };
+  }
+};
+
 export const fetchResponse = async <
   T extends ExtendedStoryResponse | ExtendedListResponse,
 >(
