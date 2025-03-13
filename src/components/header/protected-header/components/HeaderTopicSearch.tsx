@@ -97,7 +97,6 @@ const HeaderTopicSearch = () => {
         <div
           className="w-[300px] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full bg-white rounded-none shadow-md"
           onMouseEnter={() => clearTimeout(timeoutRef.current!)}
-          onMouseLeave={handleBlur}
         >
           <PopoverGroup className="w-full">
             <PopoverButton className="w-full">
