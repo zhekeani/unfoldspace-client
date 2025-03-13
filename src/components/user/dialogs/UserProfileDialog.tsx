@@ -161,7 +161,7 @@ const UserProfileDialog = ({ children }: { children: ReactNode }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
       <SettingsDialogContentContainer heading="Profile information">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)}>

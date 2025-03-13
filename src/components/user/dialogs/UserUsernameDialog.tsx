@@ -100,7 +100,7 @@ const UserUsernameDialog = ({ children }: { children: ReactNode }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogTrigger className="w-full flex justify-between py-2">
+      <DialogTrigger className="w-full flex justify-between py-2 cursor-pointer">
         {children}
       </DialogTrigger>
       <SettingsDialogContentContainer heading="Username">

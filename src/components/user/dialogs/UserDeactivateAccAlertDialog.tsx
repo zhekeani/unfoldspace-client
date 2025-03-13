@@ -12,7 +12,7 @@ const UserDeactivateAccAlertDialog = ({ children }: AlertDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
       <SettingsDialogContentContainer heading="Deactivate account">
         <div>
           <p className="text-sm text-gray-800">

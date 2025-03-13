@@ -1,5 +1,5 @@
 export const getSupabaseConfig = () => {
-  const isLocal = true;
+  const isLocal = process.env.NEXT_PUBLIC_SUPABASE_ENV === "local";
 
   return {
     url: isLocal

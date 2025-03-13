@@ -71,7 +71,7 @@ const UserEmailDialog = ({ children }: { children: ReactNode }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger className="cursor-pointer">{children}</DialogTrigger>
       <SettingsDialogContentContainer heading="Email address">
         <Form {...form}>
           <form
