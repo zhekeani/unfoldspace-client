@@ -9,6 +9,8 @@ import { useBlockEditor } from "@/components/editor/hooks/useBlockEditor";
 import { useBlockEditorAutoScroll } from "@/components/editor/hooks/useBlockEditorAutoScroll";
 import { useStorySave } from "@/components/editor/hooks/useStorySave";
 import { extractImageUrlsFromJSONContent } from "@/lib/editor/utils/extractImages";
+import { StoryDetail } from "@/types/database.types";
+import { useQueryClient } from "@tanstack/react-query";
 import FloatingTextMenu from "../menus/FloatingTextMenu/FloatingTextMenu";
 import LinkMenu from "../menus/LinkMenu/LinkMenu";
 import { TextMenu } from "../menus/TextMenu/TextMenu";
@@ -21,13 +23,30 @@ const BlockEditor = ({ initialContent }: BlockEditorProps) => {
   const menuContainerRef = useRef(null);
   const editorWrapperRef = useRef<HTMLDivElement>(null);
   const { onContentChange } = useStorySave();
-  const { isEditable, coverImage, setCoverImage } = useStoryEditor();
+  const {
+    isEditable,
+    coverImage,
+    setCoverImage,
+    storyQueryKey,
+    setSavedStatus,
+  } = useStoryEditor();
+  const queryClient = useQueryClient();
+  const currentStory = queryClient.getQueryData<StoryDetail>(storyQueryKey);
+
+  const checkUnsave = (currentContent: JSONContent) => {
+    if (currentStory) {
+      if (currentStory.json_content !== currentContent) {
+        setSavedStatus("unsaved");
+      }
+    }
+  };
 
   const { editor } = useBlockEditor({
     content: initialContent || { type: "doc", content: [] },
     editable: isEditable,
     onTransaction({ editor: currentEditor }) {
       const newContent = currentEditor.getJSON();
+      checkUnsave(newContent);
 
       onContentChange(newContent);
       const images = extractImageUrlsFromJSONContent(newContent);

@@ -60,7 +60,7 @@ export const useStorySave = () => {
         router.replace(`/editor?storyId=${providedStoryId}`);
       }
 
-      queryClient.invalidateQueries({ queryKey: storyQueryKey });
+      // queryClient.invalidateQueries({ queryKey: storyQueryKey });
 
       console.log("Story auto-saved successfully!", response.data.draft.id);
     }, 2000)
