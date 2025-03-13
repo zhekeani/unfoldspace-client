@@ -27,17 +27,19 @@ const SidebarAdviceBanner = () => {
 
         <h4 className="text-base font-semibold">Writing in UnfoldSpace</h4>
         <div className="mt-3 flex flex-col gap-1">
-          <Link href="/" className="font-medium">
+          <Link href="/" className="font-medium text-sm">
             New writer FAQ
           </Link>
-          <Link href="/" className="font-medium">
+          <Link href="/" className="font-medium text-sm">
             Expert writing advice
           </Link>
-          <Link href="/" className="font-medium">
+          <Link href="/" className="font-medium text-sm">
             Grow your readership
           </Link>
         </div>
-        <Button className="mt-6 rounded-full font-normal">Start writing</Button>
+        <Button size={"sm"} className="mt-6 rounded-full text-xs font-normal">
+          <Link href={`/editor`}>Start writing</Link>
+        </Button>
       </div>
     </SideBarSubsectionWrapper>
   );
