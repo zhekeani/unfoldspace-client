@@ -43,20 +43,22 @@ const EditorUpdateTitlePopover = ({
                   <div className="w-[68px] text-sm text-sub-text">
                     <p>Title</p>
                   </div>
-                  <FormControl>
-                    <Input
-                      minLength={5}
-                      maxLength={100}
-                      placeholder="Write a preview title"
-                      className="!text-sm font-normal border-x-0 border-t-0 rounded-none text-main-text placeholder:text-sub-text/50 shadow-none border-b-[1px] px-0 focus-visible:ring-0 focus-visible:border-b-main-text"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        debouncedSubmit(form.getValues());
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
+                  <div className="w-full">
+                    <FormControl>
+                      <Input
+                        minLength={5}
+                        maxLength={100}
+                        placeholder="Write a preview title"
+                        className="!text-sm font-normal border-x-0 border-t-0 rounded-none text-main-text placeholder:text-sub-text/50 shadow-none border-b-[1px] px-0 focus-visible:ring-0 focus-visible:border-b-main-text"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          debouncedSubmit(form.getValues());
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs mt-0.5" />
+                  </div>
                 </FormItem>
               )}
             />
@@ -69,20 +71,22 @@ const EditorUpdateTitlePopover = ({
                   <div className="w-[68px] text-sm text-sub-text">
                     <p>Subtitle</p>
                   </div>
-                  <FormControl>
-                    <Input
-                      minLength={10}
-                      maxLength={300}
-                      placeholder="Write a preview subtitle..."
-                      className="!text-sm font-base border-x-0 border-t-0 rounded-none text-main-text placeholder:text-sub-text/50 shadow-none border-b-[1px] px-0 focus-visible:ring-0 focus-visible:border-b-main-text"
-                      {...field}
-                      onChange={(e) => {
-                        field.onChange(e);
-                        debouncedSubmit(form.getValues());
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
+                  <div className="w-full">
+                    <FormControl>
+                      <Input
+                        minLength={10}
+                        maxLength={300}
+                        placeholder="Write a preview subtitle..."
+                        className="!text-sm font-base border-x-0 border-t-0 rounded-none text-main-text placeholder:text-sub-text/50 shadow-none border-b-[1px] px-0 focus-visible:ring-0 focus-visible:border-b-main-text"
+                        {...field}
+                        onChange={(e) => {
+                          field.onChange(e);
+                          debouncedSubmit(form.getValues());
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs mt-0.5" />
+                  </div>
                 </FormItem>
               )}
             />

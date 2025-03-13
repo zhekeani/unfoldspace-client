@@ -71,7 +71,7 @@ const EditorActionsPopover = ({ children }: EditorActionsPopoverProps) => {
                 disabled={!storyId}
                 onClick={() => setActionType("title")}
               >
-                Change display tile/subtitle
+                Change display title/subtitle
               </PopoverButton>
               <PopoverButton
                 disabled={!storyId}
