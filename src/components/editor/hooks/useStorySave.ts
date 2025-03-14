@@ -48,10 +48,7 @@ export const useStorySave = () => {
       }
 
       queryClient.setQueryData(storyQueryKey, () => {
-        return {
-          storyId,
-          story: response.data.draft,
-        };
+        return response.data.draft;
       });
 
       setSavedStatus("saved");
@@ -99,10 +96,7 @@ export const useStorySave = () => {
           }
 
           queryClient.setQueryData(storyQueryKey, () => {
-            return {
-              storyId,
-              story: response.data.draft,
-            };
+            return response.data.draft;
           });
 
           setSavedStatus("saved");

@@ -71,7 +71,7 @@ const CoverImageSelector = ({
               <img
                 src={coverImage}
                 alt="Selected Preview"
-                className="object-cover "
+                className="object-cover w-full h-full"
               />
 
               <Button

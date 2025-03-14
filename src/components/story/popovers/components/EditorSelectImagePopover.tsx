@@ -1,8 +1,8 @@
-import { extractImageUrlsFromJSONContent } from "@/components/../lib/editor/utils/extractImages";
-import { cn } from "@/components/../lib/utils";
-import { Story } from "@/components/../types/database.types";
 import { useStoryEditor } from "@/components/context/StoryEditorContext";
 import { Button } from "@/components/ui/button";
+import { extractImageUrlsFromJSONContent } from "@/lib/editor/utils/extractImages";
+import { cn } from "@/lib/utils";
+import { Story } from "@/types/database.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { JSONContent } from "@tiptap/react";
 
@@ -17,6 +17,7 @@ const EditorSelectImagePopover = ({
   const { storyQueryKey, setCoverImage, coverImage } = useStoryEditor();
 
   const story = queryClient.getQueryData<Story | null>(storyQueryKey);
+  console.log(story);
   const images = story
     ? extractImageUrlsFromJSONContent(story.json_content as JSONContent)
     : [];
