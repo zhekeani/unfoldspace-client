@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  StoryEditorProvider,
-  useStoryEditor,
-} from "@/components/context/StoryEditorContext";
+import { useStoryEditor } from "@/components/context/StoryEditorContext";
 import BlockEditor from "@/components/editor/components/BlockEditor/BlockEditor";
 import { fetchStoryByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import { ServiceUser, Story, Topic } from "@/types/database.types";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { JSONContent } from "@tiptap/react";
-import { useState } from "react";
 import EditorHeader from "../header/editor-header/EditorHeader";
 
 type StoryEditorContainer = {
@@ -22,7 +14,7 @@ type StoryEditorContainer = {
   topics: Topic[];
 };
 
-const InnerStoryEditorContainer = ({
+const StoryEditorContainer = ({
   pageData,
   activeUser,
 }: StoryEditorContainer) => {
@@ -50,25 +42,6 @@ const InnerStoryEditorContainer = ({
         initialContent={story ? (story.json_content as JSONContent) : undefined}
       />
     </div>
-  );
-};
-
-const StoryEditorContainer = (props: StoryEditorContainer) => {
-  const [queryClient] = useState(() => new QueryClient());
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      <StoryEditorProvider
-        topics={props.topics}
-        activeUserId={props.activeUser.id}
-        initialStoryId={props.pageData ? props.pageData.storyId : null}
-        initialCoverImage={
-          props.pageData ? props.pageData.story.cover_image : null
-        }
-      >
-        <InnerStoryEditorContainer {...props} />
-      </StoryEditorProvider>
-    </QueryClientProvider>
   );
 };
 
