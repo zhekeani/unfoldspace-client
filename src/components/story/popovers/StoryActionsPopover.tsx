@@ -42,7 +42,7 @@ const StoryActionsPopover = ({
   const handleCopyLink = async () => {
     try {
       const url = new URL(
-        `/@${storyUserUsername}/list/${storyId}`,
+        `/@${storyUserUsername}/${storyId}`,
         window.location.origin
       );
 

@@ -1304,6 +1304,7 @@ export type Database = {
         }
         Returns: {
           id: string
+          created_at: string
           title: string
           is_saved: boolean
           is_default: boolean

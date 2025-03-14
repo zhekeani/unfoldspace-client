@@ -72,6 +72,7 @@ const StoryDetailAuthorInfo = ({
           <Button
             disabled={isUpdateFollowing}
             onClick={onFollow}
+            variant={user.has_followed ? "outline" : "default"}
             className="tablet:hidden rounded-full font-normal"
           >
             {user.has_followed ? "Unfollow" : "Follow"}
@@ -112,7 +113,14 @@ const StoryDetailAuthorInfo = ({
 
       <div className="hidden tablet:block">
         {!isOwned && (
-          <Button className=" rounded-full font-normal">Follow</Button>
+          <Button
+            onClick={onFollow}
+            variant={user.has_followed ? "outline" : "default"}
+            disabled={isUpdateFollowing}
+            className=" rounded-full font-normal"
+          >
+            {user.has_followed ? "Unfollow" : "Follow"}
+          </Button>
         )}
         {isOwned && (
           <Button className="rounded-full font-normal">

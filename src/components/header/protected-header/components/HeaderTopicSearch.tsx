@@ -94,10 +94,7 @@ const HeaderTopicSearch = () => {
         </form>
       </Form>
       {isFocused && (
-        <div
-          className="w-[300px] absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full bg-white rounded-none shadow-md"
-          onMouseEnter={() => clearTimeout(timeoutRef.current!)}
-        >
+        <div className="w-[300px] absolute z-50 bottom-0 left-1/2 -translate-x-1/2 translate-y-full bg-white rounded-none shadow-md ">
           <PopoverGroup className="w-full">
             <PopoverButton className="w-full">
               <Link
