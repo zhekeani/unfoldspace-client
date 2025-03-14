@@ -18,7 +18,7 @@ import { ServiceUser } from "@/types/database.types";
 import { UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { settingLinks, userLinks } from "../constant/links";
 
 type HeaderUserDropdownProps = {
@@ -31,11 +31,10 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
 
   const pathname = usePathname();
 
-  const logout = (e: MouseEvent<HTMLAnchorElement>) => {
+  const logout = () => {
     const supabase = getSupabaseBrowserClient();
 
     if (supabase) {
-      e.preventDefault();
       supabase.auth.signOut();
     }
   };
@@ -140,21 +139,21 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           <PopoverButton
             onClick={(e) => {
               e.stopPropagation();
+              logout();
             }}
             className="py-3"
             asChild
           >
-            <Link
+            <div
               role="button"
-              href="/api/auth/logout"
-              onClick={logout}
+              // href="/api/auth/logout"
               className="w-full justify-start  cursor-pointer text-sub-text hover:text-main-text px-4 py-1"
             >
               <div className="flex flex-col leading-3 gap-3">
                 <span className="font-medium">Sign out</span>
                 <span className="font-normal">{serviceUser?.email}</span>
               </div>
-            </Link>
+            </div>
           </PopoverButton>
         </PopoverGroup>
       </PopoverContent>
