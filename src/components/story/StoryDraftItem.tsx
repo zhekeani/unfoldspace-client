@@ -60,7 +60,7 @@ const StoryDraftItem = ({ draft: initialDraft }: StoryDraftItemProps) => {
     <div className="py-5 border-b-[1px] border-complement-light-gray">
       <div>
         <Link
-          href={`/editor/${draft.id}`}
+          href={`/editor?storyId=${draft.id}`}
           className="font-medium text-main-text line-clamp-2"
         >
           {draft.title}
@@ -91,7 +91,7 @@ const StoryDraftItem = ({ draft: initialDraft }: StoryDraftItemProps) => {
           <PopoverContent className="w-fit p-1">
             <div className="flex flex-col items-start  text-xs-sm">
               <Link
-                href={`/editor/${draft.id}`}
+                href={`/editor?storyId=${draft.id}`}
                 className="w-full justify-start inline-flex items-center  gap-2 whitespace-nowrap rounded-md  transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-sub-text"
               >
                 Edit draft
