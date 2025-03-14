@@ -13,11 +13,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { ServiceUser } from "@/types/database.types";
 import { UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { settingLinks, userLinks } from "../constant/links";
 
 type HeaderUserDropdownProps = {
@@ -30,14 +31,14 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
 
   const pathname = usePathname();
 
-  // const logout = (e: MouseEvent<HTMLAnchorElement>) => {
-  //   const supabase = getSupabaseBrowserClient();
+  const logout = (e: MouseEvent<HTMLAnchorElement>) => {
+    const supabase = getSupabaseBrowserClient();
 
-  //   if (supabase) {
-  //     e.preventDefault();
-  //     supabase.auth.signOut();
-  //   }
-  // };
+    if (supabase) {
+      e.preventDefault();
+      supabase.auth.signOut();
+    }
+  };
 
   return (
     <Popover open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
@@ -135,7 +136,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           ))}
         </PopoverGroup>
         <PopoverDivider />
-        {/* <PopoverGroup className="py-5 px-1">
+        <PopoverGroup className="py-5 px-1">
           <PopoverButton
             onClick={(e) => {
               e.stopPropagation();
@@ -155,7 +156,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
               </div>
             </Link>
           </PopoverButton>
-        </PopoverGroup> */}
+        </PopoverGroup>
       </PopoverContent>
     </Popover>
   );

@@ -35,7 +35,8 @@ export async function middleware(request: NextRequest) {
   // Check if the route is protected
   const isProtectedRoute =
     protectedRoutes.some((route) => requestedPath.startsWith(route)) ||
-    requestedPath.startsWith("/home/%40"); // Protect dynamic username routes
+    requestedPath.startsWith("/%40") ||
+    requestedPath.startsWith("/@"); // Protect dynamic username routes
 
   if (!user && isProtectedRoute) {
     return NextResponse.redirect(new URL("/", request.url));
