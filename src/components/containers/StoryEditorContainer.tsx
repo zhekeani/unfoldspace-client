@@ -33,7 +33,10 @@ const InnerStoryEditorContainer = ({
     queryFn: () => fetchStoryByIdOnClient(pageData!.storyId),
     enabled: !!pageData && !!pageData.storyId,
     initialData: pageData?.story,
-    staleTime: 5 * 60 * 1000,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
   });
 
   if (error) return null;
