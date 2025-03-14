@@ -8,8 +8,10 @@ const calculateReadTime = (wordsCount: number): string => {
 export const timeAgo = (isoDate: string): string => {
   const now = new Date();
   const pastDate = new Date(isoDate);
-  const diffMs = now.getTime() - pastDate.getTime(); // Difference in milliseconds
 
+  const nowInUS = new Date(new Intl.DateTimeFormat("en-US").format(now));
+
+  const diffMs = nowInUS.getTime() - pastDate.getTime();
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
