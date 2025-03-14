@@ -60,7 +60,8 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
         <PopoverGroup className="py-3 px-1">
           <PopoverButton
             asChild
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setIsDropdownOpen(false);
             }}
           >
@@ -84,7 +85,10 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           </PopoverButton>
           {userLinks.map((userLink) => (
             <PopoverButton
-              onClick={() => setIsDropdownOpen(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDropdownOpen(false);
+              }}
               key={userLink.label}
               asChild
             >
@@ -116,7 +120,10 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           {settingLinks.map((settingLink) => (
             <PopoverButton
               key={settingLink.label}
-              onClick={() => setIsDropdownOpen(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDropdownOpen(false);
+              }}
               asChild
             >
               <Link
@@ -130,7 +137,13 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
         </PopoverGroup>
         <PopoverDivider />
         <PopoverGroup className="py-5 px-1">
-          <PopoverButton className="py-3" asChild>
+          <PopoverButton
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            className="py-3"
+            asChild
+          >
             <Link
               role="button"
               href="/api/auth/logout"
