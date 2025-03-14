@@ -1,21 +1,37 @@
+import { deletePublishedStory } from "@/actions/story/deleteStory";
+import {
+  PopoverButton,
+  PopoverGroup,
+} from "@/components/popover/components/ExtendedPopover";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { fetchStoryByIdOnClient } from "@/lib/component-fetches/story/fetchStoriesClient";
 import calculateReadTime from "@/lib/story/calculateReadTime";
 import convertIsoDate from "@/lib/story/convertIsoDate";
 import { extractFirstParagraph } from "@/lib/tiptap/extractFirstParagraph";
 import { Story } from "@/types/database.types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { JSONContent } from "@tiptap/react";
 import { Dot, Ellipsis, Share } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
+import StoryDeletionAlertDialog from "./dialogs/StoryDeletionAlertDialog";
 
 type StoryPublishedItemProps = {
   story: Story;
+  storiesQueryKey: string[];
 };
 
 const StoryPublishedItem = ({
   story: initialStory,
+  storiesQueryKey,
 }: StoryPublishedItemProps) => {
+  const queryClient = useQueryClient();
+
   const { data: story, error: storyError } = useQuery({
     queryKey: ["draft", initialStory.id],
     queryFn: () => fetchStoryByIdOnClient(initialStory.id),
@@ -23,6 +39,36 @@ const StoryPublishedItem = ({
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+  });
+
+  const { mutate: deleteMutation, isPending: isDeleting } = useMutation({
+    mutationFn: () => deletePublishedStory(initialStory.id),
+    onMutate: () => {
+      queryClient.setQueryData(
+        storiesQueryKey,
+        (oldData?: { stories: Story[] }) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            drafts: oldData.stories.filter(
+              (story) => story.id !== initialStory.id
+            ),
+          };
+        }
+      );
+    },
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.error);
+      } else {
+        toast.success("Successfully deleted story");
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: storiesQueryKey });
+    },
   });
 
   if (storyError || !story) {
@@ -70,9 +116,28 @@ const StoryPublishedItem = ({
           <Button size="icon" variant="ghost">
             <Share strokeWidth={1.5} className="text-sub-text" />
           </Button>
-          <Button size={"icon"} variant={"ghost"}>
-            <Ellipsis strokeWidth={1.5} className="text-sub-text" />
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button size="icon" variant="ghost">
+                <Ellipsis strokeWidth={1.5} className="text-sub-text" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <div className="flex flex-col items-start ">
+                <PopoverGroup>
+                  <PopoverButton>
+                    <Link href={`/editor?storyId=${story.id}`}>Edit story</Link>
+                  </PopoverButton>
+                  <StoryDeletionAlertDialog
+                    isDeleting={isDeleting}
+                    handleDelete={deleteMutation}
+                  >
+                    <PopoverButton variant="danger">Delete story</PopoverButton>
+                  </StoryDeletionAlertDialog>
+                </PopoverGroup>
+              </div>
+            </PopoverContent>
+          </Popover>
         </div>
       </div>
     </div>

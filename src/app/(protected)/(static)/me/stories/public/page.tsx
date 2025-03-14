@@ -53,7 +53,7 @@ const MePublishedPage = async ({
   }
 
   return (
-    <main className="w-full min-h-fit pt-2 desktop:pt-6 flex flex-col">
+    <main className="w-full min-h-fit pt-2 desktop:pt-2 flex flex-col">
       <div style={{ minHeight: "calc(100vh - 400px)" }}>
         <MePublishedStoriesContainer
           limit={limit}

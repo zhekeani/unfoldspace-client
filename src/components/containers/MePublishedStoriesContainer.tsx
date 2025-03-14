@@ -10,7 +10,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type MePublishedStoriesContainerProps = {
   stories: Story[];
@@ -31,8 +31,13 @@ const InnerMePublishedStoriesContainer = ({
   activeUserId,
 }: MePublishedStoriesContainerProps) => {
   const queryClient = useQueryClient();
+  const storiesQueryKey = useMemo(
+    () => ["stories", activeUserId],
+    [activeUserId]
+  );
+
   const { data: storiesRes, error: storiesError } = useQuery({
-    queryKey: ["stories"],
+    queryKey: storiesQueryKey,
     queryFn: () =>
       fetchUserStoriesByIdOnClient(activeUserId, limit, currentPage),
     initialData: {
@@ -46,7 +51,7 @@ const InnerMePublishedStoriesContainer = ({
   });
 
   useEffect(() => {
-    queryClient.setQueryData(["saved_reading_lists", activeUserId], () => {
+    queryClient.setQueryData(storiesQueryKey, () => {
       return {
         stories: initialStories,
         hasNextPage: initialHasNextPage,
@@ -60,6 +65,7 @@ const InnerMePublishedStoriesContainer = ({
     currentPage,
     activeUserId,
     initialStories,
+    storiesQueryKey,
   ]);
 
   if (storiesError || !storiesRes) return null;
@@ -78,9 +84,13 @@ const InnerMePublishedStoriesContainer = ({
           </p>
         )}
         {stories.length > 0 && (
-          <div className="w-full flex flex-col gap-9 items-start min-h-[400px]">
+          <div className="w-full flex flex-col gap-4 items-start min-h-[400px]">
             {stories.map((story) => (
-              <StoryPublishedItem key={story.id} story={story} />
+              <StoryPublishedItem
+                key={story.id}
+                story={story}
+                storiesQueryKey={storiesQueryKey}
+              />
             ))}
           </div>
         )}
