@@ -136,7 +136,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           ))}
         </PopoverGroup>
         <PopoverDivider />
-        <PopoverGroup className="py-5 px-1">
+        {/* <PopoverGroup className="py-5 px-1">
           <PopoverButton
             onClick={(e) => {
               e.stopPropagation();
@@ -156,7 +156,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
               </div>
             </Link>
           </PopoverButton>
-        </PopoverGroup>
+        </PopoverGroup> */}
       </PopoverContent>
     </Popover>
   );
