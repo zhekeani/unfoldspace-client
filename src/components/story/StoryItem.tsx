@@ -199,13 +199,20 @@ const StoryItem = ({
               </p>
             </div>
             <div className="flex-shrink-0 tablet:hidden">
-              <img
-                src={story.cover_image!}
-                alt={story.title}
-                width={80}
-                height={53}
-                className="ml-6"
-              />
+              {!story.cover_image && (
+                <div className="ml-14 w-[80px] h-[53px] flex items-center justify-center border-[1px]">
+                  <p className="font-gt-super text-xs mobile:text-sm">Unfold</p>
+                </div>
+              )}
+              {story.cover_image && (
+                <img
+                  src={story.cover_image}
+                  alt={story.title}
+                  width={80}
+                  height={53}
+                  className="ml-6"
+                />
+              )}
             </div>
           </Link>
 
