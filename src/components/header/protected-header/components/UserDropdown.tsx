@@ -17,7 +17,7 @@ import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import { ServiceUser } from "@/types/database.types";
 import { UserRound } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { settingLinks, userLinks } from "../constant/links";
 
@@ -29,6 +29,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   useUserStateChange();
 
+  const router = useRouter();
   const pathname = usePathname();
 
   const logout = () => {
@@ -59,8 +60,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
         <PopoverGroup className="py-3 px-1">
           <PopoverButton
             asChild
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               setIsDropdownOpen(false);
             }}
           >
@@ -84,8 +84,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           </PopoverButton>
           {userLinks.map((userLink) => (
             <PopoverButton
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 setIsDropdownOpen(false);
               }}
               key={userLink.label}
@@ -119,8 +118,7 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
           {settingLinks.map((settingLink) => (
             <PopoverButton
               key={settingLink.label}
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 setIsDropdownOpen(false);
               }}
               asChild
@@ -137,15 +135,15 @@ const HeaderUserDropdown = ({ serviceUser }: HeaderUserDropdownProps) => {
         <PopoverDivider />
         <PopoverGroup className="py-5 px-1">
           <PopoverButton
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               logout();
+              setIsDropdownOpen(false);
+              router.push("/");
             }}
             className="py-3"
             asChild
           >
             <div
-              role="button"
               // href="/api/auth/logout"
               className="w-full justify-start  cursor-pointer text-sub-text hover:text-main-text px-4 py-1"
             >
