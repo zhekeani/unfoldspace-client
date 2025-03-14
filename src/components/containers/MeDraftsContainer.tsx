@@ -9,7 +9,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type MeDraftsContainerProps = {
   drafts: StoryDraft[];
@@ -30,8 +30,13 @@ const InnerMeDraftsContainer = ({
   currentPage,
 }: MeDraftsContainerProps) => {
   const queryClient = useQueryClient();
+  const draftsQueryKey = useMemo(
+    () => ["drafts", activeUserId],
+    [activeUserId]
+  );
+
   const { data: draftsRes, error: draftsError } = useQuery({
-    queryKey: ["drafts", activeUserId],
+    queryKey: draftsQueryKey,
     queryFn: () =>
       fetchActiveUserDraftsOnClient(activeUserId, limit, currentPage),
     initialData: {
@@ -45,7 +50,7 @@ const InnerMeDraftsContainer = ({
   });
 
   useEffect(() => {
-    queryClient.setQueryData(["drafts", activeUserId], () => {
+    queryClient.setQueryData(draftsQueryKey, () => {
       return {
         drafts: initialDrafts,
         hasNextPage: initialHasNextPage,
@@ -59,6 +64,7 @@ const InnerMeDraftsContainer = ({
     activeUserId,
     initialDrafts,
     initialDraftsCount,
+    draftsQueryKey,
   ]);
 
   if (draftsError || !draftsRes) return null;
@@ -79,7 +85,11 @@ const InnerMeDraftsContainer = ({
         {drafts.length > 0 && (
           <div className="w-full flex flex-col gap-4 items-start min-h-[400px]">
             {drafts.map((draft) => (
-              <StoryDraftItem key={draft.id} draft={draft} />
+              <StoryDraftItem
+                key={draft.id}
+                draft={draft}
+                draftsQueryKey={draftsQueryKey}
+              />
             ))}
           </div>
         )}

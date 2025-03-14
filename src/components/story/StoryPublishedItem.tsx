@@ -71,7 +71,7 @@ const StoryPublishedItem = ({
             <Share strokeWidth={1.5} className="text-sub-text" />
           </Button>
           <Button size={"icon"} variant={"ghost"}>
-            <Ellipsis strokeWidth={1.5} className="text-sub-text"></Ellipsis>
+            <Ellipsis strokeWidth={1.5} className="text-sub-text" />
           </Button>
         </div>
       </div>

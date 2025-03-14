@@ -1,5 +1,6 @@
 "use client";
 
+import { deletePublishedStory } from "@/actions/story/deleteStory";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -10,10 +11,16 @@ import { fetchDraftByIdOnClient } from "@/lib/component-fetches/story/fetchStori
 import calculateReadTime, { timeAgo } from "@/lib/story/calculateReadTime";
 import { extractFirstParagraph } from "@/lib/tiptap/extractFirstParagraph";
 import { Story } from "@/types/database.types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { JSONContent } from "@tiptap/react";
 import { ChevronDown, Dot } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
+import {
+  PopoverButton,
+  PopoverGroup,
+} from "../popover/components/ExtendedPopover";
+import StoryDeletionAlertDialog from "./dialogs/StoryDeletionAlertDialog";
 
 export type StoryDraft = Pick<
   Story,
@@ -29,9 +36,14 @@ export type StoryDraft = Pick<
 
 type StoryDraftItemProps = {
   draft: StoryDraft;
+  draftsQueryKey: string[];
 };
 
-const StoryDraftItem = ({ draft: initialDraft }: StoryDraftItemProps) => {
+const StoryDraftItem = ({
+  draft: initialDraft,
+  draftsQueryKey,
+}: StoryDraftItemProps) => {
+  const queryClient = useQueryClient();
   const { data: draft, error: draftError } = useQuery({
     queryKey: ["draft", initialDraft.id],
     queryFn: () => fetchDraftByIdOnClient(initialDraft.id),
@@ -39,6 +51,36 @@ const StoryDraftItem = ({ draft: initialDraft }: StoryDraftItemProps) => {
     staleTime: 5 * 60 * 1000,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+  });
+
+  const { mutate: deleteMutation, isPending: isDeleting } = useMutation({
+    mutationFn: () => deletePublishedStory(initialDraft.id),
+    onMutate: () => {
+      queryClient.setQueryData(
+        draftsQueryKey,
+        (oldData?: { drafts: StoryDraft[] }) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            drafts: oldData.drafts.filter(
+              (draft) => draft.id !== initialDraft.id
+            ),
+          };
+        }
+      );
+    },
+    onSuccess: (res) => {
+      if (!res.success) {
+        toast.error(res.error);
+      } else {
+        toast.success("Successfully deleted draft");
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: draftsQueryKey });
+    },
   });
 
   if (draftError || !draft) {
@@ -88,19 +130,19 @@ const StoryDraftItem = ({ draft: initialDraft }: StoryDraftItemProps) => {
               <ChevronDown strokeWidth={2} className="text-sub-text" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-fit p-1">
-            <div className="flex flex-col items-start  text-xs-sm">
-              <Link
-                href={`/editor?storyId=${draft.id}`}
-                className="w-full justify-start inline-flex items-center  gap-2 whitespace-nowrap rounded-md  transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-sub-text"
-              >
-                Edit draft
-              </Link>
-              {/* <DraftDeleteDialog
-                isDeleting={isDeleting}
-                isPending={isPending}
-                handleDelete={handleDelete}
-              /> */}
+          <PopoverContent>
+            <div className="flex flex-col items-start ">
+              <PopoverGroup>
+                <PopoverButton>
+                  <Link href={`/editor?storyId=${draft.id}`}>Edit draft</Link>
+                </PopoverButton>
+                <StoryDeletionAlertDialog
+                  isDeleting={isDeleting}
+                  handleDelete={deleteMutation}
+                >
+                  <PopoverButton variant="danger">Delete draft</PopoverButton>
+                </StoryDeletionAlertDialog>
+              </PopoverGroup>
             </div>
           </PopoverContent>
         </Popover>

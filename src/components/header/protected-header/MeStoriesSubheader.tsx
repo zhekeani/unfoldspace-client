@@ -3,6 +3,7 @@ import SubsectionTabsCarousel, {
 } from "@/components/carousel/SubsectionTabsCarousel";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const subsectionTabs: SubsectionTab[] = [
   {
@@ -34,7 +35,7 @@ const MeStoriesSubheader = () => {
               "mobile:h-9 mobile:px-4 py-2 mobile:has-[>svg]:px-3 h-8 gap-1.5 px-3 has-[>svg]:px-2.5"
             )}
           >
-            Write Story
+            <Link href={`/editor`}>Write Story</Link>
           </Button>
         </div>
       </div>
